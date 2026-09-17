@@ -12,6 +12,7 @@
    After editing, run `npm run build` again to regenerate dist/.
    =============================================================== */
 export const CONFIG = {
+  appTitle:       "Last Train Home",   // shown in the header and the browser tab
   myMapsEmbedUrl: "https://www.google.com/maps/d/embed?mid=1j-yfShXEfBlLNnzdcv4-btB5G6SLdOI&ehbc=2E312F&noprof=1",
   myMapsAppUrl:   "https://www.google.com/maps/d/viewer?mid=1j-yfShXEfBlLNnzdcv4-btB5G6SLdOI",
   ventraUrl:      "https://www.ventrachicago.com/app/",

@@ -7,6 +7,8 @@ strict `Content-Security-Policy` with no `'unsafe-inline'` and no CDN.
 
 ## Edit the content
 
+- **Title:** `src/config.js` — set `appTitle`; it drives both the header and the
+  browser tab. (The `<title>` in `index.html` is only the pre-load default.)
 - **Map link / quick links:** `src/config.js` — paste your Google My Maps `mid`
   into `myMapsEmbedUrl` **and** `myMapsAppUrl`. Swap Ventra/Metra URLs if you like.
 - **Schedule / venues / tasks data:** `src/data.js`.

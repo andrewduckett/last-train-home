@@ -264,6 +264,7 @@ export default function App() {
   const { checks, toggle, resetMany } = useChecks();
 
   useEffect(() => { window.scrollTo(0, 0); }, [tab]);
+  useEffect(() => { document.title = CONFIG.appTitle; }, []);
 
   return (
     <div className="min-h-screen mx-auto max-w-[520px] flex flex-col">
@@ -274,7 +275,7 @@ export default function App() {
           <div className="flex items-center gap-2">
             <span className="text-[19px]">🚆</span>
             <h1 className="font-display font-bold text-[21px] tracking-wide" style={{ color: "var(--board-ink)" }}>
-              Last Train Home
+              {CONFIG.appTitle}
             </h1>
           </div>
           <p className="font-board text-[11.5px] mt-0.5 truncate" style={{ color: "var(--board-muted)" }}>{LINE}</p>
