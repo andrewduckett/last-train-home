@@ -3,7 +3,7 @@
 - [x] 1.1 Add SvelteKit, Svelte 5, `@sveltejs/adapter-static`, `@sveltejs/vite-plugin-svelte`, TypeScript, `svelte-check`, Vitest, `@testing-library/svelte`, and `jsdom` to `package.json`; verify `npm install` succeeds.
 - [x] 1.2 Create `svelte.config.js` (adapter-static, `fallback: 'index.html'`), `vite.config.ts`, `tsconfig.json`, `src/app.html`, and `src/routes/+layout.ts` with `ssr = false` and `prerender = true`; verify `npm run check` runs clean.
 - [x] 1.3 Add `dev`, `build`, `preview`, `test`, and `check` scripts to `package.json`; verify `npm run dev` serves an empty shell and `npm run build` emits a `build/` directory.
-- [ ] 1.4 Configure Vitest with a jsdom environment and add one trivial passing component test; verify `npm run test` runs it green.
+- [x] 1.4 Configure Vitest with a jsdom environment and add one trivial passing component test; verify `npm run test` runs it green.
 
 ## 2. Global tokens and scoped-CSS base
 
