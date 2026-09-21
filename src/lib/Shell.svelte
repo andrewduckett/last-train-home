@@ -67,6 +67,12 @@
 			<TasksView crawl={result.crawl} />
 		{/if}
 
+		{:else if result.status === 'not-found'}
+			<p role="status">Crawl not found.</p>
+		{:else if result.status === 'invalid'}
+			<p role="status">This crawl could not be displayed.</p>
+		{:else if result.status === 'error'}
+			<p role="status">Unable to load this crawl. Try again later.</p>
 		{/if}
 
 		<div class="content-spacer"></div>

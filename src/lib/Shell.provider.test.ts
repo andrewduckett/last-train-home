@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/svelte';
+import { fireEvent, render, screen, waitFor } from '@testing-library/svelte';
 import Shell from './Shell.svelte';
 import { createCrawlProvider } from './data/provider.js';
 import type { CrawlDefinition } from './types.js';
@@ -79,4 +79,20 @@ it('shows a loading state until the provider resolves', async () => {
 	release();
 	expect(await screen.findByTestId('view-schedule')).toHaveTextContent('Library steps');
 	expect(screen.queryByRole('status')).not.toBeInTheDocument();
+});
+
+it.each([
+	['not-found', () => undefined, 'Crawl not found.'],
+	['invalid', () => ({ title: null }), 'This crawl could not be displayed.'],
+	['error', () => { throw new Error('private diagnostic'); }, 'Unable to load this crawl. Try again later.'],
+] as const)('shows a fallback for %s', async (_status, retrieve, message) => {
+	render(Shell, { getCrawl: createCrawlProvider(retrieve).getCrawl });
+	await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent(message));
+	expect(screen.queryByRole('heading', { level: 1 })).not.toBeInTheDocument();
+	for (const tab of ['schedule', 'map', 'venues', 'tasks']) {
+		await fireEvent.click(screen.getByRole('button', { name: new RegExp(tab, 'i') }));
+		for (const view of ['schedule', 'map', 'venues', 'tasks']) {
+			expect(screen.queryByTestId(`view-${view}`)).not.toBeInTheDocument();
+		}
+	}
 });
