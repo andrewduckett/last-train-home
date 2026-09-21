@@ -1,6 +1,9 @@
 <script lang="ts">
+	import Shell from '$lib/Shell.svelte';
 </script>
 
-<main>
-	<p>Loading…</p>
-</main>
+<svelte:head>
+	<title>Last Train Home</title>
+</svelte:head>
+
+<Shell />

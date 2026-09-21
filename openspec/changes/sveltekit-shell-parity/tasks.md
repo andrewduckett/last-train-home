@@ -17,13 +17,13 @@
 
 ## 4. Port the shell and views (test-first)
 
-- [ ] 4.1 Write a failing component test for four-tab navigation (opens on Schedule, tab tap switches view and marks active, scrolls to top), then build the shell and bottom nav to pass it.
-- [ ] 4.2 Port the Schedule view (ordered timeline, time/tag/title/subtitle, departure marked distinctly from stop) at parity; verify a component test renders every entry in authored order.
-- [ ] 4.3 Port the Venues view; verify a test asserts each directions link is a Google Maps search URL carrying the venue name, street address, town, and `IL`.
-- [ ] 4.4 Write failing tests for the checklist (checking a 10-point task shows 10 of 85 and 12%, unchecking lowers the tally, reset clears after confirm and is abandoned on cancel), then port the Tasks view to pass them.
-- [ ] 4.5 Port the checklist persistence behind the existing global storage key; verify tests cover reload persistence, loading pre-migration `crawl-checks-v1` data, and starting empty when storage is missing, malformed, or throws.
-- [ ] 4.6 Port the Map view (embedded map frame plus a link to the crawl's viewer URL) and the quick links (open externally in a new tab); verify a test asserts the viewer link target and the quick-link destinations.
-- [ ] 4.7 Confirm phone-first layout: fixed header and bottom nav, safe-area insets, full-row tap targets, system light/dark with no toggle, and reduced motion honored; verify a test asserts the reduced-motion and dark-mode behavior.
+- [x] 4.1 Write a failing component test for four-tab navigation (opens on Schedule, tab tap switches view and marks active, scrolls to top), then build the shell and bottom nav to pass it.
+- [x] 4.2 Port the Schedule view (ordered timeline, time/tag/title/subtitle, departure marked distinctly from stop) at parity; verify a component test renders every entry in authored order.
+- [x] 4.3 Port the Venues view; verify a test asserts each directions link is a Google Maps search URL carrying the venue name, street address, town, and `IL`.
+- [x] 4.4 Write failing tests for the checklist (checking a 10-point task shows 10 of 85 and 12%, unchecking lowers the tally, reset clears after confirm and is abandoned on cancel), then port the Tasks view to pass them.
+- [x] 4.5 Port the checklist persistence behind the existing global storage key; verify tests cover reload persistence, loading pre-migration `crawl-checks-v1` data, and starting empty when storage is missing, malformed, or throws.
+- [x] 4.6 Port the Map view (embedded map frame plus a link to the crawl's viewer URL) and the quick links (open externally in a new tab); verify a test asserts the viewer link target and the quick-link destinations.
+- [x] 4.7 Confirm phone-first layout: fixed header and bottom nav, safe-area insets, full-row tap targets, system light/dark with no toggle, and reduced motion honored; verify a test asserts the reduced-motion and dark-mode behavior.
 
 ## 5. CSP, headers, and deploy config
 
