@@ -23,7 +23,7 @@
 
 ## 4. Verify content and behavior parity
 
-- [ ] 4.1 Verify the default Schedule tab through the real production provider: assert the seed `appTitle`, route line, schedule entries in authored order, and quick-link destinations. Add missing assertions before correcting any integration gaps.
+- [x] 4.1 Verify the default Schedule tab through the real production provider: assert the seed `appTitle`, route line, schedule entries in authored order, and quick-link destinations. Add missing assertions before correcting any integration gaps.
 - [ ] 4.2 Verify the Venues tab after navigation: assert every seed venue's name, address, and directions destination. Add missing assertions before correcting any integration gaps.
 - [ ] 4.3 Verify the Tasks tab after navigation: assert every seed task's label and points, the scavenger rules, and that the seed's placeholder album link is hidden. Verify a configured album link with a separate fixture. Keep tally, reset, and persistence tests passing with the existing `crawl-checks-v1` storage key.
 - [ ] 4.4 Verify the Map tab after navigation: assert the iframe `src` and viewer link `href` match the seed definition. Add missing assertions before correcting any integration gaps.
