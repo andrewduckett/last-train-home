@@ -64,3 +64,11 @@ describe.each(['date', 'color'])('optional %s', (field) => {
 		});
 	});
 });
+
+it('preserves uninterpreted identity strings', async () => {
+	const source = { ...record, color: 'not-a-palette', date: 'not-a-date' };
+	const provider = createCrawlProvider(() => source);
+	await expect(provider.getCrawl('uninterpreted')).resolves.toEqual({
+		status: 'found', crawl: { ...source, id: 'uninterpreted' },
+	});
+});
