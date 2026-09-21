@@ -1,0 +1,58 @@
+export type ScheduleKind = 'arrive' | 'warning' | 'depart' | 'stop';
+
+export interface ScheduleEntry {
+	t: string;
+	kind: ScheduleKind;
+	tag: string;
+	title: string;
+	sub?: string;
+}
+
+export interface VenuePlace {
+	n: string;
+	a: string;
+}
+
+export interface VenueStop {
+	stop: string;
+	town: string;
+	places: VenuePlace[];
+}
+
+export interface ScavengerTask {
+	id: string;
+	t: string;
+	p: number;
+	d: string;
+}
+
+export interface CrawlDefinition {
+	appTitle: string;
+	line: string;
+	schedule: ScheduleEntry[];
+	venues: VenueStop[];
+	scavenger: ScavengerTask[];
+	scavengerRules: string[];
+	myMapsEmbedUrl: string;
+	myMapsAppUrl: string;
+	ventraUrl: string;
+	metraUrl: string;
+	albumUrl: string;
+}
+
+export interface CrawlIdentity {
+	id: string;
+	title: string;
+	date?: string;
+	color?: string;
+}
+
+export interface Crawl extends CrawlIdentity {
+	definition: CrawlDefinition;
+}
+
+export type CrawlResult =
+	| { status: 'found'; crawl: Crawl }
+	| { status: 'not-found'; id: string }
+	| { status: 'invalid'; id: string; reason?: string }
+	| { status: 'error'; id: string; reason?: string };
