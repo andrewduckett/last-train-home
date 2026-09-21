@@ -36,3 +36,29 @@ it('preserves the quick-link destinations', async () => {
 	expect(screen.getByRole('link', { name: /Ventra/ })).toHaveAttribute('href', seed.ventraUrl);
 	expect(screen.getByRole('link', { name: /Metra/ })).toHaveAttribute('href', seed.metraUrl);
 });
+
+it('preserves all seed venues', async () => {
+	const { container } = await openTab('venues');
+	const cards = container.querySelectorAll('.venue-card');
+	expect(cards).toHaveLength(seed.venues.length);
+	seed.venues.forEach((venue, index) => {
+		const card = within(cards[index] as HTMLElement);
+		expect(card.getByText(venue.stop)).toBeInTheDocument();
+		expect(card.getByText(venue.town)).toBeInTheDocument();
+		for (const place of venue.places) {
+			expect(card.getByText(place.n)).toBeInTheDocument();
+			expect(card.getByText(place.a)).toBeInTheDocument();
+		}
+	});
+});
+
+it('preserves the seed directions destinations', async () => {
+	await openTab('venues');
+	const links = screen.getAllByRole('link', { name: 'Directions' });
+	expect(links.map((link) => decodeURIComponent(link.getAttribute('href')!))).toEqual([
+		'https://www.google.com/maps/search/?api=1&query=Station 34, 34 S Main St, Mt. Prospect, IL',
+		'https://www.google.com/maps/search/?api=1&query=Edison Park Inn, 6715 N Olmsted Ave, Edison Park, IL',
+		"https://www.google.com/maps/search/?api=1&query=Eddie's, 10 E Northwest Hwy, Arlington Heights, IL",
+		'https://www.google.com/maps/search/?api=1&query=Tap House Grill, 56 W Wilson St, Palatine, IL',
+	]);
+});
