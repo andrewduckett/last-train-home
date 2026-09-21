@@ -50,3 +50,17 @@ it.each(['', '   ', '\t\n'])('preserves an authored blank title %j', async (titl
 		status: 'found', crawl: { ...record, title, id: 'blank' },
 	});
 });
+
+describe.each(['date', 'color'])('optional %s', (field) => {
+	it.each([null, undefined, 12, false, {}, []].map((value) => [value]))('rejects a present non-string value %j', async (value) => {
+		const provider = createCrawlProvider(() => ({ ...record, [field]: value }));
+		await expect(provider.getCrawl('bad-field')).resolves.toMatchObject({ status: 'invalid', id: 'bad-field' });
+	});
+
+	it.each(['', 'authored value'])('preserves an authored string %j', async (value) => {
+		const provider = createCrawlProvider(() => ({ ...record, [field]: value }));
+		await expect(provider.getCrawl('optional')).resolves.toEqual({
+			status: 'found', crawl: { ...record, id: 'optional', [field]: value },
+		});
+	});
+});

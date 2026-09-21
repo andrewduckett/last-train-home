@@ -1,4 +1,4 @@
-import type { CrawlDefinition, CrawlResult } from '../types.js';
+import type { CrawlDefinition, CrawlIdentity, CrawlResult } from '../types.js';
 
 export interface CrawlProvider {
 	getCrawl(id: string): Promise<CrawlResult>;
@@ -13,10 +13,19 @@ export function createCrawlProvider(retrieve: (id: string) => unknown): CrawlPro
 				if (typeof record !== 'object' || record === null || !('title' in record)) {
 					return { status: 'invalid', id };
 				}
-				const { title } = record;
+				const source = record as Record<string, unknown>;
+				const { title } = source;
 				if (typeof title !== 'string') return { status: 'invalid', id };
+				const identity: CrawlIdentity = { id, title };
+				for (const field of ['date', 'color'] as const) {
+					if (field in record) {
+						const value = source[field];
+						if (typeof value !== 'string') return { status: 'invalid', id };
+						identity[field] = value;
+					}
+				}
 				return { status: 'found', crawl: {
-					id, title, definition: (record as { definition: CrawlDefinition }).definition,
+					...identity, definition: source.definition as CrawlDefinition,
 				} };
 			} catch {
 				return { status: 'error', id };
