@@ -86,3 +86,9 @@ it('hides the seed placeholder album link', async () => {
 	await openTab('tasks');
 	expect(screen.queryByRole('link', { name: /Open group album/ })).not.toBeInTheDocument();
 });
+
+it('preserves the seed map destinations', async () => {
+	await openTab('map');
+	expect(screen.getByTitle('Crawl route map')).toHaveAttribute('src', seed.myMapsEmbedUrl);
+	expect(screen.getByTestId('map-viewer-link')).toHaveAttribute('href', seed.myMapsAppUrl);
+});
