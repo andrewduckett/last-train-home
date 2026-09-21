@@ -28,3 +28,18 @@ it.each([
 	expect(() => { result = provider.getCrawl('broken'); }).not.toThrow();
 	await expect(result).resolves.toMatchObject({ status: 'error', id: 'broken' });
 });
+
+it.each([
+	['missing title', {}],
+	['null title', { title: null }],
+	['undefined title', { title: undefined }],
+	['numeric title', { title: 12 }],
+	['boolean title', { title: false }],
+	['object title', { title: {} }],
+	['array title', { title: [] }],
+	['null record', null],
+	['primitive record', 'not a record'],
+])('resolves %s to invalid', async (_name, source) => {
+	const provider = createCrawlProvider(() => source);
+	await expect(provider.getCrawl('invalid')).resolves.toMatchObject({ status: 'invalid', id: 'invalid' });
+});
