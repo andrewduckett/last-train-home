@@ -27,9 +27,9 @@
 
 ## 5. CSP, headers, and deploy config
 
-- [ ] 5.1 Configure `kit.csp` hash mode in `svelte.config.js` with the script, style, and asset directives, and ensure the `<meta>` policy sits in the head before any script; verify the built `index.html` carries a `<meta>` CSP with a `script-src` hash and no `'unsafe-inline'` in `script-src`.
-- [ ] 5.2 Move `_headers` to `static/_headers` carrying only `frame-ancestors 'none'`, HSTS, `nosniff`, and `Referrer-Policy`; verify the built `build/_headers` contains those directives and no `script-src`.
-- [ ] 5.3 Update `wrangler.jsonc` to serve `build/` with `not_found_handling: "single-page-application"`; verify a local preview serves the shell with HTTP 200 for an unmatched path and serves a real asset directly.
+- [x] 5.1 Configure `kit.csp` hash mode in `svelte.config.js` with the script, style, and asset directives, and ensure the `<meta>` policy sits in the head before any script; verify the built `index.html` carries a `<meta>` CSP with a `script-src` hash and no `'unsafe-inline'` in `script-src`.
+- [x] 5.2 Move `_headers` to `static/_headers` carrying only `frame-ancestors 'none'`, HSTS, `nosniff`, and `Referrer-Policy`; verify the built `build/_headers` contains those directives and no `script-src`.
+- [x] 5.3 Update `wrangler.jsonc` to serve `build/` with `not_found_handling: "single-page-application"`; verify a local preview serves the shell with HTTP 200 for an unmatched path and serves a real asset directly.
 
 ## 6. Verification and cleanup
 
