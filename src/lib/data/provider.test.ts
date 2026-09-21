@@ -43,3 +43,10 @@ it.each([
 	const provider = createCrawlProvider(() => source);
 	await expect(provider.getCrawl('invalid')).resolves.toMatchObject({ status: 'invalid', id: 'invalid' });
 });
+
+it.each(['', '   ', '\t\n'])('preserves an authored blank title %j', async (title) => {
+	const provider = createCrawlProvider(() => ({ ...record, title }));
+	await expect(provider.getCrawl('blank')).resolves.toEqual({
+		status: 'found', crawl: { ...record, title, id: 'blank' },
+	});
+});
