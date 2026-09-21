@@ -62,3 +62,27 @@ it('preserves the seed directions destinations', async () => {
 		'https://www.google.com/maps/search/?api=1&query=Tap House Grill, 56 W Wilson St, Palatine, IL',
 	]);
 });
+
+it('preserves every seed scavenger task', async () => {
+	const { container } = await openTab('tasks');
+	const rows = container.querySelectorAll('.check-row');
+	expect(rows).toHaveLength(seed.scavenger.length);
+	seed.scavenger.forEach((task, index) => {
+		const row = within(rows[index] as HTMLElement);
+		expect(row.getByText(task.t)).toBeInTheDocument();
+		expect(row.getByText(task.d)).toBeInTheDocument();
+		expect(row.getByText(`${task.p} pts`)).toBeInTheDocument();
+	});
+});
+
+it('preserves the scavenger rules', async () => {
+	await openTab('tasks');
+	for (const rule of seed.scavengerRules) {
+		expect(screen.getByText(rule)).toBeInTheDocument();
+	}
+});
+
+it('hides the seed placeholder album link', async () => {
+	await openTab('tasks');
+	expect(screen.queryByRole('link', { name: /Open group album/ })).not.toBeInTheDocument();
+});
