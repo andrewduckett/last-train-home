@@ -12,7 +12,7 @@
 - [x] 2.3 Validate optional `date` and `color` by type alone. Work test-first through absent fields, strings, and present non-string values, including `null` and `undefined`; verify absent fields and strings are accepted while present non-strings resolve to `invalid`.
 - [x] 2.4 Add regression tests for uninterpreted date and color strings. Verify an unrecognized color and a non-date string survive unchanged; correct any failure without adding interpretation or palette resolution.
 - [x] 2.5 Carry the **definition** through unchanged, without validating its contents. Write failing tests first; verify every source field is preserved and valid identity still resolves to `found` when the scavenger list is `null`.
-- [ ] 2.6 Wrap today's record as the sole production crawl, keyed by `cory-trent`, with identity `title` equal to `definition.appTitle`. Capture today's values in test expectations before changing the record; verify the production provider preserves them and other ids, including `constructor` and `toString`, resolve to `not-found`.
+- [x] 2.6 Wrap today's record as the sole production crawl, keyed by `cory-trent`, with identity `title` equal to `definition.appTitle`. Capture today's values in test expectations before changing the record; verify the production provider preserves them and other ids, including `constructor` and `toString`, resolve to `not-found`.
 
 ## 3. Render through the shell
 

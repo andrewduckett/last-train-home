@@ -1,3 +1,4 @@
+import { crawl } from '../crawl.js';
 import type { CrawlDefinition, CrawlIdentity, CrawlResult } from '../types.js';
 
 export interface CrawlProvider {
@@ -33,3 +34,7 @@ export function createCrawlProvider(retrieve: (id: string) => unknown): CrawlPro
 		},
 	};
 }
+
+const records = new Map([['cory-trent', { title: crawl.appTitle, definition: crawl }]]);
+
+export const { getCrawl } = createCrawlProvider((id) => records.get(id));
