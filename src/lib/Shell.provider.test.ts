@@ -96,3 +96,16 @@ it.each([
 		}
 	}
 });
+
+it('reuses one resolved crawl across tab switches', async () => {
+	const calls: string[] = [];
+	const provider = createCrawlProvider(() => source);
+	render(Shell, { getCrawl: (id) => { calls.push(id); return provider.getCrawl(id); } });
+	await screen.findByTestId('view-schedule');
+	for (const tab of ['venues', 'tasks', 'map', 'schedule']) {
+		await fireEvent.click(screen.getByRole('button', { name: new RegExp(tab, 'i') }));
+		expect(screen.getByTestId(`view-${tab}`)).toBeInTheDocument();
+	}
+	expect(calls).toEqual(['cory-trent']);
+	expect(screen.getByText('Library steps')).toBeInTheDocument();
+});
