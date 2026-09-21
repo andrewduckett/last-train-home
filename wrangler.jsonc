@@ -1,9 +1,10 @@
 {
   // Static-assets-only Worker: no server code, just serve the built site.
-  // `npm run build` produces ./dist, then `npx wrangler deploy` uploads it.
+  // `npm run build` produces ./build, then `npx wrangler deploy` uploads it.
   "name": "last-train-home",
   "compatibility_date": "2025-09-01",
   "assets": {
-    "directory": "./dist"
+    "directory": "./build",
+    "not_found_handling": "single-page-application"
   }
 }

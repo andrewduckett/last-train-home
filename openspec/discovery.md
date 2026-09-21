@@ -164,12 +164,12 @@ that introduces each constraint.
   - **Persona served**: Crawler
   - **Journey segment**: Crawler "open the link → see the plan → find the stop → track tasks" (re-platformed, one event)
   - **MoSCoW**: Must
-  - **Why this story / why now**: walking skeleton for the migration — proves the framework and, critically, the **CSP** before anything else is built on it. SvelteKit's prerendered shell normally injects an inline bootstrap `<script>`; `script-src 'self'` with no `'unsafe-inline'` forbids it. Resolving that (`kit.csp` hashing, reconciled with `public/_headers`) is the load-bearing spike and belongs first.
+  - **Why this story / why now**: walking skeleton for the migration — proves the framework and, critically, the **CSP** before anything else is built on it. SvelteKit's prerendered shell normally injects an inline bootstrap `<script>`; `script-src 'self'` with no `'unsafe-inline'` forbids it. Resolving that (`kit.csp` hashing, with header-only directives in `static/_headers`) is the load-bearing spike and belongs first.
   - **Depends on**: nothing
-  - **Scope**: in: replace React+Vite with SvelteKit + `adapter-static` (`ssr = false`, prerendered shell, SPA fallback); port the four-tab shell and all views (`ScheduleView`/`MapView`/`VenuesView`/`TasksView`) to Svelte 5 components at visual parity; keep Tailwind; keep the single crawl hardcoded (still a module); preserve the strict CSP and prove it on the built output; stand up Vitest + `@testing-library/svelte`; ADR: static-first SvelteKit. / out: provider interface, YAML, routing/ids, per-crawl state, theming or schedule changes.
+  - **Scope**: in: replace React+Vite with SvelteKit + `adapter-static` (`ssr = false`, prerendered shell, SPA fallback); port the four-tab shell and all views (`ScheduleView`/`MapView`/`VenuesView`/`TasksView`) to Svelte 5 components at visual parity; convert Tailwind to native Svelte scoped CSS (resolves Open Question 4 — see below); keep the single crawl hardcoded (still a module); preserve the strict CSP and prove it on the built output; stand up Vitest + `@testing-library/svelte`; ADRs: static-first SvelteKit, and the CSP hashing mechanism. / out: provider interface, YAML, routing/ids, per-crawl state, theming or schedule changes.
   - **Relevant code**: `src/App.jsx`, `src/main.jsx`, `src/index.css`, `src/config.js`, `src/data.js`, `index.html`, `vite.config.js`, `tailwind.config.js`, `postcss.config.js`, `public/_headers`, `wrangler.jsonc` → new `svelte.config.js`, `vite.config.ts`, `src/app.html`, `src/routes/+layout.*`, `src/routes/+page.svelte`, `src/lib/**`, `docs/decisions/`.
   - **Added**: 2026-09-20
-  - **Change**: _not yet proposed_
+  - **Change**: proposed 2026-09-20 — `openspec/changes/sveltekit-shell-parity/`
 
 - [ ] 2. `crawl-provider-interface` — the rendered event comes from `getCrawl(id)`, not a direct import
   - **Persona served**: Author (enables), Crawler (unchanged)
@@ -248,8 +248,10 @@ that introduces each constraint.
   way it is the first record and the default at `/`.
 - **Default-crawl config location** (resolve in story 3): an app-level constant vs. a tiny
   config file vs. an env value — one small setting, but name where it lives.
-- **Tailwind vs. scoped CSS** (resolve in story 1): keep Tailwind through the port (chosen
-  default, least churn) or converge on the sibling's plain scoped CSS. Reversible.
+- **Tailwind vs. scoped CSS** (resolved in story 1): converge on the sibling's plain scoped
+  CSS. The app is small, scoped CSS is the sibling's idiom and a clean base for the theming
+  story, and the CSP work does not depend on the styling idiom. The cost is a one-time
+  utility-to-CSS rewrite plus a parity check. Reversible.
 
 ## Change Log
 
