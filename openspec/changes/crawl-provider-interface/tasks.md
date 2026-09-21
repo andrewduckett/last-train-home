@@ -19,13 +19,13 @@
 - [ ] 3.1 Make `Shell.svelte` call `getCrawl('cory-trent')` once on mount and pass the found crawl to all four views as a typed prop. First add failing tests using content different from the seed, with identity `title` distinct from `definition.appTitle`; verify the header uses the definition. Adapt direct view tests to pass props and shell tests, including `tests/csp-browser.test.ts`, to await resolution; verify the navigation and view tests pass.
 - [ ] 3.2 Show a loading state while the provider promise is pending. Write a failing test with a controllable promise first; verify no view mounts before it resolves and the Schedule view appears after a `found` result.
 - [ ] 3.3 Show a fallback for each of `not-found`, `invalid`, and `error`. Write failing tests for each result first; verify a message appears and none of the four views mounts.
-- [ ] 3.4 Keep the resolved crawl across tab switches. Write a failing test first; navigate through all four tabs and back, then verify the provider received exactly one call with `cory-trent`.
+- [ ] 3.4 Add a regression test for keeping the resolved crawl across tab switches. Navigate through all four tabs and back, then verify the provider received exactly one call with `cory-trent`.
 
 ## 4. Verify content and behavior parity
 
 - [ ] 4.1 Verify the default Schedule tab through the real production provider: assert the seed `appTitle`, route line, schedule entries in authored order, and quick-link destinations. Add missing assertions before correcting any integration gaps.
 - [ ] 4.2 Verify the Venues tab after navigation: assert every seed venue's name, address, and directions destination. Add missing assertions before correcting any integration gaps.
-- [ ] 4.3 Verify the Tasks tab after navigation: assert every seed task's label and points, the scavenger rules, and the album link. Keep tally, reset, and persistence tests passing with the existing `crawl-checks-v1` storage key.
+- [ ] 4.3 Verify the Tasks tab after navigation: assert every seed task's label and points, the scavenger rules, and that the seed's placeholder album link is hidden. Verify a configured album link with a separate fixture. Keep tally, reset, and persistence tests passing with the existing `crawl-checks-v1` storage key.
 - [ ] 4.4 Verify the Map tab after navigation: assert the iframe `src` and viewer link `href` match the seed definition. Add missing assertions before correcting any integration gaps.
 - [ ] 4.5 Verify the retrieval boundary with a source inspection: the shell imports only the provider for retrieval; views receive props and import neither source data nor the provider. Confirm no YAML, routing, state-key, palette, dependency, or deployment changes entered this refactor.
 - [ ] 4.6 Run `npm run check`, `npm run build`, then `npm test` so the CSP tests inspect a fresh build; verify all succeed. Preview the built app at phone width and confirm the four tabs retain their layout and behavior.
