@@ -52,7 +52,9 @@
 	{/if}
 
 	<main class="shell-content">
-		{#if result?.status === 'found'}
+		{#if !result}
+			<p role="status">Loading crawl…</p>
+		{:else if result.status === 'found'}
 		<h2 class="view-title font-display">{TITLES[activeTab]}</h2>
 
 		{#if activeTab === 'schedule'}

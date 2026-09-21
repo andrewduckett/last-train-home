@@ -65,3 +65,18 @@ it('renders the resolved map', async () => {
 	expect(screen.getByTitle('Crawl route map')).toHaveAttribute('src', definition.myMapsEmbedUrl);
 	expect(screen.getByTestId('map-viewer-link')).toHaveAttribute('href', definition.myMapsAppUrl);
 });
+
+it('shows a loading state until the provider resolves', async () => {
+	let release!: () => void;
+	const pending = new Promise<void>((resolve) => { release = resolve; });
+	const provider = createCrawlProvider(() => source);
+	render(Shell, { getCrawl: async (id) => { await pending; return provider.getCrawl(id); } });
+	expect(screen.getByRole('status')).toHaveTextContent('Loading crawl…');
+	expect(screen.queryByRole('heading', { level: 1 })).not.toBeInTheDocument();
+	for (const tab of ['schedule', 'map', 'venues', 'tasks']) {
+		expect(screen.queryByTestId(`view-${tab}`)).not.toBeInTheDocument();
+	}
+	release();
+	expect(await screen.findByTestId('view-schedule')).toHaveTextContent('Library steps');
+	expect(screen.queryByRole('status')).not.toBeInTheDocument();
+});
