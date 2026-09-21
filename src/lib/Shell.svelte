@@ -1,5 +1,14 @@
 <script lang="ts">
-	import { crawl } from './crawl.js';
+	import { onMount } from 'svelte';
+	import { getCrawl as getDefaultCrawl, type CrawlProvider } from './data/provider.js';
+	import type { CrawlResult } from './types.js';
+
+	let { getCrawl = getDefaultCrawl }: { getCrawl?: CrawlProvider['getCrawl'] } = $props();
+	let result = $state<CrawlResult>();
+
+	onMount(() => {
+		void getCrawl('cory-trent').then((resolved) => { result = resolved; });
+	});
 	import ScheduleView from './ScheduleView.svelte';
 	import MapView from './MapView.svelte';
 	import VenuesView from './VenuesView.svelte';
@@ -30,27 +39,32 @@
 </script>
 
 <div class="shell">
+	{#if result?.status === 'found'}
 	<header class="shell-header">
 		<div class="header-inner" style="padding-top: max(12px, env(safe-area-inset-top))">
 			<div class="header-title-row">
 				<span class="header-icon">🚆</span>
-				<h1 class="header-title font-display">{crawl.appTitle}</h1>
+				<h1 class="header-title font-display">{result.crawl.definition.appTitle}</h1>
 			</div>
-			<p class="header-line font-board">{crawl.line}</p>
+			<p class="header-line font-board">{result.crawl.definition.line}</p>
 		</div>
 	</header>
+	{/if}
 
 	<main class="shell-content">
+		{#if result?.status === 'found'}
 		<h2 class="view-title font-display">{TITLES[activeTab]}</h2>
 
 		{#if activeTab === 'schedule'}
-			<ScheduleView />
+			<ScheduleView crawl={result.crawl} />
 		{:else if activeTab === 'map'}
-			<MapView />
+			<MapView crawl={result.crawl} />
 		{:else if activeTab === 'venues'}
-			<VenuesView />
+			<VenuesView crawl={result.crawl} />
 		{:else if activeTab === 'tasks'}
-			<TasksView />
+			<TasksView crawl={result.crawl} />
+		{/if}
+
 		{/if}
 
 		<div class="content-spacer"></div>

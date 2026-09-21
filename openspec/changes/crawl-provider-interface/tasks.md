@@ -16,7 +16,7 @@
 
 ## 3. Render through the shell
 
-- [ ] 3.1 Make `Shell.svelte` call `getCrawl('cory-trent')` once on mount and pass the found crawl to all four views as a typed prop. First add failing tests using content different from the seed, with identity `title` distinct from `definition.appTitle`; verify the header uses the definition. Adapt direct view tests to pass props and shell tests, including `tests/csp-browser.test.ts`, to await resolution; verify the navigation and view tests pass.
+- [x] 3.1 Make `Shell.svelte` call `getCrawl('cory-trent')` once on mount and pass the found crawl to all four views as a typed prop. First add failing tests using content different from the seed, with identity `title` distinct from `definition.appTitle`; verify the header uses the definition. Adapt direct view tests to pass props and shell tests, including `tests/csp-browser.test.ts`, to await resolution; verify the navigation and view tests pass.
 - [ ] 3.2 Show a loading state while the provider promise is pending. Write a failing test with a controllable promise first; verify no view mounts before it resolves and the Schedule view appears after a `found` result.
 - [ ] 3.3 Show a fallback for each of `not-found`, `invalid`, and `error`. Write failing tests for each result first; verify a message appears and none of the four views mounts.
 - [ ] 3.4 Add a regression test for keeping the resolved crawl across tab switches. Navigate through all four tabs and back, then verify the provider received exactly one call with `cory-trent`.

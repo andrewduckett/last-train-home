@@ -1,11 +1,13 @@
 <script lang="ts">
-	import { crawl } from './crawl.js';
+	import type { Crawl } from './types.js';
+
+	let { crawl }: { crawl: Crawl } = $props();
 	import { checksStore } from './checks.svelte.js';
 
-	const { scavenger, scavengerRules, albumUrl } = crawl;
-	const albumSet = albumUrl && !albumUrl.includes('PASTE_');
+	let { scavenger, scavengerRules, albumUrl } = $derived(crawl.definition);
+	let albumSet = $derived(albumUrl && !albumUrl.includes('PASTE_'));
 
-	const total = scavenger.reduce((s, i) => s + i.p, 0);
+	let total = $derived(scavenger.reduce((s, i) => s + i.p, 0));
 
 	let earned = $derived(scavenger.reduce((s, i) => s + (checksStore.checks[i.id] ? i.p : 0), 0));
 	let pct = $derived(Math.round((earned / total) * 100));

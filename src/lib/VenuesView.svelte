@@ -1,5 +1,8 @@
 <script lang="ts">
-	import { crawl } from './crawl.js';
+	import type { Crawl } from './types.js';
+
+	let { crawl }: { crawl: Crawl } = $props();
+	let definition = $derived(crawl.definition);
 
 	function mapsUrl(name: string, address: string, town: string): string {
 		return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name}, ${address}, ${town}, IL`)}`;
@@ -7,7 +10,7 @@
 </script>
 
 <div data-testid="view-venues" class="venues-view">
-	{#each crawl.venues as venue (venue.stop)}
+	{#each definition.venues as venue (venue.stop)}
 		<div class="venue-card">
 			<div class="venue-header">
 				<span class="venue-stop font-display">{venue.stop}</span>
