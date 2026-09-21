@@ -7,13 +7,13 @@
 
 ## 2. Global tokens and scoped-CSS base
 
-- [ ] 2.1 Create one global stylesheet holding the CSS-variable tokens (light and dark under `prefers-color-scheme`) and the shared component styles (`.time-pill`, `.rail-track`, `.check-row`), imported by `src/routes/+layout.svelte`; verify the tokens resolve in the running app.
-- [ ] 2.2 Reproduce the Tailwind base styles the app relies on (`box-sizing: border-box`, element margin resets) in the global stylesheet; verify no layout shift against the React build for the shell frame.
-- [ ] 2.3 Add self-hosted `@fontsource` font imports (the weights the design uses); verify the built output requests fonts only from its own origin.
+- [x] 2.1 Create one global stylesheet holding the CSS-variable tokens (light and dark under `prefers-color-scheme`) and the shared component styles (`.time-pill`, `.rail-track`, `.check-row`), imported by `src/routes/+layout.svelte`; verify the tokens resolve in the running app.
+- [x] 2.2 Reproduce the Tailwind base styles the app relies on (`box-sizing: border-box`, element margin resets) in the global stylesheet; verify no layout shift against the React build for the shell frame.
+- [x] 2.3 Add self-hosted `@fontsource` font imports (the weights the design uses); verify the built output requests fonts only from its own origin.
 
 ## 3. Typed crawl module
 
-- [ ] 3.1 Port `src/data.js` and `src/config.js` into a typed crawl module under `src/lib/` (schedule, venues, scavenger tasks and rules, quick links, map URLs, line); verify `svelte-check` types the module with no errors.
+- [x] 3.1 Port `src/data.js` and `src/config.js` into a typed crawl module under `src/lib/` (schedule, venues, scavenger tasks and rules, quick links, map URLs, line); verify `svelte-check` types the module with no errors.
 
 ## 4. Port the shell and views (test-first)
 
