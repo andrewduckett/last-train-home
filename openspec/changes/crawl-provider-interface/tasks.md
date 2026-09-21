@@ -3,7 +3,7 @@
 - [x] 1.1 Move the existing data types into `src/lib/types.ts`; add `CrawlIdentity`, `CrawlDefinition`, `Crawl`, and the four `CrawlResult` variants from the design. Preserve every existing definition field and subtype; verify `npm run check` and the existing component tests pass.
 - [x] 1.2 Add `CrawlProvider` and its factory in `src/lib/data/provider.ts`, with an injected retrieval function. Work test-first: verify the real factory returns a promise containing `found` for an available record and sets the **crawl** id from the requested **logical id**.
 - [x] 1.3 Make the **provider** return `not-found` when retrieval returns `undefined`. Write the failing test first; verify the resolved result carries the requested id.
-- [ ] 1.4 Make the provider convert exceptions during retrieval or validation to `error`. Write failing tests against the real factory first; verify the call never throws and its promise resolves with the requested id rather than rejecting.
+- [x] 1.4 Make the provider convert exceptions during retrieval or validation to `error`. Write failing tests against the real factory first; verify the call never throws and its promise resolves with the requested id rather than rejecting.
 
 ## 2. Validate identity and preserve the definition
 

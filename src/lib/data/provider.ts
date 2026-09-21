@@ -7,9 +7,13 @@ export interface CrawlProvider {
 export function createCrawlProvider(retrieve: (id: string) => unknown): CrawlProvider {
 	return {
 		async getCrawl(id) {
-			const record = retrieve(id) as Omit<Crawl, 'id'>;
-			if (record === undefined) return { status: 'not-found', id };
-			return { status: 'found', crawl: { ...record, id } };
+			try {
+				const record = retrieve(id) as Omit<Crawl, 'id'>;
+				if (record === undefined) return { status: 'not-found', id };
+				return { status: 'found', crawl: { ...record, id } };
+			} catch {
+				return { status: 'error', id };
+			}
 		},
 	};
 }

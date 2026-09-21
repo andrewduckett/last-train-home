@@ -18,3 +18,13 @@ it('resolves a missing record to not-found', async () => {
 	const provider = createCrawlProvider(() => undefined);
 	await expect(provider.getCrawl('missing')).resolves.toEqual({ status: 'not-found', id: 'missing' });
 });
+
+it.each([
+	['retrieval', () => { throw new Error('source unavailable'); }],
+	['record access', () => ({ get title() { throw new Error('unreadable title'); } })],
+])('resolves a %s exception to error', async (_name, retrieve) => {
+	const provider = createCrawlProvider(retrieve);
+	let result: ReturnType<typeof provider.getCrawl> | undefined;
+	expect(() => { result = provider.getCrawl('broken'); }).not.toThrow();
+	await expect(result).resolves.toMatchObject({ status: 'error', id: 'broken' });
+});
