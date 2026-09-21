@@ -13,3 +13,8 @@ describe('crawl provider', () => {
 		});
 	});
 });
+
+it('resolves a missing record to not-found', async () => {
+	const provider = createCrawlProvider(() => undefined);
+	await expect(provider.getCrawl('missing')).resolves.toEqual({ status: 'not-found', id: 'missing' });
+});

@@ -8,6 +8,7 @@ export function createCrawlProvider(retrieve: (id: string) => unknown): CrawlPro
 	return {
 		async getCrawl(id) {
 			const record = retrieve(id) as Omit<Crawl, 'id'>;
+			if (record === undefined) return { status: 'not-found', id };
 			return { status: 'found', crawl: { ...record, id } };
 		},
 	};
