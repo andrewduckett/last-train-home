@@ -180,7 +180,7 @@ that introduces each constraint.
   - **Scope**: in: a `Crawl` type split into identity (validated: `id`, `title`, optional `date`, `color`) and definition (schedule/venues/tasks/links/map, carried through); a `CrawlProvider` interface with `getCrawl(id)` returning a found/not-found/invalid/error result; an in-repo implementation wrapping today's hardcoded data as the single record; views consume only `getCrawl(id)`; ADR: crawl behind a provider. / out: YAML loading, routing, files on disk, multiple records.
   - **Relevant code**: new `src/lib/data/provider.ts`, `src/lib/types.ts`; the ported views from story 1; `docs/decisions/`.
   - **Added**: 2026-09-20
-  - **Change**: _not yet proposed_
+  - **Change**: proposed 2026-09-21 — `openspec/changes/crawl-provider-interface/`
 
 - [ ] 3. `yaml-crawl-routing` — crawls load from YAML; `/<id>` renders any, `/` renders the default
   - **Persona served**: Author, Crawler
