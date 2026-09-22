@@ -6,7 +6,7 @@ Crawl authoring prevents an organizer from publishing YAML that the current app 
 
 ### Requirement: Validate every crawl before publication
 
-The build SHALL parse every YAML **crawl** record and validate the fields required by the current views. It SHALL fail before deployment when any record is malformed or unsafe to render.
+The build SHALL parse every YAML crawl record and validate the fields required by the current views. It SHALL fail before deployment when any record is malformed or unsafe to render.
 
 #### Scenario: Every authored record is valid
 
@@ -25,10 +25,10 @@ The build SHALL parse every YAML **crawl** record and validate the fields requir
 
 ### Requirement: Keep provider validation limited to identity
 
-Build validation SHALL NOT change the runtime **provider** contract. The **provider** SHALL continue to validate **identity** and carry the **definition** through unchanged.
+Build validation SHALL NOT change the runtime provider contract. The provider SHALL continue to validate identity and carry the definition through unchanged.
 
 #### Scenario: Runtime provider reads a build-validated record
 
-- **WHEN** the runtime **provider** resolves an authored record
-- **THEN** it applies the existing **identity** checks without repeating definition validation
+- **WHEN** the runtime provider resolves an authored record
+- **THEN** it applies the existing identity checks without repeating definition validation
 

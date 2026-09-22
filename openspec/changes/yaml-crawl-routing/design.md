@@ -1,12 +1,12 @@
 ## Context
 
-See proposal.md for the motivation and the three delta specs for required behavior. The shell now asks an in-memory **provider** for cory-trent. That **provider** validates **identity** and leaves the **definition** untouched. The root route is prerendered with client rendering disabled on the server. Cloudflare already serves the app shell for unmatched paths.
+See proposal.md for the motivation and the delta specs for required behavior. The shell now asks an in-memory provider for cory-trent. That provider validates identity and leaves the definition untouched. The root route is prerendered with client rendering disabled on the server. Cloudflare already serves the app shell for unmatched paths.
 
 ## Goals / Non-Goals
 
 **Goals:**
 
-- Keep the **provider** as the only source boundary seen by the shell.
+- Keep the provider as the only source boundary seen by the shell.
 - Keep the planned event's authored content and order exactly unchanged.
 - Make direct links work with the current static build and CSP.
 
@@ -20,15 +20,15 @@ See proposal.md for the motivation and the three delta specs for required behavi
 
 ### Keep the current record shape in YAML
 
-The seed file will hold top-level **identity** fields and a nested **definition**. The **definition** will keep today's field names and values. This matches the current **provider** contract and keeps the four views unchanged. The authored title and definition appTitle will both retain the current display title.
+The seed file will hold top-level identity fields and a nested definition. The definition will keep today's field names and values. This matches the current provider contract and keeps the four views unchanged. The authored title and definition appTitle will both retain the current display title.
 
 A flat file would read more simply, but splitting it into identity and definition would reshape the record at the provider boundary. A new field schema would also pull the generic-itinerary story into this change. We will defer both changes.
 
 ### Fetch YAML inside the provider implementation
 
-A YAML loader will fetch a same-origin file from static/crawls using the requested **logical id**. The shell and views will receive only the existing CrawlResult. The loader will parse YAML with the yaml package and pass the parsed mapping to the current **identity** validation logic. It will not interpret schedule entries or resolve colors.
+A YAML loader will fetch a same-origin file from static/crawls using the requested logical id. The shell and views will receive only the existing CrawlResult. The loader will parse YAML with the yaml package and pass the parsed mapping to the current identity validation logic. It will not interpret schedule entries or resolve colors.
 
-The loader will accept only lowercase alphanumeric ids with internal hyphens before constructing a file URL. An unsupported id will return not-found without a fetch. The route will not normalize mixed-case ids. This keeps URLs and file lookup case-sensitive across development and Linux hosting. It also keeps a **logical id** from becoming path syntax. The requested id remains authoritative even if a file contains an id field.
+The loader will accept only lowercase alphanumeric ids with internal hyphens before constructing a file URL. An unsupported id will return not-found without a fetch. The route will not normalize mixed-case ids. This keeps URLs and file lookup case-sensitive across development and Linux hosting. It also keeps a logical id from becoming path syntax. The requested id remains authoritative even if a file contains an id field.
 
 The loader will map HTTP 404 and a successful text/html response to not-found. The latter is Cloudflare's SPA fallback for a missing file. Invalid YAML syntax will map to invalid. Fetch failures, body-read failures, and other non-success HTTP responses will map to error. Each path will resolve a result without throwing.
 
@@ -48,13 +48,13 @@ A focused test will compare the parsed seed YAML with a frozen copy of the curre
 
 A build gate will enumerate static/crawls and parse every YAML file. It will validate the identity and definition fields that the current views consume. A failure will name the file and field before deployment. This gate replaces the TypeScript checks lost when records move from code to YAML.
 
-The runtime **provider** will retain its existing boundary. It validates **identity** and carries the **definition** unchanged. Later domain resolvers can replace the temporary whole-record build checks with rules that drop individual malformed entries.
+The runtime provider will retain its existing boundary. It validates identity and carries the definition unchanged. Later domain resolvers can replace the temporary whole-record build checks with rules that drop individual malformed entries.
 
-Validating only cory-trent would leave the advertised add-a-file workflow unsafe. Validating the definition inside the runtime **provider** would assign domain meaning to the wrong layer.
+Validating only cory-trent would leave the advertised add-a-file workflow unsafe. Validating the definition inside the runtime provider would assign domain meaning to the wrong layer.
 
 ### Revalidate stable YAML URLs
 
-The static headers file will set Cache-Control: no-cache for /crawls/*.yaml. Browsers and Cloudflare may store a record, but they must revalidate it before reuse. This lets a redeployment replace event data at the same URL without adding build ids to the **provider** API.
+The static headers file will set Cache-Control: no-cache for /crawls/*.yaml. Browsers and Cloudflare may store a record, but they must revalidate it before reuse. This lets a redeployment replace event data at the same URL without adding build ids to the provider API.
 
 Hashed YAML filenames would make updates reliable, but an id-to-hash manifest would add another generated source. A query parameter tied to the app build would couple the source path to the deployed bundle. Revalidation keeps the authored path stable.
 

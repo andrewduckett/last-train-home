@@ -2,11 +2,11 @@
 
 ### Requirement: Revalidate crawl records after deployment
 
-The host SHALL require caches to revalidate YAML **crawl** records before reuse. The policy SHALL apply to stable URLs under the crawl asset path.
+The host SHALL require caches to revalidate YAML crawl records before reuse. The policy SHALL apply to stable URLs under the crawl asset path.
 
 #### Scenario: An organizer redeploys an updated crawl
 
-- **WHEN** a participant requests the same YAML **crawl** URL after a deployment
+- **WHEN** a participant requests the same YAML crawl URL after a deployment
 - **THEN** browser and edge caches revalidate the record before serving it
 
 #### Scenario: Built assets keep their existing cache behavior
