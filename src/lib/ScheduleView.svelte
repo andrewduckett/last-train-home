@@ -1,7 +1,10 @@
 <script lang="ts">
-	import { crawl } from './crawl.js';
+	import type { Crawl } from './types.js';
 
-	const tabs = crawl.schedule;
+	let { crawl }: { crawl: Crawl } = $props();
+	let definition = $derived(crawl.definition);
+
+	let tabs = $derived(definition.schedule);
 
 	function mapsUrl(name: string, address: string, town: string): string {
 		return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name}, ${address}, ${town}, IL`)}`;
@@ -11,11 +14,11 @@
 
 <div data-testid="view-schedule">
 	<div class="quick-links">
-		<a href={crawl.ventraUrl} target="_blank" rel="noopener noreferrer" class="quick-link">
+		<a href={definition.ventraUrl} target="_blank" rel="noopener noreferrer" class="quick-link">
 			<span class="quick-link-label font-display">Ventra</span>
 			<span class="quick-link-hint">Buy &amp; show your pass</span>
 		</a>
-		<a href={crawl.metraUrl} target="_blank" rel="noopener noreferrer" class="quick-link">
+		<a href={definition.metraUrl} target="_blank" rel="noopener noreferrer" class="quick-link">
 			<span class="quick-link-label font-display">Metra</span>
 			<span class="quick-link-hint">Live train schedules</span>
 		</a>

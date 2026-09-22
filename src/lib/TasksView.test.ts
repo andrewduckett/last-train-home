@@ -16,7 +16,7 @@ function getPercent(): string {
 
 describe('TasksView: checklist tally', () => {
 	it('checking a 10-point task shows 10 of 85 and 12%', async () => {
-		render(TasksView);
+		render(TasksView, { crawl: { id: 'cory-trent', title: crawl.appTitle, definition: crawl } });
 		// All tasks start unchecked; sh-selfie (index 0) is 10 pts, total is 85
 		const checkboxes = screen.getAllByRole('checkbox');
 		await fireEvent.click(checkboxes[0]);
@@ -28,7 +28,7 @@ describe('TasksView: checklist tally', () => {
 	});
 
 	it('unchecking a checked task lowers the tally', async () => {
-		render(TasksView);
+		render(TasksView, { crawl: { id: 'cory-trent', title: crawl.appTitle, definition: crawl } });
 		const checkboxes = screen.getAllByRole('checkbox');
 		await fireEvent.click(checkboxes[0]);
 		await waitFor(() => expect(screen.getByText(/12% collected/)).toBeInTheDocument());
@@ -38,7 +38,7 @@ describe('TasksView: checklist tally', () => {
 
 	it('reset clears checks after confirm', async () => {
 		const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true);
-		render(TasksView);
+		render(TasksView, { crawl: { id: 'cory-trent', title: crawl.appTitle, definition: crawl } });
 		const checkboxes = screen.getAllByRole('checkbox');
 		await fireEvent.click(checkboxes[0]);
 		await waitFor(() => expect(screen.getByText(/12% collected/)).toBeInTheDocument());
@@ -50,7 +50,7 @@ describe('TasksView: checklist tally', () => {
 
 	it('reset is abandoned on cancel', async () => {
 		const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(false);
-		render(TasksView);
+		render(TasksView, { crawl: { id: 'cory-trent', title: crawl.appTitle, definition: crawl } });
 		const checkboxes = screen.getAllByRole('checkbox');
 		await fireEvent.click(checkboxes[0]);
 		await waitFor(() => expect(screen.getByText(/12% collected/)).toBeInTheDocument());

@@ -1,7 +1,7 @@
 # Discovery: Last Train Home — a renderer for many timed crawls
 
 > Status: complete
-> Created: 2026-09-20 · Last revised: 2026-09-20
+> Created: 2026-09-20 · Last revised: 2026-09-21
 
 > Release plan produced by the discovery skill. Resume or revise by re-running the skill.
 > To build: run `/opsx:propose` and ask it to use the next unchecked story below.
@@ -160,7 +160,7 @@ then multiplicity, then generalization. New paths use SvelteKit conventions
 (`src/routes`, `src/lib`, `static/`); ADRs land under `docs/decisions/` with the story
 that introduces each constraint.
 
-- [ ] 1. `sveltekit-shell-parity` — the same four-tab app runs on SvelteKit, under the strict CSP
+- [x] 1. `sveltekit-shell-parity` — the same four-tab app runs on SvelteKit, under the strict CSP
   - **Persona served**: Crawler
   - **Journey segment**: Crawler "open the link → see the plan → find the stop → track tasks" (re-platformed, one event)
   - **MoSCoW**: Must
@@ -169,9 +169,9 @@ that introduces each constraint.
   - **Scope**: in: replace React+Vite with SvelteKit + `adapter-static` (`ssr = false`, prerendered shell, SPA fallback); port the four-tab shell and all views (`ScheduleView`/`MapView`/`VenuesView`/`TasksView`) to Svelte 5 components at visual parity; convert Tailwind to native Svelte scoped CSS (resolves Open Question 4 — see below); keep the single crawl hardcoded (still a module); preserve the strict CSP and prove it on the built output; stand up Vitest + `@testing-library/svelte`; ADRs: static-first SvelteKit, and the CSP hashing mechanism. / out: provider interface, YAML, routing/ids, per-crawl state, theming or schedule changes.
   - **Relevant code**: `src/App.jsx`, `src/main.jsx`, `src/index.css`, `src/config.js`, `src/data.js`, `index.html`, `vite.config.js`, `tailwind.config.js`, `postcss.config.js`, `public/_headers`, `wrangler.jsonc` → new `svelte.config.js`, `vite.config.ts`, `src/app.html`, `src/routes/+layout.*`, `src/routes/+page.svelte`, `src/lib/**`, `docs/decisions/`.
   - **Added**: 2026-09-20
-  - **Change**: proposed 2026-09-20 — `openspec/changes/sveltekit-shell-parity/`
+  - **Change**: archived 2026-09-21 — `openspec/changes/archive/2026-09-21-sveltekit-shell-parity/`
 
-- [ ] 2. `crawl-provider-interface` — the rendered event comes from `getCrawl(id)`, not a direct import
+- [x] 2. `crawl-provider-interface` — the rendered event comes from `getCrawl(id)`, not a direct import
   - **Persona served**: Author (enables), Crawler (unchanged)
   - **Journey segment**: Author "author a crawl" (the boundary); no visible change
   - **MoSCoW**: Must
@@ -180,7 +180,7 @@ that introduces each constraint.
   - **Scope**: in: a `Crawl` type split into identity (validated: `id`, `title`, optional `date`, `color`) and definition (schedule/venues/tasks/links/map, carried through); a `CrawlProvider` interface with `getCrawl(id)` returning a found/not-found/invalid/error result; an in-repo implementation wrapping today's hardcoded data as the single record; views consume only `getCrawl(id)`; ADR: crawl behind a provider. / out: YAML loading, routing, files on disk, multiple records.
   - **Relevant code**: new `src/lib/data/provider.ts`, `src/lib/types.ts`; the ported views from story 1; `docs/decisions/`.
   - **Added**: 2026-09-20
-  - **Change**: _not yet proposed_
+  - **Change**: archived 2026-09-21 — `openspec/changes/archive/2026-09-21-crawl-provider-interface/`
 
 - [ ] 3. `yaml-crawl-routing` — crawls load from YAML; `/<id>` renders any, `/` renders the default
   - **Persona served**: Author, Crawler
@@ -255,6 +255,7 @@ that introduces each constraint.
 
 ## Change Log
 
+- 2026-09-21 — Reconciled completed OpenSpec changes. Marked the SvelteKit shell and crawl-provider stories as archived, so the next unchecked story is YAML crawl routing.
 - 2026-09-20 — Initial plan from `openspec/prd.md`. Two personas (Crawler, Organizer/
   Author); Crawler + Author journey maps annotated against the working React app; MoSCoW;
   7 stories cutting the migration into thin vertical slices (framework+CSP → provider →

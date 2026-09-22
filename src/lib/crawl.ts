@@ -1,46 +1,6 @@
-export type ScheduleKind = 'arrive' | 'warning' | 'depart' | 'stop';
+import type { CrawlDefinition } from './types.js';
 
-export interface ScheduleEntry {
-	t: string;
-	kind: ScheduleKind;
-	tag: string;
-	title: string;
-	sub?: string;
-}
-
-export interface VenuePlace {
-	n: string;
-	a: string;
-}
-
-export interface VenueStop {
-	stop: string;
-	town: string;
-	places: VenuePlace[];
-}
-
-export interface ScavengerTask {
-	id: string;
-	t: string;
-	p: number;
-	d: string;
-}
-
-export interface CrawlData {
-	appTitle: string;
-	line: string;
-	schedule: ScheduleEntry[];
-	venues: VenueStop[];
-	scavenger: ScavengerTask[];
-	scavengerRules: string[];
-	myMapsEmbedUrl: string;
-	myMapsAppUrl: string;
-	ventraUrl: string;
-	metraUrl: string;
-	albumUrl: string;
-}
-
-export const crawl: CrawlData = {
+export const crawl: CrawlDefinition = {
 	appTitle: 'Last Train Home',
 	line: 'Palatine → Mt. Prospect → Edison Park → Arlington Heights → Palatine',
 

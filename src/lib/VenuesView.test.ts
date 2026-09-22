@@ -5,14 +5,14 @@ import { crawl } from './crawl.js';
 
 describe('VenuesView', () => {
 	it('renders a directions link for every venue place', () => {
-		render(VenuesView);
+		render(VenuesView, { crawl: { id: 'cory-trent', title: crawl.appTitle, definition: crawl } });
 		const links = screen.getAllByRole('link', { name: /directions/i });
 		const totalPlaces = crawl.venues.reduce((sum, v) => sum + v.places.length, 0);
 		expect(links).toHaveLength(totalPlaces);
 	});
 
 	it('each directions link href is a Google Maps search URL with name, address, town, and IL', () => {
-		const { container } = render(VenuesView);
+		const { container } = render(VenuesView, { crawl: { id: 'cory-trent', title: crawl.appTitle, definition: crawl } });
 		const allLinks = container.querySelectorAll('a[href*="google.com/maps/search"]');
 		const hrefs = Array.from(allLinks).map((el) => el.getAttribute('href') ?? '');
 

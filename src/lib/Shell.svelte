@@ -1,9 +1,20 @@
 <script lang="ts">
-	import { crawl } from './crawl.js';
+	import { onMount } from 'svelte';
+	import { getCrawl as getDefaultCrawl, type CrawlProvider } from './data/provider.js';
+	import type { CrawlResult } from './types.js';
 	import ScheduleView from './ScheduleView.svelte';
 	import MapView from './MapView.svelte';
 	import VenuesView from './VenuesView.svelte';
 	import TasksView from './TasksView.svelte';
+
+	let { getCrawl = getDefaultCrawl }: { getCrawl?: CrawlProvider['getCrawl'] } = $props();
+	let result = $state<CrawlResult>();
+
+	onMount(() => {
+		void getCrawl('cory-trent').then((resolved) => {
+			result = resolved;
+		});
+	});
 
 	const TABS = [
 		{ id: 'schedule', label: 'Schedule', icon: '🕑' },
@@ -30,27 +41,40 @@
 </script>
 
 <div class="shell">
-	<header class="shell-header">
-		<div class="header-inner" style="padding-top: max(12px, env(safe-area-inset-top))">
-			<div class="header-title-row">
-				<span class="header-icon">🚆</span>
-				<h1 class="header-title font-display">{crawl.appTitle}</h1>
+	{#if result?.status === 'found'}
+		<header class="shell-header">
+			<div class="header-inner" style="padding-top: max(12px, env(safe-area-inset-top))">
+				<div class="header-title-row">
+					<span class="header-icon">🚆</span>
+					<h1 class="header-title font-display">{result.crawl.definition.appTitle}</h1>
+				</div>
+				<p class="header-line font-board">{result.crawl.definition.line}</p>
 			</div>
-			<p class="header-line font-board">{crawl.line}</p>
-		</div>
-	</header>
+		</header>
+	{/if}
 
 	<main class="shell-content">
-		<h2 class="view-title font-display">{TITLES[activeTab]}</h2>
+		{#if !result}
+			<p role="status">Loading crawl…</p>
+		{:else if result.status === 'found'}
+			<h2 class="view-title font-display">{TITLES[activeTab]}</h2>
 
-		{#if activeTab === 'schedule'}
-			<ScheduleView />
-		{:else if activeTab === 'map'}
-			<MapView />
-		{:else if activeTab === 'venues'}
-			<VenuesView />
-		{:else if activeTab === 'tasks'}
-			<TasksView />
+			{#if activeTab === 'schedule'}
+				<ScheduleView crawl={result.crawl} />
+			{:else if activeTab === 'map'}
+				<MapView crawl={result.crawl} />
+			{:else if activeTab === 'venues'}
+				<VenuesView crawl={result.crawl} />
+			{:else if activeTab === 'tasks'}
+				<TasksView crawl={result.crawl} />
+			{/if}
+
+		{:else if result.status === 'not-found'}
+			<p role="status">Crawl not found.</p>
+		{:else if result.status === 'invalid'}
+			<p role="status">This crawl could not be displayed.</p>
+		{:else if result.status === 'error'}
+			<p role="status">Unable to load this crawl. Try again later.</p>
 		{/if}
 
 		<div class="content-spacer"></div>

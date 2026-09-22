@@ -46,8 +46,9 @@ beforeAll(() => {
 });
 
 describe('browser boot and tab switching', () => {
-	it('Shell renders and opens on Schedule tab', () => {
+	it('Shell renders and opens on Schedule tab', async () => {
 		render(Shell);
+		await screen.findByTestId('view-schedule');
 		expect(screen.getByRole('button', { name: /schedule/i })).toHaveAttribute(
 			'aria-current',
 			'page'
@@ -57,6 +58,7 @@ describe('browser boot and tab switching', () => {
 
 	it('switching to Venues tab shows the venues view', async () => {
 		render(Shell);
+		await screen.findByTestId('view-schedule');
 		await fireEvent.click(screen.getByRole('button', { name: /venues/i }));
 		expect(screen.getByTestId('view-venues')).toBeInTheDocument();
 		expect(screen.queryByTestId('view-schedule')).toBeNull();
@@ -64,12 +66,14 @@ describe('browser boot and tab switching', () => {
 
 	it('switching to Tasks tab shows the tasks view', async () => {
 		render(Shell);
+		await screen.findByTestId('view-schedule');
 		await fireEvent.click(screen.getByRole('button', { name: /tasks/i }));
 		expect(screen.getByTestId('view-tasks')).toBeInTheDocument();
 	});
 
 	it('switching to Map tab shows the map view', async () => {
 		render(Shell);
+		await screen.findByTestId('view-schedule');
 		await fireEvent.click(screen.getByRole('button', { name: /map/i }));
 		expect(screen.getByTestId('view-map')).toBeInTheDocument();
 	});

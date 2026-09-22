@@ -5,7 +5,7 @@ import { crawl } from './crawl.js';
 
 describe('ScheduleView', () => {
 	it('renders every schedule entry in authored order', () => {
-		render(ScheduleView);
+		render(ScheduleView, { crawl: { id: 'cory-trent', title: crawl.appTitle, definition: crawl } });
 		const titles = screen.getAllByText(/Stop \d|Depart|Head to|Meetup|Final Stop/i);
 		// Verify count matches data
 		expect(titles.length).toBeGreaterThan(0);
@@ -16,7 +16,7 @@ describe('ScheduleView', () => {
 	});
 
 	it('shows all schedule entries', () => {
-		render(ScheduleView);
+		render(ScheduleView, { crawl: { id: 'cory-trent', title: crawl.appTitle, definition: crawl } });
 		for (const entry of crawl.schedule) {
 			const matches = screen.getAllByText(entry.title);
 			expect(matches.length).toBeGreaterThan(0);
@@ -24,7 +24,7 @@ describe('ScheduleView', () => {
 	});
 
 	it('shows times for each entry', () => {
-		render(ScheduleView);
+		render(ScheduleView, { crawl: { id: 'cory-trent', title: crawl.appTitle, definition: crawl } });
 		for (const entry of crawl.schedule) {
 			const matches = screen.getAllByText(entry.t);
 			expect(matches.length).toBeGreaterThan(0);

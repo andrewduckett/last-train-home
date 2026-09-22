@@ -108,3 +108,47 @@ The shell SHALL target a portrait phone used one-handed. It SHALL keep the heade
 
 - **WHEN** the device requests reduced motion
 - **THEN** the shell disables its transitions and animations
+
+
+### Requirement: Resolve the crawl before rendering views
+
+The shell SHALL obtain its crawl from the provider with the default id, `cory-trent`. It
+SHALL resolve the crawl once and pass it to the four views as a prop. A view SHALL NOT call
+the provider. While the result is pending, the shell SHALL show a loading state and SHALL NOT
+mount the views. For a `found` result, it SHALL render the views from that crawl. For
+`not-found`, `invalid`, or `error`, it SHALL show a fallback and SHALL NOT mount views.
+
+#### Scenario: The default crawl resolves and the Schedule view shows its content
+
+- **WHEN** the shell resolves `cory-trent` with the Schedule tab active
+- **THEN** the header shows the seed `appTitle` and `line`, and Schedule lists entries in authored order
+
+#### Scenario: The Venues tab shows the seed venues
+
+- **WHEN** the resolved shell opens the Venues tab
+- **THEN** the view shows each seed venue's name, address, and directions link
+
+#### Scenario: The Tasks tab shows the seed tasks
+
+- **WHEN** the resolved shell opens the Tasks tab
+- **THEN** the view lists each seed scavenger task with its points
+
+#### Scenario: The Map tab shows the seed map URLs
+
+- **WHEN** the resolved shell opens the Map tab
+- **THEN** the embed src and viewer href match the seed map URLs
+
+#### Scenario: Switching tabs does not re-resolve the crawl
+
+- **WHEN** a participant switches between tabs after the crawl resolves
+- **THEN** the shell uses the resolved crawl and calls the provider once
+
+#### Scenario: A non-found result shows a fallback
+
+- **WHEN** the provider resolves to `not-found`, `invalid`, or `error`
+- **THEN** the shell shows a fallback message and does not mount the views
+
+#### Scenario: A pending result shows a loading state
+
+- **WHEN** the crawl promise has not yet resolved
+- **THEN** the shell shows a loading state and does not mount the views

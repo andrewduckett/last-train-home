@@ -1,7 +1,10 @@
 <script lang="ts">
-	import { crawl } from './crawl.js';
+	import type { Crawl } from './types.js';
 
-	const notSet = crawl.myMapsEmbedUrl.includes('PASTE_YOUR');
+	let { crawl }: { crawl: Crawl } = $props();
+	let definition = $derived(crawl.definition);
+
+	let notSet = $derived(definition.myMapsEmbedUrl.includes('PASTE_YOUR'));
 </script>
 
 <div data-testid="view-map" class="map-view">
@@ -15,7 +18,7 @@
 	<div class="map-frame-wrap">
 		<iframe
 			title="Crawl route map"
-			src={crawl.myMapsEmbedUrl}
+			src={definition.myMapsEmbedUrl}
 			class="map-frame"
 			loading="lazy"
 			referrerpolicy="no-referrer-when-downgrade"
@@ -23,7 +26,7 @@
 	</div>
 
 	<a
-		href={crawl.myMapsAppUrl}
+		href={definition.myMapsAppUrl}
 		target="_blank"
 		rel="noopener noreferrer"
 		class="map-open-btn font-display"
