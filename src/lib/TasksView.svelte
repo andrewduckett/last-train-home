@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { Crawl } from './types.js';
+	import { checksStore } from './checks.svelte.js';
 
 	let { crawl }: { crawl: Crawl } = $props();
-	import { checksStore } from './checks.svelte.js';
 
 	let { scavenger, scavengerRules, albumUrl } = $derived(crawl.definition);
 	let albumSet = $derived(albumUrl && !albumUrl.includes('PASTE_'));

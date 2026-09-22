@@ -25,9 +25,14 @@ export function createCrawlProvider(retrieve: (id: string) => unknown): CrawlPro
 						identity[field] = value;
 					}
 				}
-				return { status: 'found', crawl: {
-					...identity, definition: source.definition as CrawlDefinition,
-				} };
+				return {
+					status: 'found',
+					crawl: {
+						...identity,
+						// The trusted seed owns definition shape; this boundary validates identity only.
+						definition: source.definition as CrawlDefinition,
+					},
+				};
 			} catch {
 				return { status: 'error', id };
 			}

@@ -82,9 +82,9 @@ it('shows a loading state until the provider resolves', async () => {
 });
 
 it.each([
-	['not-found', () => undefined, 'Crawl not found.'],
-	['invalid', () => ({ title: null }), 'This crawl could not be displayed.'],
-	['error', () => { throw new Error('private diagnostic'); }, 'Unable to load this crawl. Try again later.'],
+	['not-found', (): unknown => undefined, 'Crawl not found.'],
+	['invalid', (): unknown => ({ title: null }), 'This crawl could not be displayed.'],
+	['error', (): unknown => { throw new Error('private diagnostic'); }, 'Unable to load this crawl. Try again later.'],
 ] as const)('shows a fallback for %s', async (_status, retrieve, message) => {
 	render(Shell, { getCrawl: createCrawlProvider(retrieve).getCrawl });
 	await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent(message));
