@@ -26,7 +26,7 @@ The Schedule view SHALL show valid timed `stop`, `move`, and `note` entries in a
 
 ### Requirement: Quick links and embedded map
 
-The Schedule view SHALL show the crawl's valid quick links in authored order. Each link SHALL show its label and optional hint, and open its configured destination in a new browser tab. A missing, invalid, or empty link list SHALL leave no quick-link cards. A link without required text SHALL be omitted while valid siblings remain. The Map view SHALL embed the crawl's configured Google map and link to its configured Google map viewer URL. A missing or invalid map SHALL show an unavailable message without a frame or viewer link. The view SHALL not create a clickable link or frame from an unsafe URL. Whether the viewer link opens a native app depends on the participant's device.
+The Schedule view SHALL show the crawl's valid quick links in authored order. Each link SHALL show its label and optional hint, and open its configured destination in a new browser tab. A missing, invalid, or empty link list SHALL leave no quick-link cards. A link without required text or with an unsafe URL SHALL be omitted while valid siblings remain. The Map view SHALL embed the crawl's configured Google map and link to its configured Google map viewer URL. A missing or invalid map SHALL show an unavailable message without a frame or viewer link. The view SHALL not create a clickable link or frame from an unsafe URL. Whether the viewer link opens a native app depends on the participant's device.
 
 #### Scenario: Quick link opens externally
 
@@ -61,7 +61,8 @@ The Schedule view SHALL show the crawl's valid quick links in authored order. Ea
 #### Scenario: A URL is unsafe at runtime
 
 - **WHEN** a quick link or map URL uses an unsafe scheme or unsupported map origin
-- **THEN** the view does not expose that URL as a clickable link or frame
+- **THEN** the Schedule view omits the unsafe quick-link card and keeps valid sibling cards
+- **THEN** the Map view shows no frame or viewer link for an unsafe map URL
 
 #### Scenario: The map is missing at runtime
 

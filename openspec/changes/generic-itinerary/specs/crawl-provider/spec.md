@@ -2,7 +2,7 @@
 
 ### Requirement: Preserve the planned seed crawl
 
-The YAML seed SHALL preserve the planned event's visible schedule wording, times, and entry order when its fields move to the generic itinerary schema. It SHALL preserve venue and task content, link labels and destinations, map destinations, and their authored order. The seed SHALL use the current definition fields rather than retaining obsolete field names.
+The YAML seed SHALL preserve the planned event's visible schedule wording, times, and entry order when its fields move to the generic itinerary schema. It SHALL preserve venue and task content, link labels and destinations, map destinations, and their authored order. The seed SHALL use the new generic itinerary fields rather than retaining obsolete field names.
 
 #### Scenario: The seed record matches the existing event
 
