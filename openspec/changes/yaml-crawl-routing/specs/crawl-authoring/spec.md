@@ -23,6 +23,29 @@ The build SHALL parse every YAML crawl record and validate the fields required b
 - **WHEN** any authored record cannot be parsed as YAML
 - **THEN** crawl validation fails and identifies the record
 
+### Requirement: Match crawl filenames to logical ids
+
+The build SHALL derive each crawl's logical id from its filename. The id SHALL contain lowercase alphanumeric segments separated by single hyphens. The build SHALL reject any filename that does not match the provider's accepted id grammar.
+
+#### Scenario: A filename cannot become a logical id
+
+- **WHEN** a crawl filename contains uppercase letters, underscores, adjacent hyphens, or an empty segment
+- **THEN** crawl validation fails and identifies the file
+
+### Requirement: Enforce current rendering invariants
+
+The build SHALL reject definitions that violate the current views' keyed-list and score requirements. Venue stop labels SHALL be unique. Place names SHALL be unique within each venue. Scavenger task ids SHALL be unique. Scavenger points SHALL produce a finite total greater than zero.
+
+#### Scenario: A rendered key is duplicated
+
+- **WHEN** a record repeats a venue stop label, a place name within one venue, or a scavenger task id
+- **THEN** crawl validation fails and identifies the record and duplicated field
+
+#### Scenario: Task points cannot produce a usable tally
+
+- **WHEN** a record's scavenger points produce a non-finite or non-positive total
+- **THEN** crawl validation fails and identifies the record and points field
+
 ### Requirement: Keep provider validation limited to identity
 
 Build validation SHALL NOT change the runtime provider contract. The provider SHALL continue to validate identity and carry the definition through unchanged.
@@ -31,4 +54,3 @@ Build validation SHALL NOT change the runtime provider contract. The provider SH
 
 - **WHEN** the runtime provider resolves an authored record
 - **THEN** it applies the existing identity checks without repeating definition validation
-

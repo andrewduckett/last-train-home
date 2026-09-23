@@ -1,7 +1,7 @@
 ## 1. YAML authoring boundary
 
 - [ ] 1.1 Add the `yaml` dependency and a shared JSON-clean parser, using failing tests first to verify malformed syntax and unsupported values are rejected.
-- [ ] 1.2 Add a build-time validator for every file under `static/crawls`, using failing tests first to verify errors identify the file and field.
+- [ ] 1.2 Add a build-time validator for every file under `static/crawls`, using failing tests first for invalid filename ids, duplicate rendered keys, unusable point totals, and errors that identify the file and field.
 - [ ] 1.3 Add `static/crawls/cory-trent.yaml`, using a parity test to verify every planned event value and ordered entry matches the existing fixture exactly.
 - [ ] 1.4 Run the validator before each production build, and verify `npm run build` stops when a crawl fixture is invalid.
 

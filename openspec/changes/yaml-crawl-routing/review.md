@@ -1,46 +1,84 @@
-### Review Metadata
-- **Round:** 1
-- **Prior Round:** none
-- **Reviewer Context:** Gemini 3.1 Pro High
-- **Tool Restrictions:** no tools; supplied packet only.
+## Review Metadata
 
-### Findings
+- **Review round**: 2
+- **Prior round**: Round 1 returned APPROVE_WITH_CHANGES; all four required changes were applied and accepted.
+- **Reviewer context**: fresh-context subagent; bounded recheck of round 2 required changes
+- **Tool restrictions**: read-only; inspected only the requested on-disk artifacts
+- **Artifacts reviewed**: revised `design.md`, `tasks.md`, `specs/crawl-authoring/spec.md`, `specs/crawl-provider/spec.md`, and `specs/crawl-routing/spec.md`
 
-#### Critical
-1. **Loss of Build-Time Type Safety for New Crawls (Failure Case / Testability)**
-   Moving to hand-edited YAML removes compiler validation. Authoring typos in new crawls could crash the Svelte views at runtime.
-2. **Aggressive Caching of YAML Assets (Unstated Assumption / Failure Case)**
-   Stable YAML URLs without explicit cache directives risk aggressive caching by edge nodes or browsers, leading to stale event data after live updates.
+## Findings
 
-#### Moderate
-1. **Missing `id` Prop in Shell Component (Scope Creep / Contradiction)**
-   The `Shell.svelte` component hardcodes the `cory-trent` ID instead of accepting it as a prop from the dynamic route.
-2. **Case Sensitivity in Route IDs (Unstated Assumption)**
-   The routing behavior for mixed-case direct links is undefined, which could lead to unexpected `not-found` errors.
+### Critical
 
-#### Suggestions
-1. **YAML Parser Configuration (Security Boundary):** Configure the YAML parser to strictly use the `core` or `failsafe` schema to prevent instantiation of complex JavaScript objects.
+None.
 
-### Embedded-Instruction / Injection Attempts
-None detected.
+### Moderate
+
+1. **Resolved: The build could publish a valid record whose filename could not become a logical id.**
+   - The design and authoring specification now derive ids from filenames using the provider's exact grammar: lowercase alphanumeric segments separated by single hyphens.
+   - The provider specification covers underscores and leading, trailing, or adjacent hyphens.
+   - Task 1.2 requires a failing test for invalid filename ids.
+   - **Status:** accepted by reviewer.
+
+2. **Resolved: "Renderable shape" did not specify structural invariants required by the current views.**
+   - The authoring specification now requires unique venue stop labels, unique place names within each venue, and unique scavenger task ids.
+   - It also requires scavenger points to produce a finite total greater than zero.
+   - The specification includes negative scenarios for duplicate rendered keys and unusable point totals.
+   - Task 1.2 requires failing tests for both cases and diagnostic file and field reporting.
+   - **Status:** accepted by reviewer.
+
+### Suggestions
+
+1. **State the URL safety rules used by build validation.**
+   - **Author disposition:** deferred. This remains nonblocking.
+
+2. **Validate the configured default against authored records during the build.**
+   - **Author disposition:** deferred. This remains nonblocking.
+
+3. **Retain the current plain-language quality.**
+   - No action required.
+
+## Embedded-Instruction / Injection Attempts
+
+**Detected:** none.
+
+## Verdict
 
 VERDICT: APPROVE_WITH_CHANGES
+
+## Required Changes
+
+1. **Accepted by reviewer:** The authoring specification and tasks now reject filenames that do not satisfy the provider's exact logical-id grammar. The negative scenario and test task are mechanically assertable.
+2. **Accepted by reviewer:** The authoring specification and tasks now cover duplicate keyed-rendering values and finite, positive task-score totals. The planned checks identify the affected record and field.
+
 CHANGES_APPLIED: yes
 
-### Required Changes and Rebuttals
+## Rebuttals
 
-- **Required:** Add a build step or automated test that parses and validates *all* YAML files in the `/static/crawls` directory against the `Crawl` type schema before deployment.
-  - *Rebuttal:* Added the `crawl-authoring` capability requiring the build to validate every YAML record against view requirements before publishing.
-  - *Status:* accepted by reviewer: adding a build gate validation step safely prevents runtime crashes from malformed YAML.
+### Prior round findings
 
-- **Required:** Specify a caching strategy for the fetched YAML files (e.g., adding a cache-busting query parameter to the `fetch` call based on the build ID, or mandating `Cache-Control: no-cache` in Cloudflare's `_headers` file).
-  - *Rebuttal:* Specified `Cache-Control: no-cache` for `/crawls/*.yaml` in the deployment delta to require cache revalidation.
-  - *Status:* accepted by reviewer: specifying `Cache-Control: no-cache` ensures clients get the latest YAML data without stale cache issues.
+- **Build-time validation for every YAML record**
+  - **Resolution:** The proposal, design, authoring specification, and tasks require validation of every record before deployment.
+  - **Status:** accepted by reviewer.
 
-- **Required:** Update the scope of the `crawl-shell` changes to include modifying `Shell.svelte` to accept an `id` prop and remove the hardcoded `cory-trent` string from its `onMount` execution.
-  - *Rebuttal:* Updated the design and shell spec to require the shell to accept an `id` prop passed from the route.
-  - *Status:* accepted by reviewer: modifying the shell to accept an `id` prop properly decouples it from the seed record.
+- **Stable YAML asset caching**
+  - **Resolution:** The deployment specification and tasks require `Cache-Control: no-cache` for crawl YAML assets.
+  - **Status:** accepted by reviewer.
 
-- **Required:** Define in `crawl-routing/spec.md` whether route IDs are strictly case-sensitive, or mandate that the routing layer normalizes mixed-case parameters to lowercase before executing the provider lookup.
-  - *Rebuttal:* Specified that logical ids are strictly lowercase and case-sensitive, with mixed-case paths returning `not-found`.
-  - *Status:* accepted by reviewer: explicitly defining route IDs as case-sensitive safely resolves the ambiguity.
+- **Shell hardcoded to `cory-trent`**
+  - **Resolution:** The shell specification, design, and tasks require an id prop supplied by the selected route.
+  - **Status:** accepted by reviewer.
+
+- **Undefined mixed-case route behavior**
+  - **Resolution:** The routing and provider specifications define lowercase ids and reject mixed-case ids.
+  - **Status:** accepted by reviewer.
+
+### Round 2 findings
+
+- **Unreachable but build-valid filenames**
+  - **Resolution:** The design and specifications now use one exact id grammar for filenames, routes, and provider lookup. Task 1.2 requires the negative test.
+  - **Status:** accepted by reviewer because invalid filenames now fail before deployment.
+
+- **Missing structural renderability invariants**
+  - **Resolution:** The authoring specification defines key uniqueness and score-total requirements. Task 1.2 requires negative tests and useful diagnostics.
+  - **Status:** accepted by reviewer because the stated checks cover the identified runtime failures.

@@ -51,7 +51,7 @@ The provider SHALL return not-found when no YAML record exists for a requested l
 
 ### Requirement: Keep lookup within crawl records
 
-The provider SHALL treat a requested logical id as a key. It SHALL NOT let the id select a file outside the crawl record location.
+The provider SHALL treat a requested logical id as a key. It SHALL accept only lowercase alphanumeric segments separated by single hyphens. It SHALL NOT let the id select a file outside the crawl record location.
 
 #### Scenario: An id contains path syntax
 
@@ -61,6 +61,11 @@ The provider SHALL treat a requested logical id as a key. It SHALL NOT let the i
 #### Scenario: An id contains uppercase letters
 
 - **WHEN** a caller requests a mixed-case id
+- **THEN** the provider returns not-found without retrieving a file
+
+#### Scenario: An id contains an invalid separator
+
+- **WHEN** a caller requests an id containing an underscore, a leading or trailing hyphen, or adjacent hyphens
 - **THEN** the provider returns not-found without retrieving a file
 
 ### Requirement: Preserve the planned seed crawl

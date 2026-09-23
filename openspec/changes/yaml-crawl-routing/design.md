@@ -28,7 +28,7 @@ A flat file would read more simply, but splitting it into identity and definitio
 
 A YAML loader will fetch a same-origin file from static/crawls using the requested logical id. The shell and views will receive only the existing CrawlResult. The loader will parse YAML with the yaml package and pass the parsed mapping to the current identity validation logic. It will not interpret schedule entries or resolve colors.
 
-The loader will accept only lowercase alphanumeric ids with internal hyphens before constructing a file URL. An unsupported id will return not-found without a fetch. The route will not normalize mixed-case ids. This keeps URLs and file lookup case-sensitive across development and Linux hosting. It also keeps a logical id from becoming path syntax. The requested id remains authoritative even if a file contains an id field.
+The loader will accept only lowercase alphanumeric segments separated by single hyphens before constructing a file URL. An unsupported id will return not-found without a fetch. The route will not normalize mixed-case ids. This keeps URLs and file lookup case-sensitive across development and Linux hosting. It also keeps a logical id from becoming path syntax. The requested id remains authoritative even if a file contains an id field.
 
 The loader will map HTTP 404 and a successful text/html response to not-found. The latter is Cloudflare's SPA fallback for a missing file. Invalid YAML syntax will map to invalid. Fetch failures, body-read failures, and other non-success HTTP responses will map to error. Each path will resolve a result without throwing.
 
@@ -46,7 +46,7 @@ A focused test will compare the parsed seed YAML with a frozen copy of the curre
 
 ### Validate every authored record during the build
 
-A build gate will enumerate static/crawls and parse every YAML file. It will validate the identity and definition fields that the current views consume. A failure will name the file and field before deployment. This gate replaces the TypeScript checks lost when records move from code to YAML.
+A build gate will enumerate static/crawls and parse every YAML file. It will derive each logical id from the filename and enforce the provider's exact grammar: lowercase alphanumeric segments separated by single hyphens. It will validate the identity and definition fields that the current views consume. It will also reject duplicate keys used by venue and task loops, plus task lists whose points do not produce a finite positive total. A failure will name the file and field before deployment. This gate replaces the TypeScript checks lost when records move from code to YAML.
 
 The runtime provider will retain its existing boundary. It validates identity and carries the definition unchanged. Later domain resolvers can replace the temporary whole-record build checks with rules that drop individual malformed entries.
 

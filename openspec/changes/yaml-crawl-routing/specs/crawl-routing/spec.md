@@ -6,7 +6,7 @@ Crawl routing gives participants a direct link to an authored outing. It also le
 
 ### Requirement: Select a crawl by URL
 
-The app SHALL select the configured default logical id at the root path. At a single-segment path, it SHALL select that segment as the logical id. Logical ids SHALL be case-sensitive and lowercase. The app SHALL obtain either crawl through the provider.
+The app SHALL select the configured default logical id at the root path. At a single-segment path, it SHALL select that segment as the logical id. Logical ids SHALL contain lowercase alphanumeric segments separated by single hyphens. The app SHALL obtain either crawl through the provider.
 
 #### Scenario: Root path selects the default
 
