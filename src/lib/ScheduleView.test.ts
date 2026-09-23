@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/svelte';
 import ScheduleView from './ScheduleView.svelte';
-import { crawl } from './crawl.js';
+import { crawl } from '../../tests/fixtures/cory-trent.js';
 
 describe('ScheduleView', () => {
 	it('renders every schedule entry in authored order', () => {

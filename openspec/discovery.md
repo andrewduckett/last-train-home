@@ -182,7 +182,7 @@ that introduces each constraint.
   - **Added**: 2026-09-20
   - **Change**: archived 2026-09-21 — `openspec/changes/archive/2026-09-21-crawl-provider-interface/`
 
-- [ ] 3. `yaml-crawl-routing` — crawls load from YAML; `/<id>` renders any, `/` renders the default
+- [x] 3. `yaml-crawl-routing` — crawls load from YAML; `/<id>` renders any, `/` renders the default
   - **Persona served**: Author, Crawler
   - **Journey segment**: Author "add a second crawl → set the default"; Crawler "open the link"
   - **MoSCoW**: Must
@@ -191,7 +191,7 @@ that introduces each constraint.
   - **Scope**: in: a YAML provider implementation reading `static/crawls/<id>.yaml`; the seed event authored as `static/crawls/cory-trent.yaml`; dynamic route `src/routes/[id]` (client-resolved, `ssr = false`, SPA fallback); `/` renders an app-level `defaultCrawl`; no public directory listing; ADRs: static-first serving of `/<id>`, YAML as the v1 source. / out: per-crawl state isolation (story 4), schedule generalization (story 5), theming (story 6).
   - **Relevant code**: `src/lib/data/provider.ts` (+ a `yaml.ts` loader), `static/crawls/cory-trent.yaml`, `src/routes/+page.*`, `src/routes/[id]/+page.*`, app-level default config, `wrangler.jsonc` SPA-fallback settings.
   - **Added**: 2026-09-20
-  - **Change**: _not yet proposed_
+  - **Change**: archived 2026-09-22 — `openspec/changes/archive/2026-09-22-yaml-crawl-routing/`
 
 - [ ] 4. `per-crawl-checklist-state` — scavenger ticks persist per device and per crawl, behind an interface
   - **Persona served**: Crawler

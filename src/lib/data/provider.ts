@@ -1,9 +1,19 @@
-import { crawl } from '../crawl.js';
 import type { CrawlDefinition, CrawlIdentity, CrawlResult } from '../types.js';
+import { LOGICAL_ID_PATTERN } from './id.js';
+import { parseJsonYaml } from './yaml.js';
 
 export interface CrawlProvider {
 	getCrawl(id: string): Promise<CrawlResult>;
 }
+
+export interface CrawlResponse {
+	ok: boolean;
+	status: number;
+	headers: { get(name: string): string | null };
+	text(): Promise<string>;
+}
+
+export type CrawlFetch = (path: string) => Promise<CrawlResponse>;
 
 export function createCrawlProvider(retrieve: (id: string) => unknown): CrawlProvider {
 	return {
@@ -29,7 +39,7 @@ export function createCrawlProvider(retrieve: (id: string) => unknown): CrawlPro
 					status: 'found',
 					crawl: {
 						...identity,
-						// The trusted seed owns definition shape; this boundary validates identity only.
+						// Domain layers own definition meaning; this boundary validates identity only.
 						definition: source.definition as CrawlDefinition,
 					},
 				};
@@ -40,6 +50,36 @@ export function createCrawlProvider(retrieve: (id: string) => unknown): CrawlPro
 	};
 }
 
-const records = new Map([['cory-trent', { title: crawl.appTitle, definition: crawl }]]);
+export function createYamlCrawlProvider(fetchCrawl: CrawlFetch): CrawlProvider {
+	return {
+		async getCrawl(id) {
+			if (!LOGICAL_ID_PATTERN.test(id)) return { status: 'not-found', id };
+			let response: CrawlResponse;
+			try {
+				response = await fetchCrawl(`/crawls/${id}.yaml`);
+			} catch {
+				return { status: 'error', id };
+			}
+			if (response.status === 404) return { status: 'not-found', id };
+			if (!response.ok) return { status: 'error', id };
+			if (response.headers.get('content-type')?.toLowerCase().startsWith('text/html')) {
+				return { status: 'not-found', id };
+			}
+			let source: string;
+			try {
+				source = await response.text();
+			} catch {
+				return { status: 'error', id };
+			}
+			let record: unknown;
+			try {
+				record = parseJsonYaml(source);
+			} catch {
+				return { status: 'invalid', id };
+			}
+			return createCrawlProvider(() => record).getCrawl(id);
+		},
+	};
+}
 
-export const { getCrawl } = createCrawlProvider((id) => records.get(id));
+export const { getCrawl } = createYamlCrawlProvider((path) => fetch(path));

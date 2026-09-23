@@ -1,17 +1,17 @@
 ## 1. Define the provider contract
 
 - [x] 1.1 Move the existing data types into `src/lib/types.ts`; add `CrawlIdentity`, `CrawlDefinition`, `Crawl`, and the four `CrawlResult` variants from the design. Preserve every existing definition field and subtype; verify `npm run check` and the existing component tests pass.
-- [x] 1.2 Add `CrawlProvider` and its factory in `src/lib/data/provider.ts`, with an injected retrieval function. Work test-first: verify the real factory returns a promise containing `found` for an available record and sets the **crawl** id from the requested **logical id**.
-- [x] 1.3 Make the **provider** return `not-found` when retrieval returns `undefined`. Write the failing test first; verify the resolved result carries the requested id.
+- [x] 1.2 Add `CrawlProvider` and its factory in `src/lib/data/provider.ts`, with an injected retrieval function. Work test-first: verify the real factory returns a promise containing `found` for an available record and sets the crawl id from the requested logical id.
+- [x] 1.3 Make the provider return `not-found` when retrieval returns `undefined`. Write the failing test first; verify the resolved result carries the requested id.
 - [x] 1.4 Make the provider convert exceptions during retrieval or validation to `error`. Write failing tests against the real factory first; verify the call never throws and its promise resolves with the requested id rather than rejecting.
 
 ## 2. Validate identity and preserve the definition
 
-- [x] 2.1 Require a string `title` in the **identity**. Work test-first through missing and non-string titles, including `null`; verify each resolves to `invalid` with the requested id.
+- [x] 2.1 Require a string `title` in the identity. Work test-first through missing and non-string titles, including `null`; verify each resolves to `invalid` with the requested id.
 - [x] 2.2 Add regression tests for empty and whitespace titles. Verify each authored string survives in the `found` result unchanged; correct any failure without adding length checks or trimming.
 - [x] 2.3 Validate optional `date` and `color` by type alone. Work test-first through absent fields, strings, and present non-string values, including `null` and `undefined`; verify absent fields and strings are accepted while present non-strings resolve to `invalid`.
 - [x] 2.4 Add regression tests for uninterpreted date and color strings. Verify an unrecognized color and a non-date string survive unchanged; correct any failure without adding interpretation or palette resolution.
-- [x] 2.5 Carry the **definition** through unchanged, without validating its contents. Write failing tests first; verify every source field is preserved and valid identity still resolves to `found` when the scavenger list is `null`.
+- [x] 2.5 Carry the definition through unchanged, without validating its contents. Write failing tests first; verify every source field is preserved and valid identity still resolves to `found` when the scavenger list is `null`.
 - [x] 2.6 Wrap today's record as the sole production crawl, keyed by `cory-trent`, with identity `title` equal to `definition.appTitle`. Capture today's values in test expectations before changing the record; verify the production provider preserves them and other ids, including `constructor` and `toString`, resolve to `not-found`.
 
 ## 3. Render through the shell

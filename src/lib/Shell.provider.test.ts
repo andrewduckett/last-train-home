@@ -19,8 +19,22 @@ const definition: CrawlDefinition = {
 const source = { title: 'Identity title is different', definition };
 
 function renderRiverWalk() {
-	return render(Shell, { getCrawl: createCrawlProvider(() => source).getCrawl });
+	return render(Shell, { id: 'river-walk', getCrawl: createCrawlProvider(() => source).getCrawl });
 }
+
+it('resolves the selected id once per mount', async () => {
+	const calls: string[] = [];
+	const provider = createCrawlProvider(() => source);
+	render(Shell, {
+		id: 'river-walk',
+		getCrawl: (id) => {
+			calls.push(id);
+			return provider.getCrawl(id);
+		},
+	});
+	await screen.findByTestId('view-schedule');
+	expect(calls).toEqual(['river-walk']);
+});
 
 it('renders the resolved definition header', async () => {
 	renderRiverWalk();
@@ -70,7 +84,7 @@ it('shows a loading state until the provider resolves', async () => {
 	let release!: () => void;
 	const pending = new Promise<void>((resolve) => { release = resolve; });
 	const provider = createCrawlProvider(() => source);
-	render(Shell, { getCrawl: async (id) => { await pending; return provider.getCrawl(id); } });
+	render(Shell, { id: 'river-walk', getCrawl: async (id) => { await pending; return provider.getCrawl(id); } });
 	expect(screen.getByRole('status')).toHaveTextContent('Loading crawl…');
 	expect(screen.queryByRole('heading', { level: 1 })).not.toBeInTheDocument();
 	for (const tab of ['schedule', 'map', 'venues', 'tasks']) {
@@ -86,7 +100,7 @@ it.each([
 	['invalid', (): unknown => ({ title: null }), 'This crawl could not be displayed.'],
 	['error', (): unknown => { throw new Error('private diagnostic'); }, 'Unable to load this crawl. Try again later.'],
 ] as const)('shows a fallback for %s', async (_status, retrieve, message) => {
-	render(Shell, { getCrawl: createCrawlProvider(retrieve).getCrawl });
+	render(Shell, { id: 'river-walk', getCrawl: createCrawlProvider(retrieve).getCrawl });
 	await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent(message));
 	expect(screen.queryByRole('heading', { level: 1 })).not.toBeInTheDocument();
 	for (const tab of ['schedule', 'map', 'venues', 'tasks']) {
@@ -100,12 +114,12 @@ it.each([
 it('reuses one resolved crawl across tab switches', async () => {
 	const calls: string[] = [];
 	const provider = createCrawlProvider(() => source);
-	render(Shell, { getCrawl: (id) => { calls.push(id); return provider.getCrawl(id); } });
+	render(Shell, { id: 'river-walk', getCrawl: (id) => { calls.push(id); return provider.getCrawl(id); } });
 	await screen.findByTestId('view-schedule');
 	for (const tab of ['venues', 'tasks', 'map', 'schedule']) {
 		await fireEvent.click(screen.getByRole('button', { name: new RegExp(tab, 'i') }));
 		expect(screen.getByTestId(`view-${tab}`)).toBeInTheDocument();
 	}
-	expect(calls).toEqual(['cory-trent']);
+	expect(calls).toEqual(['river-walk']);
 	expect(screen.getByText('Library steps')).toBeInTheDocument();
 });

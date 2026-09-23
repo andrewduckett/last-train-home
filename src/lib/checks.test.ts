@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { checksStore } from './checks.svelte.js';
-import { crawl } from './crawl.js';
+import { crawl } from '../../tests/fixtures/cory-trent.js';
 
 const allIds = crawl.scavenger.map((i) => i.id);
 
