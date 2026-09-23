@@ -6,13 +6,12 @@ import type { CrawlDefinition } from './types.js';
 
 const definition: CrawlDefinition = {
 	appTitle: 'River Walk', line: 'Library → Riverside',
-	schedule: [{ t: '1:00 PM', kind: 'stop', tag: 'Meet', title: 'Library steps', sub: 'Bring a camera' }],
+	schedule: [{ time: '1:00 PM', kind: 'stop', tag: 'Meet', title: 'Library steps', note: 'Bring a camera' }],
 	venues: [{ stop: 'First', town: 'River Town', places: [{ n: 'Canal Cafe', a: '7 River Rd' }] }],
 	scavenger: [{ id: 'river-photo', t: 'Find a heron', p: 30, d: 'Photograph it from the path' }],
 	scavengerRules: ['Share a bird photo.'],
-	myMapsEmbedUrl: 'https://www.google.com/maps/d/embed?mid=river',
-	myMapsAppUrl: 'https://www.google.com/maps/d/viewer?mid=river',
-	ventraUrl: 'https://example.com/passes', metraUrl: 'https://example.com/times',
+	map: { embed: 'https://www.google.com/maps/d/embed?mid=river', app: 'https://www.google.com/maps/d/viewer?mid=river' },
+	links: [{ label: 'Tickets', url: 'https://example.com/passes' }, { label: 'Times', url: 'https://example.com/times' }],
 	albumUrl: 'https://example.com/river-photos',
 };
 
@@ -47,8 +46,8 @@ it('renders the resolved schedule', async () => {
 	renderRiverWalk();
 	const view = await screen.findByTestId('view-schedule');
 	expect(view).toHaveTextContent('Library steps');
-	expect(screen.getByRole('link', { name: /Ventra/ })).toHaveAttribute('href', definition.ventraUrl);
-	expect(screen.getByRole('link', { name: /Metra/ })).toHaveAttribute('href', definition.metraUrl);
+	expect(screen.getByRole('link', { name: /Tickets/ })).toHaveAttribute('href', definition.links[0].url);
+	expect(screen.getByRole('link', { name: /Times/ })).toHaveAttribute('href', definition.links[1].url);
 });
 
 it('renders the resolved venues', async () => {
@@ -76,8 +75,22 @@ it('renders the resolved map', async () => {
 	renderRiverWalk();
 	await screen.findByTestId('view-schedule');
 	await fireEvent.click(screen.getByRole('button', { name: /Map/ }));
-	expect(screen.getByTitle('Crawl route map')).toHaveAttribute('src', definition.myMapsEmbedUrl);
-	expect(screen.getByTestId('map-viewer-link')).toHaveAttribute('href', definition.myMapsAppUrl);
+	expect(screen.getByTitle('Crawl route map')).toHaveAttribute('src', definition.map.embed);
+	expect(screen.getByTestId('map-viewer-link')).toHaveAttribute('href', definition.map.app);
+});
+
+it('keeps venues and tasks usable when itinerary fields are malformed', async () => {
+	const malformed = { ...definition, schedule: null, links: 'invalid', map: { embed: 'javascript:alert(1)', app: 'https://www.google.com/maps/d/viewer' } };
+	render(Shell, { id: 'river-walk', getCrawl: createCrawlProvider(() => ({ title: 'River Walk', definition: malformed })).getCrawl });
+	expect(await screen.findByTestId('view-schedule')).toHaveTextContent('Schedule unavailable.');
+	expect(screen.queryByRole('link', { name: 'Tickets' })).not.toBeInTheDocument();
+	await fireEvent.click(screen.getByRole('button', { name: /Map/ }));
+	expect(screen.getByTestId('view-map')).toHaveTextContent('Map unavailable.');
+	expect(screen.queryByTitle('Crawl route map')).not.toBeInTheDocument();
+	await fireEvent.click(screen.getByRole('button', { name: /Venues/ }));
+	expect(screen.getByTestId('view-venues')).toHaveTextContent('Canal Cafe');
+	await fireEvent.click(screen.getByRole('button', { name: /Tasks/ }));
+	expect(screen.getByRole('checkbox', { name: /Find a heron/ })).toBeInTheDocument();
 });
 
 it('shows a loading state until the provider resolves', async () => {

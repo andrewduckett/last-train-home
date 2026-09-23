@@ -2,6 +2,7 @@ import { parseJsonYaml } from './yaml.js';
 import { readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { LOGICAL_ID_PATTERN } from './id.js';
+import { isQuickLinkUrl, isMapEmbedUrl, isMapViewerUrl } from '../crawl/urls.js';
 
 export { LOGICAL_ID_PATTERN } from './id.js';
 
@@ -34,6 +35,13 @@ function asString(fileName, field, value) {
 }
 
 /** @param {string} fileName @param {string} field @param {unknown} value */
+function asNonemptyString(fileName, field, value) {
+	const result = asString(fileName, field, value);
+	if (!result.trim()) invalid(fileName, field);
+	return result;
+}
+
+/** @param {string} fileName @param {string} field @param {unknown} value */
 function asFiniteNumber(fileName, field, value) {
 	if (typeof value !== 'number' || !Number.isFinite(value)) invalid(fileName, field);
 	return value;
@@ -63,10 +71,6 @@ export function validateCrawlSource(fileName, source) {
 	for (const field of [
 		'appTitle',
 		'line',
-		'myMapsEmbedUrl',
-		'myMapsAppUrl',
-		'ventraUrl',
-		'metraUrl',
 		'albumUrl',
 	]) {
 		asString(fileName, `definition.${field}`, definition[field]);
@@ -75,11 +79,25 @@ export function validateCrawlSource(fileName, source) {
 	schedule.forEach((entry, index) => {
 		const field = `definition.schedule[${index}]`;
 		const scheduleEntry = asRecord(fileName, field, entry);
-		for (const name of ['t', 'kind', 'tag', 'title']) {
-			asString(fileName, `${field}.${name}`, scheduleEntry[name]);
-		}
-		if ('sub' in scheduleEntry) asString(fileName, `${field}.sub`, scheduleEntry.sub);
+		const kind = asNonemptyString(fileName, `${field}.kind`, scheduleEntry.kind);
+		if (!['stop', 'move', 'note'].includes(kind)) invalid(fileName, `${field}.kind`);
+		asNonemptyString(fileName, `${field}.time`, scheduleEntry.time);
+		asNonemptyString(fileName, `${field}.title`, scheduleEntry.title);
+		if (kind === 'move') asNonemptyString(fileName, `${field}.mode`, scheduleEntry.mode);
+		if ('tag' in scheduleEntry) asNonemptyString(fileName, `${field}.tag`, scheduleEntry.tag);
+		if ('note' in scheduleEntry) asNonemptyString(fileName, `${field}.note`, scheduleEntry.note);
 	});
+	const links = asArray(fileName, 'definition.links', definition.links);
+	links.forEach((entry, index) => {
+		const field = `definition.links[${index}]`;
+		const link = asRecord(fileName, field, entry);
+		asNonemptyString(fileName, `${field}.label`, link.label);
+		if ('hint' in link) asNonemptyString(fileName, `${field}.hint`, link.hint);
+		if (!isQuickLinkUrl(link.url)) invalid(fileName, `${field}.url`);
+	});
+	const map = asRecord(fileName, 'definition.map', definition.map);
+	if (!isMapEmbedUrl(map.embed)) invalid(fileName, 'definition.map.embed');
+	if (!isMapViewerUrl(map.app)) invalid(fileName, 'definition.map.app');
 	const venues = asArray(fileName, 'definition.venues', definition.venues);
 	const seenStops = new Set();
 	venues.forEach((entry, index) => {

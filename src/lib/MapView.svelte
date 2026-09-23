@@ -1,32 +1,27 @@
 <script lang="ts">
 	import type { Crawl } from './types.js';
+	import { resolveMap } from './crawl/urls.js';
 
 	let { crawl }: { crawl: Crawl } = $props();
 	let definition = $derived(crawl.definition);
 
-	let notSet = $derived(definition.myMapsEmbedUrl.includes('PASTE_YOUR'));
+	let map = $derived(resolveMap(definition?.map));
 </script>
 
 <div data-testid="view-map" class="map-view">
-	{#if notSet}
-		<div class="map-notice">
-			<b>Map not set yet.</b> Add <code>myMapsEmbedUrl</code> and <code>myMapsAppUrl</code>
-			to this crawl's YAML record, then run <code>npm run build</code>.
-		</div>
-	{/if}
-
-	<div class="map-frame-wrap">
+	{#if map}
+		<div class="map-frame-wrap">
 		<iframe
 			title="Crawl route map"
-			src={definition.myMapsEmbedUrl}
+			src={map.embed}
 			class="map-frame"
 			loading="lazy"
 			referrerpolicy="no-referrer-when-downgrade"
 		></iframe>
-	</div>
+		</div>
 
 	<a
-		href={definition.myMapsAppUrl}
+		href={map.app}
 		target="_blank"
 		rel="noopener noreferrer"
 		class="map-open-btn font-display"
@@ -34,6 +29,9 @@
 	>
 		📍 Open in Google Maps App
 	</a>
+	{:else}
+		<p class="map-notice" role="status">Map unavailable.</p>
+	{/if}
 </div>
 
 <style>

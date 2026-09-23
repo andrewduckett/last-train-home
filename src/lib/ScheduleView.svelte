@@ -1,45 +1,45 @@
 <script lang="ts">
 	import type { Crawl } from './types.js';
+	import { resolveSchedule } from './crawl/schedule.js';
+	import { resolveLinks } from './crawl/urls.js';
 
 	let { crawl }: { crawl: Crawl } = $props();
 	let definition = $derived(crawl.definition);
 
-	let tabs = $derived(definition.schedule);
+	let tabs = $derived(resolveSchedule(definition?.schedule));
+	let links = $derived(resolveLinks(definition?.links));
 
-	function mapsUrl(name: string, address: string, town: string): string {
-		return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name}, ${address}, ${town}, IL`)}`;
-	}
-	void mapsUrl;
 </script>
 
 <div data-testid="view-schedule">
-	<div class="quick-links">
-		<a href={definition.ventraUrl} target="_blank" rel="noopener noreferrer" class="quick-link">
-			<span class="quick-link-label font-display">Ventra</span>
-			<span class="quick-link-hint">Buy &amp; show your pass</span>
-		</a>
-		<a href={definition.metraUrl} target="_blank" rel="noopener noreferrer" class="quick-link">
-			<span class="quick-link-label font-display">Metra</span>
-			<span class="quick-link-hint">Live train schedules</span>
-		</a>
-	</div>
+	{#if links.length > 0}
+		<div class="quick-links quick-links-wrap">
+			{#each links as link}
+				<a href={link.url} target="_blank" rel="noopener noreferrer" class="quick-link">
+					<span class="quick-link-label font-display">{link.label}</span>
+					{#if link.hint}<span class="quick-link-hint">{link.hint}</span>{/if}
+				</a>
+			{/each}
+		</div>
+	{/if}
 
 	<section class="rail-track">
+		{#if tabs.length === 0}<p role="status">Schedule unavailable.</p>{/if}
 		{#each tabs as entry, i (i)}
-			{@const isDepart = entry.kind === 'depart'}
-			<div class="timeline-entry" class:last={i === tabs.length - 1}>
-				<span class="dot" class:dot-depart={isDepart} class:dot-stop={!isDepart}>
-					{#if isDepart}<span class="dot-inner"></span>{/if}
+			<div class="timeline-entry" data-kind={entry.kind} class:last={i === tabs.length - 1}>
+				<span class="dot dot-{entry.kind}">
+					{#if entry.kind === 'move'}<span class="dot-inner"></span>{/if}
 				</span>
 				<div class="entry-card">
 					<div class="entry-header">
-						<span class="time-pill">{entry.t}</span>
-						<span class="entry-tag" class:tag-depart={isDepart} class:tag-stop={!isDepart}>
-							{isDepart ? '▶ ' : '◉ '}{entry.tag}
+						<span class="time-pill">{entry.time}</span>
+						<span class="entry-tag tag-{entry.kind}">
+							{entry.tag ?? (entry.kind === 'stop' ? 'Stop' : entry.kind === 'move' ? 'Move' : 'Note')}
 						</span>
 					</div>
 					<div class="entry-title font-display">{entry.title}</div>
-					{#if entry.sub}<div class="entry-sub">{entry.sub}</div>{/if}
+					{#if entry.kind === 'move'}<div class="entry-sub">{entry.mode}</div>{/if}
+					{#if entry.note}<div class="entry-sub">{entry.note}</div>{/if}
 				</div>
 			</div>
 		{/each}
@@ -49,12 +49,15 @@
 <style>
 	.quick-links {
 		display: flex;
+		flex-wrap: wrap;
 		gap: 12px;
 		margin-bottom: 20px;
 	}
 
 	.quick-link {
-		flex: 1;
+		flex: 1 1 min(100%, 140px);
+		min-width: 0;
+		overflow-wrap: anywhere;
 		border-radius: 16px;
 		padding: 12px 16px;
 		display: flex;
@@ -107,7 +110,7 @@
 		place-items: center;
 	}
 
-	.dot-depart {
+	.dot-move {
 		background: var(--rail);
 		border-color: var(--rail);
 	}
@@ -116,6 +119,8 @@
 		background: var(--surface);
 		border-color: var(--accent);
 	}
+
+	.dot-note { background: var(--surface); border-color: var(--muted); }
 
 	.dot-inner {
 		width: 6px;
@@ -146,13 +151,15 @@
 		letter-spacing: 0.12em;
 	}
 
-	.tag-depart {
+	.tag-move {
 		color: var(--rail);
 	}
 
 	.tag-stop {
 		color: var(--accent-ink);
 	}
+
+	.tag-note { color: var(--muted); }
 
 	.entry-title {
 		font-weight: 600;

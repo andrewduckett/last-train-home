@@ -9,7 +9,7 @@ definition:
   appTitle: Example
   line: A → B
   schedule:
-    - t: Noon
+    - time: Noon
       kind: stop
       tag: Meet
       title: First stop
@@ -26,10 +26,10 @@ definition:
       d: Share it
   scavengerRules:
     - Post the photo.
-  myMapsEmbedUrl: https://example.com/embed
-  myMapsAppUrl: https://example.com/map
-  ventraUrl: https://example.com/pass
-  metraUrl: https://example.com/times
+  links: []
+  map:
+    embed: https://www.google.com/maps/d/embed?mid=example
+    app: https://www.google.com/maps/d/viewer?mid=example
   albumUrl: https://example.com/photos
 `;
 
@@ -52,10 +52,6 @@ it('identifies a definition field with the wrong type', () => {
 it.each([
 	['appTitle', '  appTitle: Example\n'],
 	['line', '  line: A → B\n'],
-	['myMapsEmbedUrl', '  myMapsEmbedUrl: https://example.com/embed\n'],
-	['myMapsAppUrl', '  myMapsAppUrl: https://example.com/map\n'],
-	['ventraUrl', '  ventraUrl: https://example.com/pass\n'],
-	['metraUrl', '  metraUrl: https://example.com/times\n'],
 	['albumUrl', '  albumUrl: https://example.com/photos\n'],
 ])('identifies an invalid definition.%s type', (field, authoredLine) => {
 	const source = validSource.replace(authoredLine, `  ${field}: 42\n`);
@@ -80,9 +76,9 @@ it.each([
 });
 
 it('identifies an invalid schedule time type', () => {
-	const source = validSource.replace('    - t: Noon\n', '    - t: 42\n');
+	const source = validSource.replace('    - time: Noon\n', '    - time: 42\n');
 	expect(() => validateCrawlSource('example.yaml', source)).toThrow(
-		/example\.yaml.*definition\.schedule\[0\]\.t/i,
+		/example\.yaml.*definition\.schedule\[0\]\.time/i,
 	);
 });
 
