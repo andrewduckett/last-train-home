@@ -6,7 +6,7 @@ Crawl theming gives each outing a readable accent while keeping the shared stati
 
 ### Requirement: Resolve an authored color to a crawl palette
 
-The theme layer SHALL recognize the names `amber` and `teal`. It SHALL use the neutral station-board palette when `color` is absent or unknown. An unknown name SHALL NOT prevent any crawl view from rendering.
+The theme layer SHALL recognize the names `amber` and `teal`. It SHALL use the neutral palette when `color` is absent or unknown. An unknown name SHALL NOT prevent any crawl view from rendering.
 
 #### Scenario: An authored palette is available
 
@@ -35,7 +35,7 @@ Each palette SHALL provide light and dark tokens. The displayed tokens SHALL fol
 
 ### Requirement: Keep authored accents readable
 
-Every published palette SHALL meet WCAG AA contrast for text on its declared backgrounds. This includes foreground and muted text on content surfaces, station-board text, accent text, and text on filled accent controls. Tests SHALL check these pairs in the generated CSS used by the build.
+The build SHALL publish only palettes whose declared text and background pairs meet WCAG AA contrast. These pairs include foreground and muted text on content surfaces, board text, accent text, and text on filled accent controls. Tests SHALL check these pairs in the generated CSS used by the build.
 
 #### Scenario: A palette is published
 

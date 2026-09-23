@@ -4,7 +4,7 @@ Every crawl currently uses the same fixed orange styling, even though records ca
 
 ## What Changes
 
-- Add named amber and teal accent palettes, plus a neutral station-board fallback.
+- Add named amber and teal accent palettes, plus a neutral palette fallback.
 - Set `color: amber` on `cory-trent` to preserve its current identity.
 - Resolve a crawl's optional `color` in the theme layer. Missing or unknown names select neutral without breaking the crawl.
 - Generate light and dark CSS tokens from one palette source. Follow the device's color scheme without an in-app toggle.

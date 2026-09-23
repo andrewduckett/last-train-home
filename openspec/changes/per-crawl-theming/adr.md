@@ -5,7 +5,7 @@
 
 ## Review Summary
 
-ADR review completed for this change. Generating theme tokens from one palette source is a durable architectural choice. No existing ADR is superseded.
+ADR review completed for this change. Generating CSS from one palette source prevents color values from drifting across components. No existing ADR is superseded.
 
 ## In-Force ADRs Reviewed
 

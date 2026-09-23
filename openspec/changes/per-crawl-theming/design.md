@@ -22,13 +22,15 @@ See `proposal.md` for the need. The provider validates `color` as an optional st
 
 The theme resolver accepts a `color` string and returns `amber`, `teal`, or `neutral`. It maps missing and unknown names to `neutral`. `cory-trent.yaml` declares `color: amber`, so the first crawl retains its identity. The provider and build's identity validation continue to check type only. Rejecting unknown names there would violate the existing boundary and make a typo block the whole crawl.
 
-The shell places a palette attribute on its outer element after a found result arrives. Descendant views inherit CSS variables from that element. A route change replaces the shell's selected palette. The neutral root tokens also style loading and error states before a crawl is available. Applying a global attribute to `html` would make overlapping or delayed route loads easier to theme incorrectly.
+The shell places a palette attribute on its outer element after a found result arrives. Descendant views inherit CSS variables from that element. A route change replaces the shell's selected palette. The neutral palette supplies root tokens for loading and error states. Applying a global attribute to `html` would make overlapping or delayed route loads easier to theme incorrectly.
+
+All palettes share the same light and dark background, content surfaces, and station-board surfaces. Named palettes change accent tokens only. The neutral page background outside the 520px shell therefore matches the shell background. When a route changes before an earlier fetch finishes, the shell ignores the late result before creating a checklist controller. This prevents obsolete storage reads as well as stale accents.
 
 ### Generate all UI color tokens from one data file
 
-Keep the neutral base, both named accents, and shared semantic colors in one palette source under `src/lib/theme/`. A Node script emits a deterministic CSS file beside it. `src/app.css` imports that file and contains layout rules but no authored color values. Component styles use CSS variables for every color, including the board's active labels, pills, tinted map panel, filled buttons, and checklist marks.
+Keep the neutral palette, both named accents, and shared semantic colors in one palette source under `src/lib/theme/`. A Node script emits a deterministic CSS file beside it. `src/app.css` imports that file and contains layout rules but no authored color values. Component styles use CSS variables for every color, including the board's active labels, pills, tinted map panel, filled buttons, and checklist marks.
 
-Generate selectors for the neutral root, named shell palettes, and their dark variants inside one `prefers-color-scheme: dark` query. Remove the `data-theme` overrides. Keep the board surface dark in both schemes, while its text and accent tokens can vary by palette. Keep checklist success green as a shared semantic token. A hand-edited CSS token list would repeat values and allow source and output to drift.
+Generate selectors for the neutral palette root, named shell palettes, and their dark variants inside one `prefers-color-scheme: dark` query. Remove the `data-theme` overrides. Keep the board surface dark in both schemes, while its text and accent tokens can vary by palette. Keep checklist success green as a shared semantic token. A hand-edited CSS token list would repeat values and allow source and output to drift.
 
 Use separate tokens for accent text on a surface, text on an accent fill, and accent text on the board. One color cannot safely serve every background. Name each contrast pair in the palette source, including foreground and muted text against content surfaces. Decorative colors can remain outside the pair registry only when no text uses them.
 

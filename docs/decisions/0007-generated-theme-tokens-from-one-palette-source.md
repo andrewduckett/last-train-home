@@ -13,7 +13,7 @@ Color values currently appear in global CSS and individual components. A new acc
 
 ## Decision
 
-We keep every authored UI color in one palette source. A build script emits CSS variables for neutral, amber, and teal in light and dark modes. The shell selects a named palette after its crawl resolves. Missing and unknown names select neutral. The crawl provider only carries the name; it never interprets the palette.
+We keep every authored UI color in one palette source. A build script emits CSS variables for the neutral, amber, and teal palettes in light and dark modes. The shell selects a named palette after its crawl resolves. Missing and unknown names select the neutral palette. The crawl provider only carries the name; it never interprets the palette.
 
 We declare text and background pairs alongside the values. Tests read the emitted CSS and check those pairs against WCAG AA. This makes the shipped output, rather than an unused source table, the object of verification.
 
