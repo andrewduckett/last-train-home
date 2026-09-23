@@ -43,3 +43,7 @@ CHANGES_APPLIED: yes
 ## Rebuttals
 
 The author confirmed the findings against the current design and source. The author applied all three required changes. Gemini re-checked each item and marked all three PASS. Gemini found no direct contradictions in the edits.
+
+## Task-list follow-up
+
+After the design review, Gemini checked `tasks.md` and returned APPROVE_WITH_CHANGES. It identified five missing test details: stale ids at load, shell startup failures, old-key exclusion, clean refresh, and storage result contracts. The author added those tests to the task list. Gemini re-checked all five and marked each PASS. No required task-list edits remain.
