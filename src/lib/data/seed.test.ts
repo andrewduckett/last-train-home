@@ -19,7 +19,7 @@ it('resolves the original seed content through the production provider', async (
 	vi.stubGlobal('fetch', fetchCrawl);
 	await expect(getCrawl('cory-trent')).resolves.toEqual({
 		status: 'found',
-		crawl: { id: 'cory-trent', title: 'Last Train Home', definition: expectedDefinition },
+		crawl: { id: 'cory-trent', title: 'Last Train Home', color: 'amber', definition: expectedDefinition },
 	});
 	expect(fetchCrawl).toHaveBeenCalledWith('/crawls/cory-trent.yaml');
 });
