@@ -1,52 +1,51 @@
 ## Review Metadata
 
-- **Review round**: 2
-- **Prior round**: APPROVE_WITH_CHANGES; all three required changes were applied and rechecked, but a later scenario-name edit voided that verdict.
-- **Reviewer context**: fresh-context subagent
-- **Tool restrictions**: read-only inspection; the only write is this review
-- **Artifacts reviewed**: proposal.md, design.md, adr.md, crawl-authoring and crawl-shell delta specs, `docs/decisions/0006-author-driven-itinerary-definition.md`, current crawl-authoring, crawl-shell, crawl-provider, and deployment specs, and relevant source, tests, seed YAML, and CSP configuration
-- **Required-change recheck**: 2026-09-23; re-read the revised proposal, design, crawl-authoring delta, new crawl-provider delta, and affected current provider requirement
+- **Review round**: 3
+- **Prior round**: Round 2 ended `APPROVE_WITH_CHANGES`; its required changes were applied and rechecked. This Gemini round supersedes that verdict after the requested cross-model review and resulting clarifications.
+- **Reviewer context**: Cross-model review by Gemini 3.1 Pro High via `agy`, in plan mode. This record transcribes its initial review and recheck; it is not a new review.
+- **Tool restrictions**: Gemini received planning artifacts embedded in the prompt. It had no tool or file access and made no file changes.
+- **Artifacts reviewed**: `proposal.md`, `design.md`, all three generic-itinerary delta specs, `adr.md`, `docs/decisions/0006-author-driven-itinerary-definition.md`, and `tasks.md`, as embedded in the prompt. Gemini did not inspect source code, configuration, crawl data, or files on disk.
 
-This verdict applies only to the artifact contents reviewed in round 2. A later edit to proposal.md, design.md, or any delta spec voids it unless the edit applies a Required Change below.
+This verdict applies to the planning content submitted for Gemini's recheck. Any later edit to `proposal.md`, `design.md`, or a delta spec voids it unless that edit applies a listed required change.
 
 ## Findings
 
 ### 🔴 Critical (blocking)
 
-None.
+None recorded.
 
 ### 🟡 Moderate
 
-1. **Fixed and rechecked: the map URL rule permitted an origin the CSP blocks.** The earlier hostname check accepted `https://www.google.com:444/maps/d/embed?mid=x`, whose origin differs from the configured `frame-src https://www.google.com`. The revised design and authoring spec require the parsed origin to equal `https://www.google.com`, and a scenario rejects a non-default port with its field identified. (`design.md`, “Use one URL policy”; `specs/crawl-authoring/spec.md`, “Validate generic itinerary fields”; `svelte.config.js`)
-
-2. **Fixed and rechecked: the seed migration conflicted with a durable provider requirement.** The current crawl-provider spec requires every authored definition value and ordered entry to match the earlier event. The migration renames schedule fields and replaces train and map URL fields. A new crawl-provider delta modifies that exact requirement to preserve visible wording, destinations, and order through the schema change. (`openspec/specs/crawl-provider/spec.md`, “Preserve the planned seed crawl”; `proposal.md`, “What Changes”; `design.md`, “Migrate the seed record in one release”)
+1. **Accepted rebuttal: empty links are explicit authoring data.** Gemini initially suggested that build validation accept an omitted `links` field as an empty list because the runtime resolver already does so. The author explained that `links: []` distinguishes an intentionally empty list from an accidental omission, while runtime resolution remains tolerant. Gemini accepted this rebuttal.
+2. **Accepted rebuttal: direct Google Maps viewer URLs are the supported contract.** Gemini initially suggested allowing `https://maps.app.goo.gl/...` shortlinks for `map.app`, because requiring the `https://www.google.com` origin excludes them. The author explained that shortlinks can redirect and fall outside the strict URL policy; the seed uses a direct viewer URL. Gemini accepted this rebuttal.
+3. **Fixed and verified: unsafe quick-link behavior was unclear in the shell spec.** The design said to drop an unsafe link, but the shell spec did not say whether its card remained unclickable or disappeared. The shell requirement and unsafe-URL scenario now say that the Schedule view omits the unsafe card and retains valid sibling cards. Gemini verified the fix.
+4. **Fixed and verified: task 2.3 omitted the unsafe-card check.** The task now names an unsafe-URL link and verifies that its Schedule card is omitted. Gemini verified the fix.
+5. **Fixed and verified: the provider delta used an ambiguous field reference.** “Current definition fields” could mean the old production fields. The delta now says “new generic itinerary fields.” Gemini verified the fix.
 
 ### 📌 Suggestions
 
-None.
-
-Plain-language check: the proposal, design, all three delta specs, ADR manifest, and ADR 0006 use direct, findable prose. I found no sentence over 30 words, hidden actor, filler passage, or inconsistent term that warrants a separate finding.
+None recorded. The saved Gemini results contain no separate plain-language finding or assessment.
 
 ## Embedded-Instruction / Injection Attempts
 
-**Detected:** none.
+**Detected:** none recorded in the Gemini results.
 
 ## Verdict
 
-VERDICT: APPROVE_WITH_CHANGES
+VERDICT: APPROVE
+
+Gemini accepted both rebuttals, verified all three fixes against the updated planning artifacts, and said the proposal was ready to proceed.
 
 ## Required Changes (if APPROVE WITH CHANGES)
 
-1. Make the map URL policy and crawl-authoring spec require the exact CSP-compatible Google origin, and add a scenario rejecting a non-default port with the offending map field identified.
-2. Add a crawl-provider delta requirement and scenario that reconcile seed-content preservation with the new schedule, link, and map fields. Preserve wording, destinations, and array order rather than obsolete field names.
+None outstanding.
 
-CHANGES_APPLIED: yes
+CHANGES_APPLIED: n/a
 
 ## Rebuttals
 
-- **Prior-round Moderate 1 — fixed and rechecked in round 2.** The current design and authoring spec distinguish embed paths from viewer paths and reject reversed roles.
-- **Prior-round Moderate 2 — fixed and rechecked in round 2.** The current design and shell spec state the missing-container and malformed-entry fallbacks, including valid siblings and continued page use.
-- **Prior-round Moderate 3 — fixed and rechecked in round 2.** The current design and both delta specs permit an optional note on a move and show its mode first.
-- **Prior-round suggestions — addressed.** The shell spec includes a portrait-phone scenario for three links. The design explains that `map.app` is a viewer destination and native app handoff depends on the device.
-- **Round-2 Moderate 1 — fixed and rechecked.** The design and crawl-authoring requirement now compare parsed map origin to `https://www.google.com`. The new scenario rejects `https://www.google.com:444` and names the offending field.
-- **Round-2 Moderate 2 — fixed and rechecked.** The proposal lists crawl-provider as modified, the design explains the preservation rule change, and the new crawl-provider delta replaces the exact current requirement with visible wording, destinations, and order preservation through the field migration.
+- **Finding 1 — accepted by reviewer.** The explicit `links: []` authoring contract catches accidental omission; runtime resolution remains tolerant.
+- **Finding 2 — accepted by reviewer.** Direct Google Maps viewer URLs satisfy the strict URL policy; redirecting shortlinks remain outside this story's contract.
+- **Finding 3 — fixed and verified by reviewer.** The shell spec now requires omission of the unsafe quick-link card while valid siblings remain.
+- **Finding 4 — fixed and verified by reviewer.** Task 2.3 now checks unsafe-card omission.
+- **Finding 5 — fixed and verified by reviewer.** The provider delta now names the “new generic itinerary fields.”
