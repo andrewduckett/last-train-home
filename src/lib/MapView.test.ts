@@ -10,10 +10,10 @@ describe('MapView', () => {
 		expect(iframe).toBeTruthy();
 	});
 
-	it('viewer link opens to the configured myMapsAppUrl', () => {
+	it('viewer link opens to the configured map app URL', () => {
 		render(MapView, { crawl: { id: 'cory-trent', title: crawl.appTitle, definition: crawl } });
 		const link = screen.getByTestId('map-viewer-link');
-		expect(link).toHaveAttribute('href', crawl.myMapsAppUrl);
+		expect(link).toHaveAttribute('href', crawl.map.app);
 		expect(link).toHaveAttribute('target', '_blank');
 	});
 });

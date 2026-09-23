@@ -26,7 +26,7 @@ describe('ScheduleView', () => {
 	it('shows times for each entry', () => {
 		render(ScheduleView, { crawl: { id: 'cory-trent', title: crawl.appTitle, definition: crawl } });
 		for (const entry of crawl.schedule) {
-			const matches = screen.getAllByText(entry.t);
+			const matches = screen.getAllByText(entry.time);
 			expect(matches.length).toBeGreaterThan(0);
 		}
 	});

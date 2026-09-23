@@ -3,95 +3,95 @@
   "line": "Palatine → Mt. Prospect → Edison Park → Arlington Heights → Palatine",
   "schedule": [
     {
-      "time": "2:45 PM",
-      "kind": "stop",
+      "t": "2:45 PM",
+      "kind": "arrive",
       "tag": "Be here by",
       "title": "Meetup — Palatine Station",
-      "note": "137 W. Wood St"
+      "sub": "137 W. Wood St"
     },
     {
-      "time": "3:05 PM",
-      "kind": "note",
+      "t": "3:05 PM",
+      "kind": "warning",
       "tag": "Wrap up",
       "title": "Head to Inbound Platform",
-      "note": "Verify Ventra passes"
+      "sub": "Verify Ventra passes"
     },
     {
-      "time": "3:12 PM",
-      "kind": "move",
+      "t": "3:12 PM",
+      "kind": "depart",
       "tag": "Depart",
       "title": "Depart Palatine",
-      "mode": "Inbound train → Mt. Prospect"
+      "sub": "Inbound train → Mt. Prospect"
     },
     {
-      "time": "3:25 PM",
+      "t": "3:25 PM",
       "kind": "stop",
       "tag": "Arrive at",
       "title": "Stop 1 · Mt. Prospect Bar Stop",
-      "note": "Station 34"
+      "sub": "Station 34"
     },
     {
-      "time": "4:10 PM",
-      "kind": "note",
+      "t": "4:10 PM",
+      "kind": "warning",
       "tag": "Wrap up",
       "title": "Head to Inbound Platform",
-      "note": "Close out tabs!"
+      "sub": "Close out tabs!"
     },
     {
-      "time": "4:21 PM",
-      "kind": "move",
+      "t": "4:21 PM",
+      "kind": "depart",
       "tag": "Depart",
       "title": "Depart Mt. Prospect",
-      "mode": "Inbound train → Edison Park"
+      "sub": "Inbound train → Edison Park"
     },
     {
-      "time": "4:45 PM",
+      "t": "4:45 PM",
       "kind": "stop",
       "tag": "Arrive at",
       "title": "Stop 2 · Edison Park Bar Stop",
-      "note": "Edison Park Inn"
+      "sub": "Edison Park Inn"
     },
     {
-      "time": "5:40 PM",
-      "kind": "note",
+      "t": "5:40 PM",
+      "kind": "warning",
       "tag": "Wrap up",
       "title": "Cross the tracks",
-      "note": "Head to OUTBOUND platform"
+      "sub": "Head to OUTBOUND platform"
     },
     {
-      "time": "5:50 PM",
-      "kind": "move",
+      "t": "5:50 PM",
+      "kind": "depart",
       "tag": "Depart",
       "title": "Depart Edison Park",
-      "mode": "Outbound train → Arlington Heights"
+      "sub": "Outbound train → Arlington Heights"
     },
     {
-      "time": "6:15 PM",
+      "t": "6:15 PM",
       "kind": "stop",
       "tag": "Arrive at",
       "title": "Stop 3 · Arlington Heights Bar Stop",
-      "note": "Eddie's"
+      "sub": "Eddie's"
     },
     {
-      "time": "7:00 PM",
-      "kind": "note",
+      "t": "7:00 PM",
+      "kind": "warning",
       "tag": "Wrap up",
       "title": "Head to Outbound Platform",
-      "note": "Close out tabs!"
+      "sub": "Close out tabs!"
     },
     {
-      "time": "7:11 PM",
-      "kind": "move",
+      "t": "7:11 PM",
+      "kind": "depart",
       "tag": "Depart",
       "title": "Depart Arlington Heights",
-      "mode": "Outbound train → Palatine"
+      "sub": "Outbound train → Palatine"
     },
     {
-      "time": "7:25 PM",
+      "t": "7:25 PM",
       "kind": "stop",
       "tag": "Final Stop",
       "title": "Stop 4 · Palatine Final Landing",
-      "note": "Tap House Grill"
+      "sub": "Tap House Grill"
     }
   ],
   "venues": [
@@ -184,21 +184,9 @@
     "Every challenge only counts as a photo posted to the shared group album.",
     "Tick each one off here once you've uploaded it to see your tally."
   ],
-  "albumUrl": "PASTE_YOUR_GROUP_ALBUM_LINK_HERE",
-  "links": [
-    {
-      "label": "Ventra",
-      "hint": "Buy & show your pass",
-      "url": "https://www.ventrachicago.com/app/"
-    },
-    {
-      "label": "Metra",
-      "hint": "Live train schedules",
-      "url": "https://www.metra.com/schedules?line=UP-NW&allstops=0"
-    }
-  ],
-  "map": {
-    "embed": "https://www.google.com/maps/d/embed?mid=1j-yfShXEfBlLNnzdcv4-btB5G6SLdOI&ehbc=2E312F&noprof=1",
-    "app": "https://www.google.com/maps/d/viewer?mid=1j-yfShXEfBlLNnzdcv4-btB5G6SLdOI"
-  }
+  "myMapsEmbedUrl": "https://www.google.com/maps/d/embed?mid=1j-yfShXEfBlLNnzdcv4-btB5G6SLdOI&ehbc=2E312F&noprof=1",
+  "myMapsAppUrl": "https://www.google.com/maps/d/viewer?mid=1j-yfShXEfBlLNnzdcv4-btB5G6SLdOI",
+  "ventraUrl": "https://www.ventrachicago.com/app/",
+  "metraUrl": "https://www.metra.com/schedules?line=UP-NW&allstops=0",
+  "albumUrl": "PASTE_YOUR_GROUP_ALBUM_LINK_HERE"
 }

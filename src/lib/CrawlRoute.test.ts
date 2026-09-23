@@ -14,10 +14,8 @@ function record(title: string) {
 			venues: [],
 			scavenger: [],
 			scavengerRules: [],
-			myMapsEmbedUrl: 'embed',
-			myMapsAppUrl: 'map',
-			ventraUrl: 'pass',
-			metraUrl: 'times',
+			map: { embed: 'https://www.google.com/maps/embed', app: 'https://www.google.com/maps/d/viewer' },
+			links: [],
 			albumUrl: 'photos',
 		},
 	};

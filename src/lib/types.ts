@@ -1,12 +1,16 @@
-export type ScheduleKind = 'arrive' | 'warning' | 'depart' | 'stop';
+export type ScheduleKind = 'stop' | 'move' | 'note';
 
 export interface ScheduleEntry {
-	t: string;
+	time: string;
 	kind: ScheduleKind;
-	tag: string;
+	tag?: string;
 	title: string;
-	sub?: string;
+	mode?: string;
+	note?: string;
 }
+
+export interface QuickLink { label: string; hint?: string; url: string }
+export interface CrawlMap { embed: string; app: string }
 
 export interface VenuePlace {
 	n: string;
@@ -33,10 +37,8 @@ export interface CrawlDefinition {
 	venues: VenueStop[];
 	scavenger: ScavengerTask[];
 	scavengerRules: string[];
-	myMapsEmbedUrl: string;
-	myMapsAppUrl: string;
-	ventraUrl: string;
-	metraUrl: string;
+	links: QuickLink[];
+	map: CrawlMap;
 	albumUrl: string;
 }
 

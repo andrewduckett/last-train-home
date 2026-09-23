@@ -2,6 +2,7 @@ import { expect, it } from 'vitest';
 import { fireEvent, render, screen, within } from '@testing-library/svelte';
 import Shell from './Shell.svelte';
 import seed from '../../tests/fixtures/cory-trent.json';
+import before from '../../tests/fixtures/cory-trent-before.json';
 import { seedShellProps } from '../../tests/fixtures/seed-provider.js';
 
 async function openTab(tab: string) {
@@ -15,6 +16,8 @@ async function openTab(tab: string) {
 
 it('preserves the seed header', async () => {
 	await openTab('schedule');
+	expect(seed.appTitle).toBe(before.appTitle);
+	expect(seed.line).toBe(before.line);
 	expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(seed.appTitle);
 	expect(screen.getByText(seed.line)).toBeInTheDocument();
 });
@@ -25,20 +28,24 @@ it('preserves every schedule entry in authored order', async () => {
 	expect(entries).toHaveLength(seed.schedule.length);
 	seed.schedule.forEach((entry, index) => {
 		const row = within(entries[index] as HTMLElement);
-		expect(row.getByText(entry.t)).toBeInTheDocument();
+		expect(entry.time).toBe(before.schedule[index].t);
+		expect(entry.title).toBe(before.schedule[index].title);
+		expect(row.getByText(entry.time)).toBeInTheDocument();
 		expect(row.getByText(entry.title)).toBeInTheDocument();
-		expect(row.getByText(entry.sub)).toBeInTheDocument();
+		expect(row.getByText(entry.mode ?? entry.note)).toHaveTextContent(before.schedule[index].sub);
 		expect(entries[index].querySelector('.entry-tag')).toHaveTextContent(entry.tag);
 	});
 });
 
 it('preserves the quick-link destinations', async () => {
 	await openTab('schedule');
-	expect(screen.getByRole('link', { name: /Ventra/ })).toHaveAttribute('href', seed.ventraUrl);
-	expect(screen.getByRole('link', { name: /Metra/ })).toHaveAttribute('href', seed.metraUrl);
+	expect(seed.links.map((link) => link.url)).toEqual([before.ventraUrl, before.metraUrl]);
+	expect(screen.getByRole('link', { name: /Ventra/ })).toHaveAttribute('href', seed.links[0].url);
+	expect(screen.getByRole('link', { name: /Metra/ })).toHaveAttribute('href', seed.links[1].url);
 });
 
 it('preserves all seed venues', async () => {
+	expect(seed.venues).toEqual(before.venues);
 	const { container } = await openTab('venues');
 	const cards = container.querySelectorAll('.venue-card');
 	expect(cards).toHaveLength(seed.venues.length);
@@ -65,6 +72,7 @@ it('preserves the seed directions destinations', async () => {
 });
 
 it('preserves every seed scavenger task', async () => {
+	expect(seed.scavenger).toEqual(before.scavenger);
 	const { container } = await openTab('tasks');
 	const rows = container.querySelectorAll('.check-row');
 	expect(rows).toHaveLength(seed.scavenger.length);
@@ -77,6 +85,7 @@ it('preserves every seed scavenger task', async () => {
 });
 
 it('preserves the scavenger rules', async () => {
+	expect(seed.scavengerRules).toEqual(before.scavengerRules);
 	await openTab('tasks');
 	for (const rule of seed.scavengerRules) {
 		expect(screen.getByText(rule)).toBeInTheDocument();
@@ -90,6 +99,7 @@ it('hides the seed placeholder album link', async () => {
 
 it('preserves the seed map destinations', async () => {
 	await openTab('map');
-	expect(screen.getByTitle('Crawl route map')).toHaveAttribute('src', seed.myMapsEmbedUrl);
-	expect(screen.getByTestId('map-viewer-link')).toHaveAttribute('href', seed.myMapsAppUrl);
+	expect(seed.map).toEqual({ embed: before.myMapsEmbedUrl, app: before.myMapsAppUrl });
+	expect(screen.getByTitle('Crawl route map')).toHaveAttribute('src', seed.map.embed);
+	expect(screen.getByTestId('map-viewer-link')).toHaveAttribute('href', seed.map.app);
 });
