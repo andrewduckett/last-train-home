@@ -6,12 +6,20 @@
 	import MapView from './MapView.svelte';
 	import VenuesView from './VenuesView.svelte';
 	import TasksView from './TasksView.svelte';
+	import { createChecksController, type ChecksController } from './checks.svelte.js';
 
 	let { id, getCrawl = getDefaultCrawl }: { id: string; getCrawl?: CrawlProvider['getCrawl'] } = $props();
 	let result = $state<CrawlResult>();
+	let checksController = $state<ChecksController>();
 
 	onMount(() => {
 		void getCrawl(id).then((resolved) => {
+			if (resolved.status === 'found') {
+				checksController = createChecksController(
+					resolved.crawl.id,
+					resolved.crawl.definition.scavenger.map((task) => task.id),
+				);
+			}
 			result = resolved;
 		});
 	});
@@ -35,6 +43,7 @@
 	let activeTab = $state<TabId>('schedule');
 
 	function switchTab(id: TabId) {
+		if (id === 'tasks') checksController?.refresh();
 		activeTab = id;
 		window.scrollTo(0, 0);
 	}
@@ -65,8 +74,8 @@
 				<MapView crawl={result.crawl} />
 			{:else if activeTab === 'venues'}
 				<VenuesView crawl={result.crawl} />
-			{:else if activeTab === 'tasks'}
-				<TasksView crawl={result.crawl} />
+			{:else if activeTab === 'tasks' && checksController}
+				<TasksView crawl={result.crawl} controller={checksController} />
 			{/if}
 
 		{:else if result.status === 'not-found'}

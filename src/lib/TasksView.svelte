@@ -1,20 +1,20 @@
 <script lang="ts">
 	import type { Crawl } from './types.js';
-	import { checksStore } from './checks.svelte.js';
+	import type { ChecksController } from './checks.svelte.js';
 
-	let { crawl }: { crawl: Crawl } = $props();
+	let { crawl, controller }: { crawl: Crawl; controller: ChecksController } = $props();
 
 	let { scavenger, scavengerRules, albumUrl } = $derived(crawl.definition);
 	let albumSet = $derived(albumUrl && !albumUrl.includes('PASTE_'));
 
 	let total = $derived(scavenger.reduce((s, i) => s + i.p, 0));
 
-	let earned = $derived(scavenger.reduce((s, i) => s + (checksStore.checks[i.id] ? i.p : 0), 0));
+	let earned = $derived(scavenger.reduce((s, i) => s + (Object.hasOwn(controller.checks, i.id) ? i.p : 0), 0));
 	let pct = $derived(Math.round((earned / total) * 100));
 
 	function resetScavenger() {
 		if (confirm('Clear these checkmarks?')) {
-			checksStore.resetMany(scavenger.map((i) => i.id));
+			controller.reset();
 		}
 	}
 </script>
@@ -62,12 +62,12 @@
 
 		<div class="checklist-items">
 			{#each scavenger as item (item.id)}
-				{@const checked = !!checksStore.checks[item.id]}
+				{@const checked = Object.hasOwn(controller.checks, item.id)}
 				<label class="check-row" class:done={checked}>
 					<input
 						type="checkbox"
 						checked={checked}
-						onchange={() => checksStore.toggle(item.id)}
+						onchange={() => controller.toggle(item.id)}
 					/>
 					<span class="check-box">
 						<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">

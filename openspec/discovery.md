@@ -193,7 +193,7 @@ that introduces each constraint.
   - **Added**: 2026-09-20
   - **Change**: archived 2026-09-22 — `openspec/changes/archive/2026-09-22-yaml-crawl-routing/`
 
-- [ ] 4. `per-crawl-checklist-state` — scavenger ticks persist per device and per crawl, behind an interface
+- [x] 4. `per-crawl-checklist-state` — scavenger ticks persist per device and per crawl, behind an interface
   - **Persona served**: Crawler
   - **Journey segment**: Crawler "track tasks → reopen later" (isolated per crawl)
   - **MoSCoW**: Must
@@ -202,7 +202,7 @@ that introduces each constraint.
   - **Scope**: in: a state-store interface (`loadChecks(id)` / `saveChecks(id, …)`); a localStorage implementation keyed `crawl-checks:<id>`; migrate today's `useChecks` logic behind it; reconcile stored ticks against the crawl's current task ids on load; ADR: per-device state behind a store interface. / out: cross-device sync, non-checklist state, reset UI changes.
   - **Relevant code**: today's `useChecks` in `src/App.jsx` → `src/lib/state/store.ts` + `src/lib/state/localStorage.ts`; the Tasks view; `docs/decisions/`.
   - **Added**: 2026-09-20
-  - **Change**: _not yet proposed_
+  - **Change**: archived 2026-09-23 — `openspec/changes/archive/2026-09-23-per-crawl-checklist-state/`
 
 - [ ] 5. `generic-itinerary` — the schedule renders any timed crawl; links and map are per-crawl data
   - **Persona served**: Crawler, Author
