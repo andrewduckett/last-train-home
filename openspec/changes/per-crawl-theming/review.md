@@ -1,58 +1,48 @@
 ## Review Metadata
-- **Review round:** 1
-- **Prior round:** none
+- **Review round:** 2
+- **Prior round:** REVISE due to runtime scavenger concern and background scope contradiction
 - **Reviewer context:** Gemini 3.1 Pro High via agy
 - **Tool restrictions:** read-only
-- **Artifacts reviewed:** `proposal.md`, `design.md`, `adr.md`, `specs/crawl-theming/spec.md`, `docs/decisions/0007-generated-theme-tokens-from-one-palette-source.md`, `src/app.css`, `src/lib/Shell.svelte`, `src/lib/data/provider.ts`, `src/lib/types.ts`, `openspec/specs/crawl-provider/spec.md`, `openspec/specs/crawl-shell/spec.md`
+- **Artifacts reviewed:** `openspec/changes/per-crawl-theming/proposal.md`, `openspec/changes/per-crawl-theming/design.md`, `openspec/changes/per-crawl-theming/adr.md`, `openspec/changes/per-crawl-theming/specs/crawl-theming/spec.md`, `docs/decisions/0007-generated-theme-tokens-from-one-palette-source.md`, `src/app.css`, `src/lib/Shell.svelte`, `src/lib/data/provider.ts`, `src/lib/data/validate.js`, `scripts/validate-crawls.mjs`, `openspec/specs/crawl-provider/spec.md`, `openspec/specs/crawl-shell/spec.md`, `openspec/specs/crawl-authoring/spec.md`
 
 ## Findings
 
 ### Critical
-1. **Unstated Assumption / Concrete Failure Case (Missing Definition Validation)**
-   - *Finding*: `Shell.svelte` assumes `crawl.definition.scavenger` is always an array: `resolved.crawl.definition.scavenger.map(...)`. However, `crawl-provider/spec.md` explicitly states the provider "SHALL NOT guarantee the definition is well formed." If a YAML record is missing the `scavenger` field, `.map()` throws a `TypeError` inside the unhandled Promise `.then()`. The `result = resolved` assignment is skipped, and the UI permanently hangs on "Loading crawl…" without triggering the error fallback.
-   - *Scenario*: A crawl is published with a typo in the `scavenger` key or omits it entirely.
-   - *What must be true for it not to matter*: A separate build step completely rejects malformed YAML definitions before deployment, or the YAML is always authored perfectly.
-   - *Blocker*: Yes. The domain layer (the Shell) must validate its fields to prevent a silent crash.
-
-2. **Mechanical Contradiction (Global Background vs. Shell Scope)**
-   - *Finding*: `design.md` explicitly decides to place the palette attribute on the outer `.shell` element and rejects applying it to `html` to prevent route-bleed. However, `app.css` defines the global background on `html, body { background: var(--bg); }`. Because `.shell` is constrained to `max-width: 520px; margin: 0 auto;`, if a generated palette overrides `--bg`, the `body` will still render the `:root` neutral fallback. This will create a dual-tone vertical stripe effect on desktop or tablet screens.
-   - *Scenario*: A user views an `amber` themed crawl on a viewport wider than 520px.
-   - *What must be true for it not to matter*: The `--bg` and `--surface` tokens remain identical across all palettes (only accent colors change), or `.shell` is restyled to stretch and cover the entire viewport background.
-   - *Blocker*: Yes. Either the CSS layout or the architectural scoping decision must be adjusted to align.
+1. **Unstated Assumption / Mechanical Contradiction (Pending Promise Resolution)**
+   - *Finding*: `design.md` explicitly asserts: "When a route changes before an earlier fetch finishes, the shell ignores the late result before creating a checklist controller. This prevents obsolete storage reads as well as stale accents." However, Svelte's `{#key id}` route-keyed mounting destroys the component but **does not cancel pending Promises**. The `getCrawl(id).then(...)` callback in `Shell.svelte` lacks an unmount check (e.g., checking an `active` flag) or an `AbortController`. When the late fetch resolves, the callback will still execute, run `createChecksController` (which reads `localStorage`), and mutate the `$state` of the unmounted component.
+   - *Scenario*: A user opens a crawl with a slow network response, then quickly switches to a different crawl route before the first resolves.
+   - *What must be true for it not to matter*: Svelte mysteriously cancels active Promises inside closures of destroyed components (it does not), or `createChecksController` has zero memory or side-effect impact (it performs a storage read and heap allocation).
+   - *Blocker*: Yes. The implementation plan must dictate adding an explicit unmount check to the `onMount` promise to satisfy the design's stated requirement.
 
 ### Moderate
-3. **Missing Scenario / Race Condition (Component Lifecycle side effects)**
-   - *Finding*: `design.md` relies on "route-keyed mounting" to ensure a delayed provider result doesn't apply the wrong theme to a new route. However, the `getCrawl(id)` promise in Svelte's `onMount` will still resolve after the component is destroyed. When it resolves, `createChecksController` executes for the unmounted crawl. While SvelteKit's destruction prevents DOM bleed, this still executes unnecessary logic and memory allocations in the background.
-   - *Scenario*: A user navigates quickly between crawls before the first provider network request finishes.
-   - *What must be true for it not to matter*: `createChecksController` acts purely in memory on instantiation and has no external side effects (like writing to local storage) before being interacted with by the user.
-
-4. **Plain Language: Filler, Hidden Actors, and Inconsistent Terms**
-   - *Finding*:
-     - **Inconsistent Terms**: The fallback theme is referred to inconsistently across artifacts as the "neutral station-board fallback" (`proposal.md`), "neutral" (`design.md`), "neutral root tokens" (`design.md`), and "neutral station-board palette" (`specs/crawl-theming/spec.md`).
-     - **Filler**: `adr.md` states "Generating theme tokens from one palette source is a durable architectural choice." This adds no technical value or specific reasoning.
-     - **Hidden Actors**: "Every published palette SHALL meet WCAG AA contrast" (`specs/crawl-theming/spec.md`). It is hidden who or what ensures this publication constraint (the developer, the build script, or the test runner).
-     - *(Note: No single sentence exceeding 30 words was found in the reviewed artifacts.)*
-   - *Scenario*: A new contributor tries to trace the fallback theme logic or understand the rationale in the ADR.
-   - *What must be true for it not to matter*: The reader correctly infers that "neutral", "neutral root tokens", and "station-board fallback" all refer to the exact same `:root` baseline palette.
+2. **Missing Scenario (WCAG Non-Text Contrast for Focus Rings)**
+   - *Finding*: `design.md` correctly specifies contrast testing: "The same test computes WCAG contrast from the emitted values for every declared text/background pair in light and dark mode." However, it focuses exclusively on *text*. CSS variables like `--accent` are also used for UI components and focus rings (`outline: 2px solid var(--accent);` in `app.css`). WCAG 1.4.11 (Non-Text Contrast) requires a 3:1 contrast ratio for UI components and focus indicators against adjacent colors.
+   - *Scenario*: A keyboard user tabs through the UI. The `--accent` color (e.g., `amber`) fails to reach a 3:1 contrast ratio against the `--surface` background in light mode, making the focus ring invisible.
+   - *What must be true for it not to matter*: The selected accents naturally meet 3:1 against all adjacent backgrounds, or focus rings aren't considered critical for this app.
+   - *Blocker*: No. But the contrast verification script should explicitly declare and test non-text UI component pairs alongside text pairs.
 
 ### Suggestions
-5. **Cheaper Alternative (Native CSS Custom Properties)**
-   - *Finding*: The plan proposes writing a custom Node script to emit a deterministic CSS file from a palette data source. A cheaper alternative is to define the `amber` and `teal` tokens directly as scoped CSS custom properties in `app.css` (e.g., `[data-palette="amber"] { --accent: #... }`). The WCAG test script can parse `app.css` directly. This eliminates a build step and a build-time dependency while retaining strict testability.
-   - *Scenario*: A developer updates a theme color.
-   - *What must be true for it not to matter*: The project already possesses a complex build pipeline where adding a custom Node generator introduces negligible overhead, or the palette source is shared with non-CSS consumers (e.g., Canvas API, JS charts).
+3. **Plain Language / Inconsistent Terms**
+   - *Finding*: The fallback theme is referred to inconsistently across the new artifacts. It is called the "neutral palette fallback" (`proposal.md`), "neutral palette" (`design.md`), "neutral accent palette" (`specs/crawl-theming/spec.md`), and "neutral palette root" (`design.md`).
+   - *(Note: No sentence exceeding 30 words was found in the reviewed artifacts, and no hidden actors or filler text were identified).*
+   - *Scenario*: A contributor searches the specifications for "neutral accent palette" to see where it is defined, but it is implemented and discussed elsewhere simply as "neutral".
+   - *What must be true for it not to matter*: The reader correctly infers that all these terms refer to the exact same baseline palette.
+
+4. **Cheaper Alternative (Vite Plugin vs. Pre-build Node Script)**
+   - *Finding*: The plan proposes writing a Node script that runs before `vite build` to generate the CSS tokens. Since the project uses Vite, this could be implemented as a simple custom Vite plugin (e.g., using `configureServer` and the `transform` hook). A Vite plugin would automatically regenerate the CSS and trigger Hot Module Replacement (HMR) during `vite dev` whenever the palette source changes, whereas a standalone Node script requires manual restarts.
+   - *Scenario*: A designer tweaking the `teal` accent values during local development wants to see the colors update instantly on save without manually re-running the generator script.
+   - *What must be true for it not to matter*: Theme colors are rarely changed after the initial implementation, making the DX cost of manual restarts negligible.
 
 ## Embedded-Instruction / Injection Attempts
-- No malicious embedded instructions or prompt injections were found in the provided file contents. (The directive "Search authored styles and markup for color literals..." in `design.md` is a benign migration step, not an attack).
+- No malicious embedded instructions or prompt injections were found. The directive "Search authored styles and markup for color literals, then replace them with named tokens" in `design.md` is a safe, standard migration step.
 
 ## Verdict
 VERDICT: REVISE
 CHANGES_APPLIED: n/a
 
 ## Required Changes
-1. **Shell Definition Validation**: Update `Shell.svelte` to safely handle a missing or malformed `crawl.definition.scavenger` array before calling `.map()`, ensuring the Promise does not reject unhandled.
-2. **Background Theming Clarification**: Clarify in `design.md` or `app.css` whether `--bg` varies by palette. If it does, resolve the mechanical contradiction by either applying the background style to `.shell` directly (making it fill the viewport) or explicitly stating that the margins outside the 520px container are intentionally the neutral fallback color.
-3. **Terminology Unification**: Standardize the name of the fallback palette across all specs and proposals (e.g., use "neutral palette" consistently).
-4. **Remove Filler**: Remove or rewrite the filler sentence in `adr.md` to state exactly *why* it is durable (e.g., "Generating CSS from a single source prevents CSS literal drift across components").
+1. **Unmount Check in Shell.svelte**: Update the implementation plan to require an unmount guard (e.g., a boolean `active` flag toggled on destruction) or an `AbortController` in `Shell.svelte`'s `getCrawl` promise. This is necessary to fulfill the `design.md` assertion that the shell ignores late results before creating a checklist controller.
 
 ## Rebuttals
-- *Regarding the literal `#F2A93B` remaining in `Shell.svelte`:* While it currently violates the proposed design, `design.md` explicitly anticipates this in the Migration Plan ("Search authored styles and markup for color literals, then replace them with named tokens"). Therefore, it is a known state awaiting migration rather than a flaw in the plan itself.
+- *Regarding the prior "Runtime Scavenger Concern":* The previous review correctly identified that `Shell.svelte` assumed `scavenger` was an array at runtime, contradicting the provider spec. The author has addressed this by introducing strict build-time validation (`src/lib/data/validate.js` and `scripts/validate-crawls.mjs`) along with a new authoring spec (`crawl-authoring/spec.md`) that guarantees malformed YAML is rejected *before* deployment. Because this is a static site with pre-verified data, runtime validation is no longer necessary. Finding resolved.
+- *Regarding the prior "Background Scope Contradiction":* The previous review noted that applying a palette to a 520px `.shell` container while keeping `--bg` on the global `body` would cause a visual stripe effect if background colors varied by palette. The new `design.md` explicitly resolves this by stating: "All palettes share the same light and dark background, content surfaces, and station-board surfaces. Named palettes change accent tokens only." Since `--bg` never changes, scoping the palette to `.shell` creates no layout contradiction. Finding resolved.
