@@ -46,7 +46,7 @@
 		padding: 12px 14px;
 		font-size: 13px;
 		line-height: 1.6;
-		background: rgba(201, 118, 42, 0.12);
+		background: var(--accent-tint);
 		border: 1px solid var(--accent);
 		color: var(--accent-ink);
 	}
@@ -54,7 +54,7 @@
 	.map-frame-wrap {
 		border-radius: 16px;
 		overflow: hidden;
-		border: 1px solid var(--line);
+		border: 1px solid var(--control-line);
 		box-shadow: 0 1px 3px var(--shadow);
 		aspect-ratio: 3 / 4;
 	}
@@ -76,7 +76,7 @@
 		font-size: 19px;
 		letter-spacing: 0.04em;
 		background: var(--accent);
-		color: #1a1206;
+		color: var(--on-accent);
 		box-shadow: 0 2px 8px var(--shadow);
 		text-decoration: none;
 		transition: transform 0.1s;

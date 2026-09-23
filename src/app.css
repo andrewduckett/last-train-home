@@ -1,3 +1,5 @@
+@import './lib/theme/generated.css';
+
 /* ---- Normalize / Tailwind-preflight equivalents ---- */
 *,
 *::before,
@@ -24,52 +26,6 @@ pre {
 	padding: 0;
 }
 
-/* ---- Theme tokens: content surfaces adapt to light / dark ---- */
-:root {
-	--bg: #eef1f4;
-	--surface: #ffffff;
-	--ink: #181c22;
-	--muted: #5a6472;
-	--line: #e2e6eb;
-	--accent: #c9762a;
-	--accent-ink: #8a4e14;
-	--rail: #177567;
-	--good: #177567;
-	--shadow: rgba(20, 25, 33, 0.09);
-	/* The station "board" chrome stays dark in every theme */
-	--board: #12161c;
-	--board-2: #1b2129;
-	--board-ink: #edeff3;
-	--board-muted: #8b95a3;
-	--board-line: #2a313c;
-}
-@media (prefers-color-scheme: dark) {
-	:root:not([data-theme='light']) {
-		--bg: #0f1319;
-		--surface: #181d25;
-		--ink: #e9ecf0;
-		--muted: #98a2b0;
-		--line: #2a313c;
-		--accent: #f2a93b;
-		--accent-ink: #f2a93b;
-		--rail: #2fb7a0;
-		--good: #2fb7a0;
-		--shadow: rgba(0, 0, 0, 0.45);
-	}
-}
-:root[data-theme='dark'] {
-	--bg: #0f1319;
-	--surface: #181d25;
-	--ink: #e9ecf0;
-	--muted: #98a2b0;
-	--line: #2a313c;
-	--accent: #f2a93b;
-	--accent-ink: #f2a93b;
-	--rail: #2fb7a0;
-	--good: #2fb7a0;
-	--shadow: rgba(0, 0, 0, 0.45);
-}
-
 html,
 body {
 	background: var(--bg);
@@ -94,9 +50,9 @@ body {
 	letter-spacing: 0.04em;
 	font-variant-numeric: tabular-nums;
 	background: var(--board);
-	color: #f2a93b;
+	color: var(--board-accent);
 	border: 1px solid var(--board-line);
-	box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.35);
+	box-shadow: inset 0 -2px 0 var(--shadow);
 	display: inline-flex;
 	align-items: center;
 	border-radius: 4px;
@@ -132,7 +88,7 @@ body {
 	height: 26px;
 	border-radius: 8px;
 	flex: 0 0 auto;
-	border: 2px solid var(--line);
+	border: 2px solid var(--control-line);
 	background: var(--surface);
 	display: grid;
 	place-items: center;
@@ -141,6 +97,7 @@ body {
 .check-box svg {
 	width: 16px;
 	height: 16px;
+	stroke: var(--on-good);
 	opacity: 0;
 	transform: scale(0.5);
 	transition: all 0.12s ease;
@@ -168,6 +125,10 @@ button:focus-visible {
 	outline: 2px solid var(--accent);
 	outline-offset: 2px;
 	border-radius: 8px;
+}
+
+.shell-nav button:focus-visible {
+	outline-color: var(--board-accent);
 }
 
 /* Safe-area padding so bottom nav clears the home indicator */

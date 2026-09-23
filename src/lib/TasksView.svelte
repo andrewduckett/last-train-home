@@ -70,7 +70,7 @@
 						onchange={() => controller.toggle(item.id)}
 					/>
 					<span class="check-box">
-						<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+						<svg viewBox="0 0 24 24" fill="none" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
 							<path d="M5 13l4 4L19 7" />
 						</svg>
 					</span>
@@ -120,7 +120,7 @@
 		font-weight: 700;
 		font-size: 15px;
 		letter-spacing: 0.04em;
-		color: #f2a93b;
+		color: var(--board-accent);
 	}
 
 	.score-rules {
@@ -155,7 +155,7 @@
 		font-size: 15px;
 		letter-spacing: 0.04em;
 		background: var(--accent);
-		color: #1a1206;
+		color: var(--on-accent);
 		text-decoration: none;
 		transition: transform 0.1s;
 	}
