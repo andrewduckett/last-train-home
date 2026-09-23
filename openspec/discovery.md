@@ -1,7 +1,7 @@
 # Discovery: Last Train Home — a renderer for many timed crawls
 
 > Status: complete
-> Created: 2026-09-20 · Last revised: 2026-09-21
+> Created: 2026-09-20 · Last revised: 2026-09-23
 
 > Release plan produced by the discovery skill. Resume or revise by re-running the skill.
 > To build: run `/opsx:propose` and ask it to use the next unchecked story below.
@@ -204,7 +204,7 @@ that introduces each constraint.
   - **Added**: 2026-09-20
   - **Change**: archived 2026-09-23 — `openspec/changes/archive/2026-09-23-per-crawl-checklist-state/`
 
-- [ ] 5. `generic-itinerary` — the schedule renders any timed crawl; links and map are per-crawl data
+- [x] 5. `generic-itinerary` — the schedule renders any timed crawl; links and map are per-crawl data
   - **Persona served**: Crawler, Author
   - **Journey segment**: Crawler "see the plan" for a non-train crawl; Author "author a crawl"
   - **MoSCoW**: Should
@@ -213,7 +213,7 @@ that introduces each constraint.
   - **Scope**: in: schedule as an ordered list of author-driven `stop` / `move` / note entries, `mode` free text (no transit enum); an authored `links[]` (`label`, `hint`, `url`) replacing hardcoded Ventra/Metra; `map` (embed + app url) per crawl; resolver drops malformed entries; `cory-trent.yaml` migrated to the shape. / out: routing/state changes, theming, a second crawl.
   - **Relevant code**: schedule/links/map resolvers under `src/lib/character`-equivalent (`src/lib/crawl/*`), the Schedule and Map views, `static/crawls/cory-trent.yaml`.
   - **Added**: 2026-09-20
-  - **Change**: _not yet proposed_
+  - **Change**: archived 2026-09-23 — `openspec/changes/archive/2026-09-23-generic-itinerary/`
 
 - [ ] 6. `per-crawl-theming` — each crawl carries an accent that resolves to an accessible palette
   - **Persona served**: Crawler, Author
@@ -255,6 +255,7 @@ that introduces each constraint.
 
 ## Change Log
 
+- 2026-09-23 — Archived `generic-itinerary`. Story 5 is complete; per-crawl theming is next.
 - 2026-09-21 — Reconciled completed OpenSpec changes. Marked the SvelteKit shell and crawl-provider stories as archived, so the next unchecked story is YAML crawl routing.
 - 2026-09-20 — Initial plan from `openspec/prd.md`. Two personas (Crawler, Organizer/
   Author); Crawler + Author journey maps annotated against the working React app; MoSCoW;
