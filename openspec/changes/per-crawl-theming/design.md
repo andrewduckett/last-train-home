@@ -20,7 +20,7 @@ See `proposal.md` for the need. The provider validates `color` as an optional st
 
 ### Resolve a small set of exact palette names
 
-The theme resolver accepts a `color` string and returns `amber`, `teal`, or `neutral`. It maps missing and unknown names to `neutral`. `cory-trent.yaml` declares `color: amber`, so the first crawl retains its identity. The provider and build's identity validation continue to check type only. Rejecting unknown names there would violate the existing boundary and make a typo block the whole crawl.
+The theme resolver accepts a `color` string and returns `amber`, `teal`, or `neutral`. It matches the two authored names exactly in lowercase. Other spellings, including `Amber` and `TEAL`, select the neutral palette. `cory-trent.yaml` declares `color: amber`, so the first crawl retains its identity. The provider and build's identity validation continue to check type only. Rejecting unknown names there would violate the existing boundary and make a typo block the whole crawl.
 
 The shell places a palette attribute on its outer element after a found result arrives. Descendant views inherit CSS variables from that element. A route change replaces the shell's selected palette. The neutral palette supplies root tokens for loading and error states. Applying a global attribute to `html` would make overlapping or delayed route loads easier to theme incorrectly.
 
@@ -38,7 +38,7 @@ Use separate tokens for accent text on a surface, text on an accent fill, and ac
 
 ### Verify the emitted stylesheet, not only palette data
 
-Generate the CSS before `vite build`. A test runs the generator in check mode, reads the emitted CSS, and verifies each expected selector and token value. The same test computes WCAG contrast from the emitted values for every declared text/background pair in light and dark mode. Ordinary text uses 4.5:1; any deliberately large text pair must be named and use 3:1. This catches a generator or stylesheet mapping error that source-only tests would miss.
+Generate the CSS before `vite build`. The `npm run dev` path generates it before Vite starts. A small Vite plugin watches the palette source during development, invokes the same generator on changes, and lets Vite reload the emitted CSS. The plugin adds no new dependency. A test runs the generator in check mode, reads the emitted CSS, and verifies each expected selector and token value. The same test computes WCAG contrast from the emitted values for every declared text/background pair in light and dark mode. Ordinary text uses 4.5:1; any deliberately large text pair must be named and use 3:1. This catches a generator or stylesheet mapping error that source-only tests would miss.
 
 Use a focused shell test with amber, teal, and unknown records to prove palette selection and route changes. Existing view tests protect rendering and navigation. The static build remains same-origin and needs no CSP change.
 

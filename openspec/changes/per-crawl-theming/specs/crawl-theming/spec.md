@@ -6,7 +6,7 @@ Crawl theming gives each outing a readable accent while keeping the shared stati
 
 ### Requirement: Resolve an authored color to a crawl palette
 
-The theme layer SHALL recognize the names `amber` and `teal`. It SHALL use the neutral palette when `color` is absent or unknown. An unknown name SHALL NOT prevent any crawl view from rendering.
+The theme resolver SHALL recognize the exact lowercase names `amber` and `teal`. It SHALL use the neutral palette when `color` is absent or unknown. An unknown name SHALL NOT prevent any crawl view from rendering.
 
 #### Scenario: An authored palette is available
 
@@ -16,8 +16,13 @@ The theme layer SHALL recognize the names `amber` and `teal`. It SHALL use the n
 #### Scenario: A color is missing or unknown
 
 - **WHEN** a crawl has no `color` or an unrecognized color name
-- **THEN** its shell and views use the neutral accent palette
+- **THEN** its shell and views use the neutral palette
 - **THEN** the crawl remains usable
+
+#### Scenario: An authored name has different casing
+
+- **WHEN** a crawl has `color: Amber` or `color: TEAL`
+- **THEN** its shell and views use the neutral palette
 
 #### Scenario: The selected crawl changes
 
