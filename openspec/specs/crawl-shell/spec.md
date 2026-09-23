@@ -112,16 +112,12 @@ The shell SHALL target a portrait phone used one-handed. It SHALL keep the heade
 
 ### Requirement: Resolve the crawl before rendering views
 
-The shell SHALL obtain its crawl from the provider with the default id, `cory-trent`. It
-SHALL resolve the crawl once and pass it to the four views as a prop. A view SHALL NOT call
-the provider. While the result is pending, the shell SHALL show a loading state and SHALL NOT
-mount the views. For a `found` result, it SHALL render the views from that crawl. For
-`not-found`, `invalid`, or `error`, it SHALL show a fallback and SHALL NOT mount views.
+The route SHALL give the shell its selected logical id. The shell SHALL obtain that crawl from the provider for each route selection. It SHALL pass the resolved crawl to the four views. A view SHALL NOT call the provider. While a result is pending, the shell SHALL show a loading state and SHALL NOT mount the views. For a found result, it SHALL render that crawl. For not-found, invalid, or error, it SHALL show a fallback and SHALL NOT mount views. A stale result SHALL NOT replace a newer route selection.
 
 #### Scenario: The default crawl resolves and the Schedule view shows its content
 
-- **WHEN** the shell resolves `cory-trent` with the Schedule tab active
-- **THEN** the header shows the seed `appTitle` and `line`, and Schedule lists entries in authored order
+- **WHEN** the shell resolves cory-trent with the Schedule tab active
+- **THEN** the header shows the seed appTitle and line, and Schedule lists entries in authored order
 
 #### Scenario: The Venues tab shows the seed venues
 
@@ -140,15 +136,30 @@ mount the views. For a `found` result, it SHALL render the views from that crawl
 
 #### Scenario: Switching tabs does not re-resolve the crawl
 
-- **WHEN** a participant switches between tabs after the crawl resolves
-- **THEN** the shell uses the resolved crawl and calls the provider once
+- **WHEN** a participant switches between tabs for one selected crawl
+- **THEN** the shell uses that resolved crawl and calls the provider once for that selection
 
 #### Scenario: A non-found result shows a fallback
 
-- **WHEN** the provider resolves to `not-found`, `invalid`, or `error`
+- **WHEN** the provider resolves to not-found, invalid, or error
 - **THEN** the shell shows a fallback message and does not mount the views
 
 #### Scenario: A pending result shows a loading state
 
 - **WHEN** the crawl promise has not yet resolved
 - **THEN** the shell shows a loading state and does not mount the views
+
+#### Scenario: Changing the route loads the newly selected crawl
+
+- **WHEN** a participant changes from one crawl URL to another in the same session
+- **THEN** the shell loads the new logical id and renders the new crawl
+
+#### Scenario: The shell receives the direct route id
+
+- **WHEN** a participant opens a direct crawl path
+- **THEN** the route gives that path's logical id to the shell
+
+#### Scenario: An earlier request resolves last
+
+- **WHEN** an earlier crawl request resolves after the route selects another crawl
+- **THEN** the shell keeps the result for the latest route selection
