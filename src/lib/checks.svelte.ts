@@ -1,43 +1,51 @@
-const STORE_KEY = 'crawl-checks-v1';
+import { localStorageChecksStore } from './state/localStorage.js';
+import type { CheckedTasks, ChecksStore } from './state/store.js';
 
-function loadChecks(): Record<string, boolean> {
-	try {
-		const raw = localStorage.getItem(STORE_KEY);
-		if (!raw) return {};
-		const parsed = JSON.parse(raw);
-		if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) return {};
-		return parsed as Record<string, boolean>;
-	} catch {
-		return {};
+export function createChecksController(
+	id: string,
+	taskIds: string[],
+	store: ChecksStore = localStorageChecksStore,
+) {
+	const currentIds = new Set(taskIds);
+	let checks = $state<CheckedTasks>({});
+	let dirty = false;
+
+	function currentChecks(saved: CheckedTasks): CheckedTasks {
+		const next: CheckedTasks = Object.create(null);
+		for (const taskId of currentIds) {
+			if (Object.hasOwn(saved, taskId) && saved[taskId] === true) next[taskId] = true;
+		}
+		return next;
 	}
-}
 
-function saveChecks(checks: Record<string, boolean>): void {
-	try {
-		localStorage.setItem(STORE_KEY, JSON.stringify(checks));
-	} catch {
-		// ignore storage errors
+	function refresh() {
+		if (dirty) return;
+		const loaded = store.loadChecks(id);
+		if (loaded.status === 'ok') checks = currentChecks(loaded.checks);
 	}
-}
 
-function createChecksStore() {
-	let checks = $state<Record<string, boolean>>(loadChecks());
+	function save() {
+		dirty = !store.saveChecks(id, checks);
+	}
+
+	refresh();
 
 	return {
-		get checks() {
-			return checks;
-		},
-		toggle(id: string) {
-			checks = { ...checks, [id]: !checks[id] };
-			saveChecks(checks);
-		},
-		resetMany(ids: string[]) {
-			const next = { ...checks };
-			for (const id of ids) delete next[id];
+		get checks() { return checks; },
+		refresh,
+		toggle(taskId: string) {
+			if (!currentIds.has(taskId)) return;
+			const next = currentChecks(checks);
+			if (Object.hasOwn(next, taskId)) delete next[taskId];
+			else next[taskId] = true;
 			checks = next;
-			saveChecks(checks);
+			save();
+		},
+		reset() {
+			checks = {};
+			save();
 		},
 	};
 }
 
-export const checksStore = createChecksStore();
+export type ChecksController = ReturnType<typeof createChecksController>;

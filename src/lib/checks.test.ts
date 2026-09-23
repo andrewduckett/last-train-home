@@ -1,56 +1,103 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { checksStore } from './checks.svelte.js';
-import { crawl } from '../../tests/fixtures/cory-trent.js';
+import { expect, it } from 'vitest';
+import { createChecksController } from './checks.svelte.js';
+import type { CheckedTasks, ChecksStore } from './state/store.js';
 
-const allIds = crawl.scavenger.map((i) => i.id);
+function memoryStore(initial: CheckedTasks = {}) {
+	let saved = initial;
+	let readable = true;
+	let writable = true;
+	const store: ChecksStore = {
+		loadChecks: () => readable ? { status: 'ok', checks: saved } : { status: 'unavailable' },
+		saveChecks: (_id, checks) => {
+			if (!writable) return false;
+			saved = checks;
+			return true;
+		},
+	};
+	return {
+		store,
+		get saved() { return saved; },
+		set saved(value: CheckedTasks) { saved = value; },
+		set readable(value: boolean) { readable = value; },
+		set writable(value: boolean) { writable = value; },
+	};
+}
 
-beforeEach(() => {
-	localStorage.clear();
-	checksStore.resetMany(allIds);
+it('toggles a task on and off', () => {
+	const controller = createChecksController('first', ['photo'], memoryStore().store);
+	controller.toggle('photo');
+	expect(controller.checks).toEqual({ photo: true });
+	controller.toggle('photo');
+	expect(controller.checks).toEqual({});
 });
 
-describe('checksStore persistence', () => {
-	it('persists checks to localStorage', () => {
-		checksStore.toggle('sh-selfie');
-		const stored = JSON.parse(localStorage.getItem('crawl-checks-v1') ?? '{}');
-		expect(stored['sh-selfie']).toBe(true);
-	});
+it('resets current checks', () => {
+	const device = memoryStore({ photo: true });
+	const controller = createChecksController('first', ['photo'], device.store);
+	controller.reset();
+	expect(controller.checks).toEqual({});
+	expect(device.saved).toEqual({});
+});
 
-	it('loads pre-migration crawl-checks-v1 data', () => {
-		localStorage.setItem('crawl-checks-v1', JSON.stringify({ 'sh-toast': true, 'sh-tap': true }));
-		// Simulate a reload by reading directly from localStorage (store is a singleton;
-		// we test the loadChecks path by verifying what's stored)
-		const stored = JSON.parse(localStorage.getItem('crawl-checks-v1') ?? '{}');
-		expect(stored['sh-toast']).toBe(true);
-		expect(stored['sh-tap']).toBe(true);
-	});
+it.each(['constructor', '__proto__', 'toString'])('handles prototype-shaped task id %s', (id) => {
+	const controller = createChecksController('first', [id], memoryStore().store);
+	expect(Object.hasOwn(controller.checks, id)).toBe(false);
+	controller.toggle(id);
+	expect(Object.hasOwn(controller.checks, id)).toBe(true);
+	controller.toggle(id);
+	expect(Object.hasOwn(controller.checks, id)).toBe(false);
+});
 
-	it('starts empty when storage is missing', () => {
-		// localStorage is already cleared by beforeEach
-		expect(checksStore.checks).toEqual({});
-	});
+it('excludes removed ids from exposed checks and later saves', () => {
+	const device = memoryStore({ removed: true, photo: true });
+	const controller = createChecksController('first', ['photo', 'toast'], device.store);
+	expect(controller.checks).toEqual({ photo: true });
+	controller.toggle('toast');
+	expect(device.saved).toEqual({ photo: true, toast: true });
+});
 
-	it('starts empty when storage is malformed', () => {
-		localStorage.setItem('crawl-checks-v1', 'NOT_JSON');
-		// The store loaded at module init; malformed handling is in loadChecks
-		// We verify loadChecks returns {} for malformed data by inspecting the behavior:
-		// after clearing all via resetMany the store is empty
-		checksStore.resetMany(allIds);
-		expect(Object.keys(checksStore.checks).length).toBe(0);
-	});
+it('refreshes a clean controller from newer saved checks', () => {
+	const device = memoryStore();
+	const controller = createChecksController('first', ['photo'], device.store);
+	device.saved = { photo: true };
+	controller.refresh();
+	expect(controller.checks).toEqual({ photo: true });
+});
 
-	it('toggles a task on and off', () => {
-		checksStore.toggle('sh-selfie');
-		expect(checksStore.checks['sh-selfie']).toBe(true);
-		checksStore.toggle('sh-selfie');
-		expect(checksStore.checks['sh-selfie']).toBe(false);
-	});
+it('retains current checks when a refresh read fails', () => {
+	const device = memoryStore({ photo: true });
+	const controller = createChecksController('first', ['photo'], device.store);
+	device.readable = false;
+	controller.refresh();
+	expect(controller.checks).toEqual({ photo: true });
+});
 
-	it('resetMany removes specified ids', () => {
-		checksStore.toggle('sh-selfie');
-		checksStore.toggle('sh-toast');
-		checksStore.resetMany(['sh-selfie', 'sh-toast']);
-		expect(checksStore.checks['sh-selfie']).toBeUndefined();
-		expect(checksStore.checks['sh-toast']).toBeUndefined();
-	});
+it('retains a failed write in memory', () => {
+	const device = memoryStore();
+	device.writable = false;
+	const controller = createChecksController('first', ['photo'], device.store);
+	controller.toggle('photo');
+	expect(controller.checks).toEqual({ photo: true });
+});
+
+it('keeps unsaved edits over a later successful read', () => {
+	const device = memoryStore();
+	device.writable = false;
+	const controller = createChecksController('first', ['photo', 'toast'], device.store);
+	controller.toggle('photo');
+	device.saved = { toast: true };
+	controller.refresh();
+	expect(controller.checks).toEqual({ photo: true });
+});
+
+it('refreshes again after a later successful save', () => {
+	const device = memoryStore();
+	device.writable = false;
+	const controller = createChecksController('first', ['photo', 'toast'], device.store);
+	controller.toggle('photo');
+	device.writable = true;
+	controller.toggle('toast');
+	device.saved = { toast: true };
+	controller.refresh();
+	expect(controller.checks).toEqual({ toast: true });
 });

@@ -1,14 +1,18 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/svelte';
 import TasksView from './TasksView.svelte';
-import { checksStore } from './checks.svelte.js';
+import { createChecksController } from './checks.svelte.js';
 import { crawl } from '../../tests/fixtures/cory-trent.js';
 
-// Reset store and localStorage between tests
 beforeEach(() => {
 	localStorage.clear();
-	checksStore.resetMany(crawl.scavenger.map((i) => i.id));
 });
+
+function renderTasks() {
+	const resolved = { id: 'cory-trent', title: crawl.appTitle, definition: crawl };
+	const controller = createChecksController(resolved.id, crawl.scavenger.map((task) => task.id));
+	return render(TasksView, { crawl: resolved, controller });
+}
 
 function getPercent(): string {
 	return screen.getByText(/\d+% collected/).textContent ?? '';
@@ -16,7 +20,7 @@ function getPercent(): string {
 
 describe('TasksView: checklist tally', () => {
 	it('checking a 10-point task shows 10 of 85 and 12%', async () => {
-		render(TasksView, { crawl: { id: 'cory-trent', title: crawl.appTitle, definition: crawl } });
+		renderTasks();
 		// All tasks start unchecked; sh-selfie (index 0) is 10 pts, total is 85
 		const checkboxes = screen.getAllByRole('checkbox');
 		await fireEvent.click(checkboxes[0]);
@@ -28,7 +32,7 @@ describe('TasksView: checklist tally', () => {
 	});
 
 	it('unchecking a checked task lowers the tally', async () => {
-		render(TasksView, { crawl: { id: 'cory-trent', title: crawl.appTitle, definition: crawl } });
+		renderTasks();
 		const checkboxes = screen.getAllByRole('checkbox');
 		await fireEvent.click(checkboxes[0]);
 		await waitFor(() => expect(screen.getByText(/12% collected/)).toBeInTheDocument());
@@ -38,7 +42,7 @@ describe('TasksView: checklist tally', () => {
 
 	it('reset clears checks after confirm', async () => {
 		const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true);
-		render(TasksView, { crawl: { id: 'cory-trent', title: crawl.appTitle, definition: crawl } });
+		renderTasks();
 		const checkboxes = screen.getAllByRole('checkbox');
 		await fireEvent.click(checkboxes[0]);
 		await waitFor(() => expect(screen.getByText(/12% collected/)).toBeInTheDocument());
@@ -50,7 +54,7 @@ describe('TasksView: checklist tally', () => {
 
 	it('reset is abandoned on cancel', async () => {
 		const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(false);
-		render(TasksView, { crawl: { id: 'cory-trent', title: crawl.appTitle, definition: crawl } });
+		renderTasks();
 		const checkboxes = screen.getAllByRole('checkbox');
 		await fireEvent.click(checkboxes[0]);
 		await waitFor(() => expect(screen.getByText(/12% collected/)).toBeInTheDocument());
