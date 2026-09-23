@@ -24,7 +24,9 @@ The theme resolver accepts a `color` string and returns `amber`, `teal`, or `neu
 
 The shell places a palette attribute on its outer element after a found result arrives. Descendant views inherit CSS variables from that element. A route change replaces the shell's selected palette. The neutral palette supplies root tokens for loading and error states. Applying a global attribute to `html` would make overlapping or delayed route loads easier to theme incorrectly.
 
-All palettes share the same light and dark background, content surfaces, and station-board surfaces. Named palettes change accent tokens only. The neutral page background outside the 520px shell therefore matches the shell background. When a route changes before an earlier fetch finishes, the shell ignores the late result before creating a checklist controller. This prevents obsolete storage reads as well as stale accents.
+All palettes share the same light and dark background, content surfaces, and station-board surfaces. Named palettes change accent tokens only. The neutral page background outside the 520px shell therefore matches the shell background.
+
+The shell's `onMount` callback tracks whether its instance is still mounted. Its cleanup marks that instance inactive. The `getCrawl(id)` continuation checks this flag before creating a checklist controller or assigning the result. A late response for an old route then causes no storage read or stale accent update. Route-keyed mounting alone does not cancel the promise.
 
 ### Generate all UI color tokens from one data file
 
