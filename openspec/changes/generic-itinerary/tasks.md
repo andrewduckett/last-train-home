@@ -7,7 +7,7 @@
 
 - [ ] 2.1 Write failing tests for HTTP and HTTPS links, exact Google map origins, embed and viewer roles, non-default ports, and unsafe URLs; verify the focused URL tests fail first.
 - [ ] 2.2 Add the shared URL policy and link and map resolvers; verify URL tests pass and malformed containers resolve without throwing.
-- [ ] 2.3 Write failing Schedule view tests for zero, one, and at least three links on a phone, plus a missing-label link; render authored cards and verify labels, hints, hrefs, order, new-tab attributes, and no horizontal overflow.
+- [ ] 2.3 Write failing Schedule view tests for zero, one, and at least three links on a phone, plus missing-label and unsafe-URL links; render authored cards and verify labels, hints, hrefs, order, new-tab attributes, unsafe-card omission, and no horizontal overflow.
 - [ ] 2.4 Write failing Map view tests for configured URLs and missing or invalid maps; render the map or unavailable message and verify no unsafe frame or viewer link appears.
 
 ## 3. Authored record and publication checks
