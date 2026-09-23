@@ -4,12 +4,13 @@
 	"version": "1.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "vite dev",
-		"build": "npm run validate:crawls && vite build",
+		"dev": "npm run generate:palette && vite dev",
+		"build": "npm run generate:palette && npm run validate:crawls && vite build",
 		"preview": "vite preview",
 		"test": "vitest run",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"validate:crawls": "node scripts/validate-crawls.mjs"
+		"validate:crawls": "node scripts/validate-crawls.mjs",
+		"generate:palette": "node scripts/generate-palette.mjs"
 	},
 	"dependencies": {
 		"@fontsource/ibm-plex-mono": "^5.1.1",
