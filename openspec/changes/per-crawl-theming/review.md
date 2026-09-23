@@ -37,7 +37,7 @@ No embedded instructions or injection attempts were found in the reviewed conten
 
 ## Verdict
 VERDICT: APPROVE_WITH_CHANGES
-CHANGES_APPLIED: no
+CHANGES_APPLIED: yes
 
 ## Required Changes
 1. Update `design.md` to specify how the CSS generation script integrates with the local development loop (e.g., via a Vite plugin or a concurrent watch script) to prevent a broken iteration cycle.
@@ -45,3 +45,18 @@ CHANGES_APPLIED: no
 
 ## Rebuttals
 - The prior round requested a fix for a late crawl response after unmount. The plan properly addresses this in `design.md` by requiring the `onMount` callback to track mount status and check it before updating state. While the current `Shell.svelte` source code lacks this flag, the review evaluates the *plan* for modifying it, which is logically sound and sufficient.
+
+## Targeted Re-check
+
+Gemini 3.1 Pro High re-checked only the two required changes on 2026-09-23.
+
+- **Required Change 1: accepted by reviewer.** The design now generates CSS before Vite starts and watches the palette source during development.
+- **Required Change 2: accepted by reviewer.** The design and spec now require exact lowercase palette names.
+
+TARGETED_RECHECK: ACCEPTED
+
+## Author Responses to Other Findings
+
+- **Neutral accent during loading:** Accepted as the neutral palette state while the crawl is unresolved. The shell cannot know the authored accent before the fetch completes.
+- **Non-text contrast:** Add a focused implementation task for focus indicators and other meaningful UI boundaries.
+- **Plain language suggestions:** The case-matching text now uses one name for the resolver. Remaining wording suggestions do not change the contract.
