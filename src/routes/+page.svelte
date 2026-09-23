@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { defaultCrawl } from '$lib/config.js';
 	import Shell from '$lib/Shell.svelte';
 </script>
 
@@ -6,4 +7,4 @@
 	<title>Last Train Home</title>
 </svelte:head>
 
-<Shell />
+<Shell id={defaultCrawl} />

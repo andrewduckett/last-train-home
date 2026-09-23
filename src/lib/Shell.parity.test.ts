@@ -2,9 +2,10 @@ import { expect, it } from 'vitest';
 import { fireEvent, render, screen, within } from '@testing-library/svelte';
 import Shell from './Shell.svelte';
 import seed from '../../tests/fixtures/cory-trent.json';
+import { seedShellProps } from '../../tests/fixtures/seed-provider.js';
 
 async function openTab(tab: string) {
-	const rendered = render(Shell);
+	const rendered = render(Shell, seedShellProps);
 	await screen.findByTestId('view-schedule');
 	if (tab !== 'schedule') {
 		await fireEvent.click(screen.getByRole('button', { name: new RegExp(tab, 'i') }));

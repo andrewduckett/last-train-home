@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/svelte';
 import VenuesView from './VenuesView.svelte';
-import { crawl } from './crawl.js';
+import { crawl } from '../../tests/fixtures/cory-trent.js';
 
 describe('VenuesView', () => {
 	it('renders a directions link for every venue place', () => {

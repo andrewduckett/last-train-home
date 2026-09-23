@@ -7,11 +7,11 @@
 	import VenuesView from './VenuesView.svelte';
 	import TasksView from './TasksView.svelte';
 
-	let { getCrawl = getDefaultCrawl }: { getCrawl?: CrawlProvider['getCrawl'] } = $props();
+	let { id, getCrawl = getDefaultCrawl }: { id: string; getCrawl?: CrawlProvider['getCrawl'] } = $props();
 	let result = $state<CrawlResult>();
 
 	onMount(() => {
-		void getCrawl('cory-trent').then((resolved) => {
+		void getCrawl(id).then((resolved) => {
 			result = resolved;
 		});
 	});

@@ -10,8 +10,8 @@
 <div data-testid="view-map" class="map-view">
 	{#if notSet}
 		<div class="map-notice">
-			<b>Map not set yet.</b> Paste your Google My Maps ID into <code>src/lib/crawl.ts</code>
-			(look for <code>myMapsEmbedUrl</code>), then run <code>npm run build</code>.
+			<b>Map not set yet.</b> Add <code>myMapsEmbedUrl</code> and <code>myMapsAppUrl</code>
+			to this crawl's YAML record, then run <code>npm run build</code>.
 		</div>
 	{/if}
 

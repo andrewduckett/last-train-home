@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/svelte';
 import MapView from './MapView.svelte';
-import { crawl } from './crawl.js';
+import { crawl } from '../../tests/fixtures/cory-trent.js';
 
 describe('MapView', () => {
 	it('renders an embedded map iframe', () => {

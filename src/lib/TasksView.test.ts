@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/svelte';
 import TasksView from './TasksView.svelte';
 import { checksStore } from './checks.svelte.js';
-import { crawl } from './crawl.js';
+import { crawl } from '../../tests/fixtures/cory-trent.js';
 
 // Reset store and localStorage between tests
 beforeEach(() => {
