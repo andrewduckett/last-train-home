@@ -14,4 +14,4 @@
 ## 3. Seed crawl and release checks
 
 - [x] 3.1 Add `color: amber` to `cory-trent.yaml`. Verify `/` and `/cory-trent` select amber while a test crawl without `color` selects neutral.
-- [ ] 3.2 Run `npm test`, `npm run check`, and `npm run build`. Inspect the built CSS and CSP output, then verify the four tabs remain readable and usable in light and dark mode on a portrait phone.
+- [x] 3.2 Run `npm test`, `npm run check`, and `npm run build`. Inspect the built CSS and CSP output, then verify the four tabs remain readable and usable in light and dark mode on a portrait phone.
