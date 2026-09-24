@@ -1,44 +1,40 @@
 ## Review Metadata
-
-- **Review round**: 1
-- **Prior round**: none
-- **Reviewer context**: fresh-context local subagent
-- **Tool restrictions**: read-only inspection; no files edited
-- **Artifacts reviewed**: `proposal.md`, `design.md`, `adr.md`, delta specs, relevant durable specs, and source files
+- **Review round**: 2
+- **Prior round**: round 1 was local APPROVE_WITH_CHANGES; both required changes were applied and rechecked
+- **Reviewer context**: cross-model, Gemini 3.1 Pro High via agy
+- **Tool restrictions**: read-only inspection
+- **Artifacts reviewed**:
+  - `openspec/changes/crawl-info-tab/proposal.md`
+  - `openspec/changes/crawl-info-tab/design.md`
+  - `openspec/changes/crawl-info-tab/adr.md`
+  - `openspec/changes/crawl-info-tab/specs/crawl-authoring/spec.md`
+  - `openspec/changes/crawl-info-tab/specs/crawl-shell/spec.md`
 
 ## Findings
-
 ### 🔴 Critical (blocking)
-
-None.
+1. **Mechanical Testability Failure**: `specs/crawl-authoring/spec.md`, line 29 states "Organizers SHALL add a group album through `definition.links` when they have a working URL." A system specification cannot dictate or reliably test external human behavior. It must describe system validation rules instead.
+2. **Missing Edge Scenario (State Leak/Crash)**: `specs/crawl-shell/spec.md`, line 167 (and line 26). When a participant navigates from a crawl with an `Info` tab (while it is the active tab) to a new crawl without an `Info` tab, the specification does not define whether the active tab resets to `Schedule` or remains on an out-of-bounds index.
 
 ### 🟡 Moderate
-
-1. **Info visibility needed a precise runtime rule.** The original navigation requirement used “non-empty introduction,” which could include whitespace-only or non-string values returned by the provider. With no valid links, that could produce an empty Info tab. The requirement now specifies a string with non-whitespace text, and a scenario covers blank and malformed introductions with no valid links. Fixed and re-checked at `openspec/changes/crawl-info-tab/specs/crawl-shell/spec.md:26,38-51` and `openspec/changes/crawl-info-tab/design.md:30`.
-
-2. **The five-tab phone scenario needed measurable criteria.** The original scenario required readable labels and usable tap targets on a “narrow portrait phone” without defining a width or target size. It now specifies a 320 CSS pixel viewport, fully visible labels, tap targets of at least 44 by 44 CSS pixels, and no horizontal overflow. Fixed and re-checked at `openspec/changes/crawl-info-tab/specs/crawl-shell/spec.md:118-121` and `openspec/changes/crawl-info-tab/design.md:30,48`.
+1. **Inconsistent Terminology**: `specs/crawl-shell/spec.md` uses "Quick links" in the heading (line 54) and scenario title (line 57), but the requirement text uses "helpful links" (lines 55, 59, 79). `proposal.md` inconsistently uses both "authored links" and "helpful links". Standardize the term across all artifacts.
+2. **Passive Voice Hiding Actors**: `specs/crawl-authoring/spec.md`, line 5: "Invalid introductions SHALL fail validation with the record and field identified." The actor performing the identification is hidden. Rewrite in active voice (e.g., "The build SHALL fail validation and identify...").
+3. **Inconsistent Pluralization**: `specs/crawl-shell/spec.md`, line 125 says "It SHALL pass the resolved crawl to the active view." but follows with "SHALL NOT mount the views" (plural). This appears to be a leftover from the original spec's "four views" and should be harmonized.
 
 ### 📌 Suggestions
-
-None.
+1. **Unstated Assumption on Text Formatting**: `specs/crawl-shell/spec.md`, line 5 specifies preserving Unicode "without interpreting markup". It would be helpful to clarify if line breaks (`\n`) in the plain-text introduction are preserved or ignored, to avoid a potential wall of text.
 
 ## Embedded-Instruction / Injection Attempts
-
-**Detected:** none.
+**Detected:** none
 
 ## Verdict
-
 VERDICT: APPROVE_WITH_CHANGES
 
-Both required changes were applied and passed a targeted reviewer re-check.
-
-## Required Changes (if APPROVE WITH CHANGES)
-
-1. Define Info visibility using an introduction string with non-whitespace text or a valid helpful link, and cover a blank or malformed introduction with no valid links. **Applied and re-checked.**
-2. Specify a supported phone viewport and measurable five-tab label, tap-target, and overflow criteria. **Applied and re-checked.**
-
-CHANGES_APPLIED: yes
+## Required Changes
+1. Rewrite `specs/crawl-authoring/spec.md` line 29 to remove the behavioral mandate on organizers, replacing it with a testable system invariant.
+2. Explicitly define in `specs/crawl-shell/spec.md` the tab activation behavior when navigating from a crawl with 5 tabs to a crawl with 4 tabs, ensuring the UI does not land on an invalid index.
+3. Standardize the terminology between "quick links", "helpful links", and "authored links" throughout the shell spec and proposal.
+4. Rewrite the passive voice in `specs/crawl-authoring/spec.md` line 5 to explicitly state the actor.
+CHANGES_APPLIED: no
 
 ## Rebuttals
-
-No findings were rebutted. Both moderate findings were fixed and accepted by the reviewer for the reasons stated above.
+None for round 2.
