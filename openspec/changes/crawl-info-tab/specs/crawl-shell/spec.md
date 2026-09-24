@@ -23,7 +23,7 @@ The Info view SHALL show a crawl's optional plain-text introduction when it is a
 
 ### Requirement: Four-tab navigation
 
-The shell SHALL always present Schedule, Map, Venues, and Tasks. It SHALL add Info after those tabs only when the crawl has an introduction string with non-whitespace text or a valid helpful link. The shell SHALL show one view at a time. It SHALL open on Schedule and mark the active tab.
+The shell SHALL always present Schedule, Map, Venues, and Tasks. It SHALL add Info after those tabs only when the crawl has an introduction string with non-whitespace text or a valid quick link. The shell SHALL show one view at a time. It SHALL open on Schedule and mark the active tab. Each new crawl selection SHALL reset the active tab to Schedule.
 
 #### Scenario: App opens on the Schedule tab
 
@@ -37,26 +37,31 @@ The shell SHALL always present Schedule, Map, Venues, and Tasks. It SHALL add In
 
 #### Scenario: A crawl has Info content
 
-- **WHEN** a crawl has an introduction string with non-whitespace text or at least one valid helpful link
+- **WHEN** a crawl has an introduction string with non-whitespace text or at least one valid quick link
 - **THEN** the shell shows Info as its fifth tab
 
 #### Scenario: A crawl has no Info content
 
-- **WHEN** a crawl has no introduction string with non-whitespace text and no valid helpful link
+- **WHEN** a crawl has no introduction string with non-whitespace text and no valid quick link
 - **THEN** the shell shows only Schedule, Map, Venues, and Tasks
 
 #### Scenario: A blank or malformed introduction does not create Info
 
-- **WHEN** a crawl has a whitespace-only or non-string introduction and no valid helpful links
+- **WHEN** a crawl has a whitespace-only or non-string introduction and no valid quick links
 - **THEN** the shell shows only Schedule, Map, Venues, and Tasks
+
+#### Scenario: A new crawl omits Info while Info is active
+
+- **WHEN** a participant opens another crawl without Info while viewing Info on the previous crawl
+- **THEN** the shell selects Schedule for the new crawl and shows no Info tab
 
 ### Requirement: Quick links and embedded map
 
-The Info view SHALL show the crawl's valid helpful links in authored order. Each link SHALL show its label and optional hint, and open its destination in a new browser tab. A missing, invalid, or empty link list SHALL leave no link cards. The view SHALL omit a link without required text or with an unsafe URL while keeping valid siblings. The Schedule view SHALL start with the timeline and SHALL NOT show link cards. An album link SHALL use the same authored link format and behavior as any other helpful link. The Map view SHALL embed the configured Google map and link to its viewer URL. A missing or invalid map SHALL show an unavailable message without a frame or viewer link. The view SHALL NOT create a clickable link or frame from an unsafe URL. Whether the viewer link opens a native app depends on the participant's device.
+The Info view SHALL show the crawl's valid quick links in authored order. Each link SHALL show its label and optional hint, and open its destination in a new browser tab. A missing, invalid, or empty link list SHALL leave no link cards. The view SHALL omit a link without required text or with an unsafe URL while keeping valid siblings. The Schedule view SHALL start with the timeline and SHALL NOT show link cards. An album link SHALL use the same format and behavior as any other quick link. The Map view SHALL embed the configured Google map and link to its viewer URL. A missing or invalid map SHALL show an unavailable message without a frame or viewer link. The view SHALL NOT create a clickable link or frame from an unsafe URL. Whether the viewer link opens a native app depends on the participant's device.
 
 #### Scenario: Quick link opens externally
 
-- **WHEN** a participant taps an authored helpful link in Info
+- **WHEN** a participant taps a quick link in Info
 - **THEN** the browser opens that link's configured destination in a new tab
 
 #### Scenario: A crawl has no quick links
@@ -76,7 +81,7 @@ The Info view SHALL show the crawl's valid helpful links in authored order. Each
 
 #### Scenario: Several links fit a phone screen
 
-- **WHEN** a crawl has at least three helpful links on a portrait phone
+- **WHEN** a crawl has at least three quick links on a portrait phone
 - **THEN** each card keeps readable text and a full-card tap target without horizontal overflow
 
 #### Scenario: Album link uses the common link format
@@ -92,8 +97,8 @@ The Info view SHALL show the crawl's valid helpful links in authored order. Each
 
 #### Scenario: A URL is unsafe at runtime
 
-- **WHEN** a helpful link or map URL uses an unsafe scheme or unsupported map origin
-- **THEN** Info omits the unsafe helpful link and keeps valid sibling links
+- **WHEN** a quick link or map URL uses an unsafe scheme or unsupported map origin
+- **THEN** Info omits the unsafe quick link and keeps valid sibling links
 - **THEN** the Map view shows no frame or viewer link for an unsafe map URL
 
 #### Scenario: The map is missing at runtime

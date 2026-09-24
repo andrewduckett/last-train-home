@@ -6,8 +6,9 @@
 ## 2. Info experience
 
 - [ ] 2.1 Add failing view tests for plain text, emoji, safe links, authored order, and malformed runtime content. Build the Info view using the existing link resolver; verify its focused tests pass.
-- [ ] 2.2 Add failing navigation tests for intro-only, links-only, empty, blank, and malformed content. Show Info only for usable content, move link cards off Schedule, and verify the shell and Schedule tests pass.
-- [ ] 2.3 Add a failing test that Tasks has no special album button. Remove album handling from Tasks and update integration expectations; verify the Tasks and shell tests pass.
+- [ ] 2.2 Add failing navigation tests for intro-only, links-only, empty, blank, and malformed content. Show Info only for usable content, move quick-link cards off Schedule, and verify the shell and Schedule tests pass.
+- [ ] 2.3 Add a failing test for opening a crawl without Info while Info is active. Reset the new crawl to Schedule and verify the route and shell tests pass.
+- [ ] 2.4 Add a failing test that Tasks has no special album button. Remove album handling from Tasks and update integration expectations; verify the Tasks and shell tests pass.
 
 ## 3. Phone and build verification
 

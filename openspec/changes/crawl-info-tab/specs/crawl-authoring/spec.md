@@ -2,7 +2,7 @@
 
 ### Requirement: Validate optional crawl introduction
 
-The build SHALL accept an omitted introduction. When present, `definition.intro` SHALL be a non-empty string after trimming whitespace. The build SHALL accept Unicode characters, including emoji, in the introduction. Invalid introductions SHALL fail validation with the record and field identified.
+The build SHALL accept an omitted introduction. When present, `definition.intro` SHALL be a non-empty string after trimming whitespace. The build SHALL accept Unicode characters, including emoji, in the introduction. The build SHALL reject an invalid introduction and identify its record and field.
 
 #### Scenario: A crawl omits the introduction
 
@@ -24,9 +24,9 @@ The build SHALL accept an omitted introduction. When present, `definition.intro`
 - **WHEN** an authored introduction contains only whitespace
 - **THEN** build validation fails and identifies `definition.intro`
 
-### Requirement: Author album links through the common link list
+### Requirement: Validate album links through the quick-link list
 
-The build SHALL accept a crawl without an album link. Organizers SHALL add a group album through `definition.links` when they have a working URL. The build SHALL apply the existing link validation rules to that album link. The build SHALL reject the obsolete `definition.albumUrl` field so an author does not publish an invisible album destination.
+The build SHALL accept a crawl without an album link. It SHALL accept a group album in `definition.links` under the same rules as other quick links. The build SHALL reject the obsolete `definition.albumUrl` field so an author does not publish an invisible album destination.
 
 #### Scenario: The seed has no album destination
 
