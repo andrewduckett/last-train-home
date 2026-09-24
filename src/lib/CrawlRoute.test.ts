@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/svelte';
+import { fireEvent, render, screen, waitFor } from '@testing-library/svelte';
 import { expect, it } from 'vitest';
 import { createCrawlProvider, createYamlCrawlProvider } from './data/provider.js';
 import type { CrawlResult } from './types.js';
@@ -16,7 +16,6 @@ function record(title: string) {
 			scavengerRules: [],
 			map: { embed: 'https://www.google.com/maps/embed', app: 'https://www.google.com/maps/d/viewer' },
 			links: [],
-			albumUrl: 'photos',
 		},
 	};
 }
@@ -47,6 +46,22 @@ it('loads a new crawl after an in-session id change', async () => {
 	await rendered.rerender({ id: 'second', getCrawl });
 	await screen.findByRole('heading', { name: 'Second crawl' });
 	expect(ids).toEqual(['first', 'second']);
+});
+
+it('resets Info to Schedule when the new crawl has no Info content', async () => {
+	const provider = createCrawlProvider((id) => {
+		const crawl = record(id);
+		return { ...crawl, definition: { ...crawl.definition, ...(id === 'first' ? { intro: 'Welcome' } : {}) } };
+	});
+	const rendered = render(CrawlRoute, { id: 'first', getCrawl: provider.getCrawl });
+	await screen.findByTestId('view-schedule');
+	await fireEvent.click(screen.getByRole('button', { name: /Info/ }));
+	expect(screen.getByTestId('view-info')).toBeInTheDocument();
+	await rendered.rerender({ id: 'second', getCrawl: provider.getCrawl });
+	await screen.findByRole('heading', { name: 'second' });
+	expect(screen.getByTestId('view-schedule')).toBeInTheDocument();
+	expect(screen.getByRole('button', { name: /Schedule/ })).toHaveAttribute('aria-current', 'page');
+	expect(screen.queryByRole('button', { name: /Info/ })).not.toBeInTheDocument();
 });
 
 it('keeps the newest crawl when an earlier request resolves last', async () => {
