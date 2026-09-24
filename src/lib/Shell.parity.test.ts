@@ -38,7 +38,7 @@ it('preserves every schedule entry in authored order', async () => {
 });
 
 it('preserves the quick-link destinations', async () => {
-	await openTab('schedule');
+	await openTab('info');
 	expect(seed.links.map((link) => link.url)).toEqual([before.ventraUrl, before.metraUrl]);
 	expect(screen.getByRole('link', { name: /Ventra/ })).toHaveAttribute('href', seed.links[0].url);
 	expect(screen.getByRole('link', { name: /Metra/ })).toHaveAttribute('href', seed.links[1].url);

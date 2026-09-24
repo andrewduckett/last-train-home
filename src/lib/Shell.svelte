@@ -6,6 +6,8 @@
 	import MapView from './MapView.svelte';
 	import VenuesView from './VenuesView.svelte';
 	import TasksView from './TasksView.svelte';
+	import InfoView from './InfoView.svelte';
+	import { resolveLinks } from './crawl/urls.js';
 	import { createChecksController, type ChecksController } from './checks.svelte.js';
 	import { resolvePalette } from './theme/resolve.js';
 
@@ -28,20 +30,24 @@
 		return () => { mounted = false; };
 	});
 
-	const TABS = [
+	const BASE_TABS = [
 		{ id: 'schedule', label: 'Schedule', icon: '🕑' },
 		{ id: 'map', label: 'Map', icon: '🗺️' },
 		{ id: 'venues', label: 'Venues', icon: '🍺' },
 		{ id: 'tasks', label: 'Tasks', icon: '✅' },
 	] as const;
+	const INFO_TAB = { id: 'info', label: 'Info', icon: 'ℹ️' } as const;
+	let hasInfo = $derived(result?.status === 'found' && ((typeof result.crawl.definition.intro === 'string' && !!result.crawl.definition.intro.trim()) || resolveLinks(result.crawl.definition.links).length > 0));
+	let tabs = $derived(hasInfo ? [...BASE_TABS, INFO_TAB] : [...BASE_TABS]);
 
-	type TabId = (typeof TABS)[number]['id'];
+	type TabId = (typeof BASE_TABS)[number]['id'] | typeof INFO_TAB.id;
 
 	const TITLES: Record<TabId, string> = {
 		schedule: 'Schedule',
 		map: 'Route Map',
 		venues: 'Venues',
 		tasks: 'Tasks',
+		info: 'Info',
 	};
 
 	let activeTab = $state<TabId>('schedule');
@@ -80,6 +86,8 @@
 				<VenuesView crawl={result.crawl} />
 			{:else if activeTab === 'tasks' && checksController}
 				<TasksView crawl={result.crawl} controller={checksController} />
+			{:else if activeTab === 'info' && hasInfo}
+				<InfoView crawl={result.crawl} />
 			{/if}
 
 		{:else if result.status === 'not-found'}
@@ -94,8 +102,8 @@
 	</main>
 
 	<nav class="shell-nav safe-bottom">
-		<div class="nav-grid">
-			{#each TABS as tab (tab.id)}
+		<div class="nav-grid" style:grid-template-columns={`repeat(${tabs.length}, minmax(0, 1fr))`}>
+			{#each tabs as tab (tab.id)}
 				{@const active = activeTab === tab.id}
 				<button
 					class="nav-btn"
@@ -189,7 +197,7 @@
 
 	.nav-grid {
 		display: grid;
-		grid-template-columns: repeat(4, 1fr);
+		grid-template-columns: repeat(4, minmax(0, 1fr));
 	}
 
 	.nav-btn {
@@ -199,6 +207,8 @@
 		align-items: center;
 		gap: 2px;
 		padding: 10px 4px;
+		min-width: 0;
+		min-height: 44px;
 		background: transparent;
 		border: none;
 		cursor: pointer;
