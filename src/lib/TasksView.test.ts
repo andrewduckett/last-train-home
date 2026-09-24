@@ -19,6 +19,12 @@ function getPercent(): string {
 }
 
 describe('TasksView: checklist tally', () => {
+	it('does not render a special album button for an obsolete album field', () => {
+		const resolved = { id: 'cory-trent', title: crawl.appTitle, definition: { ...crawl, albumUrl: 'https://example.com/album' } };
+		const controller = createChecksController(resolved.id, crawl.scavenger.map((task) => task.id));
+		render(TasksView, { crawl: resolved, controller });
+		expect(screen.queryByRole('link', { name: /Open group album/ })).not.toBeInTheDocument();
+	});
 	it('checking a 10-point task shows 10 of 85 and 12%', async () => {
 		renderTasks();
 		// All tasks start unchecked; sh-selfie (index 0) is 10 pts, total is 85
