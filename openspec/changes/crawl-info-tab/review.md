@@ -34,7 +34,13 @@ VERDICT: APPROVE_WITH_CHANGES
 2. Explicitly define in `specs/crawl-shell/spec.md` the tab activation behavior when navigating from a crawl with 5 tabs to a crawl with 4 tabs, ensuring the UI does not land on an invalid index.
 3. Standardize the terminology between "quick links", "helpful links", and "authored links" throughout the shell spec and proposal.
 4. Rewrite the passive voice in `specs/crawl-authoring/spec.md` line 5 to explicitly state the actor.
-CHANGES_APPLIED: no
+CHANGES_APPLIED: yes
 
 ## Rebuttals
-None for round 2.
+
+- Moderate finding 3: "SHALL NOT mount the views" refers to all views during a pending or error state. The found state mounts one active view. Gemini accepted this rebuttal in the targeted recheck.
+- Line-break suggestion: The short plain-text introduction does not need a formatting rule in this change. Gemini accepted leaving this out of scope.
+
+## Targeted Reviewer Recheck
+
+Gemini 3.1 Pro High accepted required changes 1–4 against the revised artifacts. It also accepted the moderate rebuttal and the decision on line breaks. `RECHECK: ACCEPTED`.
