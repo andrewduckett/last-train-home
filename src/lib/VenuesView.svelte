@@ -72,7 +72,7 @@
 		font-weight: 700;
 		font-size: 17px;
 		letter-spacing: 0.04em;
-		color: #f2a93b;
+		color: var(--board-accent);
 	}
 
 	.venue-town {

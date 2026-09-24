@@ -7,13 +7,16 @@
 	import VenuesView from './VenuesView.svelte';
 	import TasksView from './TasksView.svelte';
 	import { createChecksController, type ChecksController } from './checks.svelte.js';
+	import { resolvePalette } from './theme/resolve.js';
 
 	let { id, getCrawl = getDefaultCrawl }: { id: string; getCrawl?: CrawlProvider['getCrawl'] } = $props();
 	let result = $state<CrawlResult>();
 	let checksController = $state<ChecksController>();
 
 	onMount(() => {
+		let mounted = true;
 		void getCrawl(id).then((resolved) => {
+			if (!mounted) return;
 			if (resolved.status === 'found') {
 				checksController = createChecksController(
 					resolved.crawl.id,
@@ -22,6 +25,7 @@
 			}
 			result = resolved;
 		});
+		return () => { mounted = false; };
 	});
 
 	const TABS = [
@@ -49,7 +53,7 @@
 	}
 </script>
 
-<div class="shell">
+<div class="shell" data-palette={result?.status === 'found' ? resolvePalette(result.crawl.color) : 'neutral'}>
 	{#if result?.status === 'found'}
 		<header class="shell-header">
 			<div class="header-inner" style="padding-top: max(12px, env(safe-area-inset-top))">
@@ -101,7 +105,7 @@
 				>
 					{#if active}<span class="nav-active-bar"></span>{/if}
 					<span class="nav-icon" style="opacity: {active ? 1 : 0.55}">{tab.icon}</span>
-					<span class="nav-label" style="color: {active ? '#F2A93B' : 'var(--board-muted)'}">
+					<span class="nav-label" class:nav-label-active={active}>
 						{tab.label}
 					</span>
 				</button>
@@ -211,7 +215,7 @@
 		height: 3px;
 		width: 32px;
 		border-radius: 999px;
-		background: var(--accent);
+		background: var(--board-accent);
 	}
 
 	.nav-icon {
@@ -220,8 +224,13 @@
 	}
 
 	.nav-label {
+		color: var(--board-muted);
 		font-size: 11px;
 		font-weight: 600;
 		letter-spacing: 0.04em;
+	}
+
+	.nav-label-active {
+		color: var(--board-accent);
 	}
 </style>

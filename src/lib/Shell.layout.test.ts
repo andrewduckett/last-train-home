@@ -28,8 +28,9 @@ describe('Shell: phone-first layout', () => {
 		expect(appCss).toMatch(/animation:\s*none/);
 	});
 
-	it('app.css includes prefers-color-scheme dark rule', () => {
-		expect(appCss).toMatch(/prefers-color-scheme:\s*dark/);
+	it('generated palette CSS follows the system dark scheme', () => {
+		expect(appCss).toContain("@import './lib/theme/generated.css'");
+		expect(readFileSync(resolve('src/lib/theme/generated.css'), 'utf8')).toMatch(/prefers-color-scheme:\s*dark/);
 	});
 
 	it('app.css includes safe-area-inset-bottom for bottom nav', () => {

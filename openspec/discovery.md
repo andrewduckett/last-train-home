@@ -215,16 +215,16 @@ that introduces each constraint.
   - **Added**: 2026-09-20
   - **Change**: archived 2026-09-23 — `openspec/changes/archive/2026-09-23-generic-itinerary/`
 
-- [ ] 6. `per-crawl-theming` — each crawl carries an accent that resolves to an accessible palette
+- [x] 6. `per-crawl-theming` — each crawl carries an accent that resolves to an accessible palette
   - **Persona served**: Crawler, Author
   - **Journey segment**: Crawler "see the plan / find the stop" (legibility, identity)
   - **MoSCoW**: Should
   - **Why this story / why now**: today one fixed station-board look is baked into `index.css`. Letting a crawl author a `color` (resolved to a palette, neutral fallback for an unknown name) gives each event identity without hand-typed hex going unreadable. Tokens live in one source of truth with AA-checked pairs, mirroring the sibling.
   - **Depends on**: story 3
   - **Scope**: in: a named palette as the single source of truth (light + dark), generated CSS tokens; resolve a crawl's `color` onto the station-board base; `prefers-color-scheme` auto light/dark; AA contrast enforced by tests reading the emitted CSS; ADR: theme tokens one source of truth. / out: a user-facing theme toggle, per-entry colors, new data beyond `color`.
-  - **Relevant code**: `src/index.css` → `src/lib/theme/*` (palette source + generated CSS + resolve + tests), the layout and views.
+  - **Relevant code**: `src/app.css`, `src/lib/theme/*` (palette source, generated CSS, resolver, and tests), `src/lib/Shell.svelte`, and the four views.
   - **Added**: 2026-09-20
-  - **Change**: _not yet proposed_
+  - **Change**: archived 2026-09-23 — `openspec/changes/archive/2026-09-23-per-crawl-theming/`
 
 - [ ] 7. `second-crawl-proof` — a second, non-Metra crawl ships end-to-end
   - **Persona served**: Author, Crawler
