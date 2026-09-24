@@ -3,6 +3,7 @@ color: amber
 definition:
   appTitle: Last Train Home
   line: Palatine → Mt. Prospect → Edison Park → Arlington Heights → Palatine
+  intro: Hello! and Welcome!
   schedule:
     - time: 2:45 PM
       kind: stop
@@ -122,7 +123,6 @@ definition:
   scavengerRules:
     - Every challenge only counts as a photo posted to the shared group album.
     - Tick each one off here once you've uploaded it to see your tally.
-  albumUrl: PASTE_YOUR_GROUP_ALBUM_LINK_HERE
   links:
     - label: Ventra
       hint: Buy & show your pass
