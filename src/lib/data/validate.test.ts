@@ -30,8 +30,26 @@ definition:
   map:
     embed: https://www.google.com/maps/d/embed?mid=example
     app: https://www.google.com/maps/d/viewer?mid=example
-  albumUrl: https://example.com/photos
 `;
+
+it('accepts an omitted introduction', () => {
+	expect(() => validateCrawlSource('example.yaml', validSource)).not.toThrow();
+});
+
+it('accepts a Unicode introduction', () => {
+	expect(() => validateCrawlSource('example.yaml', validSource.replace('  line: A → B\n', '  line: A → B\n  intro: Welcome 🚆!\n'))).not.toThrow();
+});
+
+it.each(['   ', 42, '[welcome]', '{ greeting: hello }'])(
+	'rejects invalid introduction %j', (intro) => {
+		const source = validSource.replace('  line: A → B\n', `  line: A → B\n  intro: ${intro}\n`);
+		expect(() => validateCrawlSource('example.yaml', source)).toThrow(/example\.yaml: invalid definition\.intro/);
+	},
+);
+
+it('rejects the obsolete album field', () => {
+	expect(() => validateCrawlSource('example.yaml', validSource + '  albumUrl: https://example.com/photos\n')).toThrow(/example\.yaml: invalid definition\.albumUrl/);
+});
 
 it.each(['BadName.yaml', 'bad_name.yaml', 'bad--name.yaml', '-bad.yaml', 'bad-.yaml'])(
 	'rejects invalid filename %s',
@@ -52,7 +70,6 @@ it('identifies a definition field with the wrong type', () => {
 it.each([
 	['appTitle', '  appTitle: Example\n'],
 	['line', '  line: A → B\n'],
-	['albumUrl', '  albumUrl: https://example.com/photos\n'],
 ])('identifies an invalid definition.%s type', (field, authoredLine) => {
 	const source = validSource.replace(authoredLine, `  ${field}: 42\n`);
 	expect(() => validateCrawlSource('example.yaml', source)).toThrow(

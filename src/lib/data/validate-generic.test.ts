@@ -4,7 +4,7 @@ import { validateCrawlSource } from './validate.js';
 
 function source(change: (definition: Record<string, any>) => void = () => {}) {
 	const definition: Record<string, any> = {
-		appTitle: 'Walk', line: 'Park → Cafe', albumUrl: 'photos',
+		appTitle: 'Walk', line: 'Park → Cafe',
 		schedule: [{ kind: 'move', time: 'Noon', title: 'To cafe', mode: '15 min walk' }],
 		links: [], map: { embed: 'https://www.google.com/maps/d/embed?mid=x', app: 'https://www.google.com/maps/d/viewer?mid=x' },
 		venues: [{ stop: 'Cafe', town: 'Town', places: [{ n: 'Cafe', a: '1 Main' }] }],
@@ -16,6 +16,18 @@ function source(change: (definition: Record<string, any>) => void = () => {}) {
 
 it('accepts a walking move and an empty link list', () => {
 	expect(() => validateCrawlSource('walk.yaml', source())).not.toThrow();
+});
+
+it('accepts an album through the quick-link list', () => {
+	expect(() => validateCrawlSource('walk.yaml', source((definition) => {
+		definition.links = [{ label: 'Group album', url: 'https://example.com/album' }];
+	}))).not.toThrow();
+});
+
+it('rejects an unsafe album quick link', () => {
+	expect(() => validateCrawlSource('walk.yaml', source((definition) => {
+		definition.links = [{ label: 'Group album', url: 'javascript:alert(1)' }];
+	}))).toThrow('walk.yaml: invalid definition.links[0].url');
 });
 
 it.each([

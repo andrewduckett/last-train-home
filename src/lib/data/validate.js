@@ -68,10 +68,11 @@ export function validateCrawlSource(fileName, source) {
 		if (field in record) asString(fileName, field, record[field]);
 	}
 	const definition = asRecord(fileName, 'definition', record.definition);
+	if ('albumUrl' in definition) invalid(fileName, 'definition.albumUrl');
+	if ('intro' in definition) asNonemptyString(fileName, 'definition.intro', definition.intro);
 	for (const field of [
 		'appTitle',
 		'line',
-		'albumUrl',
 	]) {
 		asString(fileName, `definition.${field}`, definition[field]);
 	}
