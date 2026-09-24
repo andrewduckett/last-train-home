@@ -4,8 +4,7 @@
 
 	let { crawl, controller }: { crawl: Crawl; controller: ChecksController } = $props();
 
-	let { scavenger, scavengerRules, albumUrl } = $derived(crawl.definition);
-	let albumSet = $derived(albumUrl && !albumUrl.includes('PASTE_'));
+	let { scavenger, scavengerRules } = $derived(crawl.definition);
 
 	let total = $derived(scavenger.reduce((s, i) => s + i.p, 0));
 
@@ -33,11 +32,6 @@
 					<span>{rule}</span>
 				</div>
 			{/each}
-			{#if albumSet}
-				<a href={albumUrl} target="_blank" rel="noopener noreferrer" class="album-link font-display">
-					📷 Open group album
-				</a>
-			{/if}
 		</div>
 	</div>
 
@@ -142,26 +136,6 @@
 		flex: 0 0 auto;
 		font-weight: 700;
 		color: var(--accent-ink);
-	}
-
-	.album-link {
-		margin-top: 8px;
-		display: block;
-		width: 100%;
-		text-align: center;
-		border-radius: 12px;
-		padding: 10px 16px;
-		font-weight: 600;
-		font-size: 15px;
-		letter-spacing: 0.04em;
-		background: var(--accent);
-		color: var(--on-accent);
-		text-decoration: none;
-		transition: transform 0.1s;
-	}
-
-	.album-link:active {
-		transform: scale(0.99);
 	}
 
 	.checklist-card {

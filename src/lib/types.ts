@@ -33,13 +33,13 @@ export interface ScavengerTask {
 export interface CrawlDefinition {
 	appTitle: string;
 	line: string;
+	intro?: string;
 	schedule: ScheduleEntry[];
 	venues: VenueStop[];
 	scavenger: ScavengerTask[];
 	scavengerRules: string[];
 	links: QuickLink[];
 	map: CrawlMap;
-	albumUrl: string;
 }
 
 export interface CrawlIdentity {

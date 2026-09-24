@@ -24,6 +24,12 @@ it('resolves the original seed content through the production provider', async (
 	expect(fetchCrawl).toHaveBeenCalledWith('/crawls/cory-trent.yaml');
 });
 
+it('publishes the welcome without an album placeholder', () => {
+	expect(expectedDefinition.intro).toBe('Hello! and Welcome!');
+	expect(expectedDefinition).not.toHaveProperty('albumUrl');
+	expect(expectedDefinition.links.map((link) => link.label)).toEqual(['Ventra', 'Metra']);
+});
+
 it.each(['missing', 'constructor'])('does not resolve missing id %j', async (id) => {
 	vi.stubGlobal('fetch', async () => ({
 		ok: false,

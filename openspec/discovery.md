@@ -1,7 +1,7 @@
 # Discovery: Last Train Home — a renderer for many timed crawls
 
 > Status: complete
-> Created: 2026-09-20 · Last revised: 2026-09-23
+> Created: 2026-09-20 · Last revised: 2026-09-24
 
 > Release plan produced by the discovery skill. Resume or revise by re-running the skill.
 > To build: run `/opsx:propose` and ask it to use the next unchecked story below.
@@ -31,6 +31,9 @@
   less prominent home for helpful links, and to replace abbreviated venue and task
   keys in the author-facing YAML. Organizer chose an Info tab for the introduction
   and links.
+- 2026-09-23 — Organizer clarified story 7: show Info only when it has content;
+  move the group album into ordinary authored links; keep the Ventra and Metra
+  links; use "Hello! and Welcome!" as the seed introduction; support emoji.
 
 ## Scope, goals, non-goals
 
@@ -241,16 +244,16 @@ that introduces each constraint.
   - **Added**: 2026-09-20
   - **Change**: archived 2026-09-23 — `openspec/changes/archive/2026-09-23-per-crawl-theming/`
 
-- [ ] 7. `crawl-info-tab` — optional crawl introduction and helpful links live on an Info tab
+- [x] 7. `crawl-info-tab` — optional crawl introduction and helpful links live on an Info tab
   - **Persona served**: Crawler, Author
   - **Journey segment**: Crawler "open the link → see the plan"; Author "author a crawl"
   - **MoSCoW**: Should
   - **Why this story / why now**: links are already authored per crawl, but their cards sit ahead of the timetable on Schedule. A short introduction has no field or UI. Move both to an easy-to-find Info tab before another crawl needs its own guidance.
   - **Depends on**: stories 3, 5, 6
-  - **Scope**: in: optional plain-text `definition.intro` for a few sentences, with a brief seed introduction in `cory-trent.yaml`; Info tab showing the intro and the existing safe, authored `links[]` in order; remove link cards from Schedule so it starts with the timeline; show the Info tab only when the intro or at least one valid link exists; keep the bottom navigation readable and tappable on a portrait phone; update build validation, relevant specs, and tests. / out: in-app editing, rich text, changes to the Map or Tasks tabs.
-  - **Relevant code**: `static/crawls/cory-trent.yaml`, `src/lib/Shell.svelte`, `src/lib/ScheduleView.svelte`, `src/lib/crawl/urls.js`, `src/lib/data/validate.js`, `src/lib/types.ts`, `openspec/specs/crawl-shell/spec.md`, `openspec/specs/crawl-authoring/spec.md`.
+  - **Scope**: in: optional Unicode plain-text `definition.intro` (including emoji), with the exact seed text "Hello! and Welcome!"; Info tab showing the intro and safe, authored `links[]` in order; keep the seed Ventra and Metra links; remove link cards from Schedule; show Info only when an intro or valid link exists; move the group album into ordinary `links[]`, remove `albumUrl` and its Tasks button, and omit the seed album link until a real URL exists; keep five-tab navigation usable on a portrait phone; update validation, specs, and tests. / out: in-app editing, rich text, changes to Map or checklist scoring.
+  - **Relevant code**: `static/crawls/cory-trent.yaml`, `src/lib/Shell.svelte`, `src/lib/ScheduleView.svelte`, `src/lib/TasksView.svelte`, `src/lib/crawl/urls.js`, `src/lib/data/validate.js`, `src/lib/types.ts`, `openspec/specs/crawl-shell/spec.md`, `openspec/specs/crawl-authoring/spec.md`.
   - **Added**: 2026-09-23
-  - **Change**: _not yet proposed_
+  - **Change**: archived 2026-09-24 — `openspec/changes/archive/2026-09-24-crawl-info-tab/`
 
 - [ ] 8. `readable-yaml-fields` — venue and scavenger fields use descriptive names
   - **Persona served**: Author, Crawler
@@ -292,6 +295,8 @@ that introduces each constraint.
 
 ## Change Log
 
+- 2026-09-24 — Archived `crawl-info-tab`. Story 7 is complete; `readable-yaml-fields` is next.
+- 2026-09-23 — Refined story 7 after exploration. Info is conditional, the group album becomes a normal helpful link, and the seed keeps Ventra and Metra. The placeholder album value is dropped. The seed intro is "Hello! and Welcome!", and intro text supports emoji.
 - 2026-09-23 — Added `crawl-info-tab` and `readable-yaml-fields` before the second-crawl proof at the Organizer's request. Links already come from each crawl's YAML; the Info tab changes their placement and adds an optional introduction. The planned rename keeps scavenger task ids stable so saved checklist state still matches. Reconciled stories 4 and 6 with their archived changes.
 - 2026-09-23 — Archived `generic-itinerary`. Story 5 is complete; per-crawl theming is next.
 - 2026-09-21 — Reconciled completed OpenSpec changes. Marked the SvelteKit shell and crawl-provider stories as archived, so the next unchecked story is YAML crawl routing.

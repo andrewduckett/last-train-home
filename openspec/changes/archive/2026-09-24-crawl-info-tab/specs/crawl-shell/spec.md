@@ -1,10 +1,25 @@
-# Crawl Shell Specification
+## ADDED Requirements
 
-## Purpose
+### Requirement: Crawl introduction
 
-The crawl shell is the phone screen a participant uses on the day. It renders one crawl across Schedule, Map, Venues, and Tasks. An Info tab appears when the crawl has an introduction or a valid quick link.
+The Info view SHALL show a crawl's optional plain-text introduction when it is a string with non-whitespace text. It SHALL preserve Unicode text, including emoji, without interpreting markup. A missing, blank, or malformed introduction SHALL leave no introduction text and SHALL NOT prevent the crawl from loading.
 
-## Requirements
+#### Scenario: The seed introduction appears
+
+- **WHEN** a participant opens Info for cory-trent
+- **THEN** the view shows "Hello! and Welcome!"
+
+#### Scenario: An introduction contains emoji
+
+- **WHEN** an authored introduction contains emoji
+- **THEN** Info shows those characters with the surrounding text
+
+#### Scenario: The introduction is malformed at runtime
+
+- **WHEN** the provider returns a non-string introduction with valid links
+- **THEN** Info omits the introduction and keeps the links usable
+
+## MODIFIED Requirements
 
 ### Requirement: Four-tab navigation
 
@@ -39,114 +54,6 @@ The shell SHALL always present Schedule, Map, Venues, and Tasks. It SHALL add In
 
 - **WHEN** a participant opens another crawl without Info while viewing Info on the previous crawl
 - **THEN** the shell selects Schedule for the new crawl and shows no Info tab
-
-### Requirement: Schedule timeline
-
-The Schedule view SHALL show valid timed `stop`, `move`, and `note` entries in authored order. Each entry SHALL show its time and title. It SHALL show an authored tag when present and a kind-based tag otherwise. A move SHALL show its authored mode without limiting that text to known transit types. Each entry SHALL show its optional note; a move SHALL show its mode before that note. The view SHALL distinguish moves, stops, and notes visually. An invalid entry SHALL be omitted without hiding valid entries or failing the crawl page.
-
-#### Scenario: Timeline renders in order
-
-- **WHEN** the Schedule view receives valid stop, move, and note entries
-- **THEN** it lists them in authored order with their times, titles, tags, and available details
-
-#### Scenario: A walking move uses author text
-
-- **WHEN** a move has `mode: 15 min walk to the next stop`
-- **THEN** the timeline shows that text without replacing it with a train label
-
-#### Scenario: One entry is malformed at runtime
-
-- **WHEN** a schedule contains an entry without a valid kind or required text
-- **THEN** the timeline omits that entry and continues to show valid entries
-
-#### Scenario: The schedule container is missing at runtime
-
-- **WHEN** the resolved crawl has no schedule list
-- **THEN** the Schedule view shows an unavailable message and the other crawl tabs remain usable
-
-### Requirement: Venue list with directions
-
-The Venues view SHALL list each stop with its venue names and addresses. Each venue SHALL show a directions link that opens a map search in a new browser tab. The search query SHALL carry the venue's name, street address, town, and state, matching the pre-migration behavior.
-
-#### Scenario: Directions link opens a map search
-
-- **WHEN** a participant taps a venue's directions link
-- **THEN** the browser opens, in a new tab, a Google Maps search URL whose query is the venue's name, street address, town, and `IL`
-
-### Requirement: Scavenger checklist with points tally
-
-The Tasks view SHALL list each scavenger task with its point value. Tapping a task SHALL toggle its check. The view SHALL show earned points, total points, and percent collected, where percent collected is `round(earned / total * 100)`.
-
-#### Scenario: Checking a task updates the tally
-
-- **WHEN** a participant checks a task worth 10 points, with 85 points total and none yet checked
-- **THEN** earned points show 10 of 85 and percent collected shows 12
-
-#### Scenario: Unchecking a task lowers the tally
-
-- **WHEN** a participant unchecks a checked task
-- **THEN** earned points and percent collected drop by that task's contribution
-
-#### Scenario: Reset clears checks after confirmation
-
-- **WHEN** a participant taps Reset and confirms
-- **THEN** the shell clears every check in that list and the tally returns to 0 of 85
-
-#### Scenario: Reset is abandoned on cancel
-
-- **WHEN** a participant taps Reset and cancels the confirmation
-- **THEN** the checks stay unchanged
-
-### Requirement: Per-crawl checklist persists on the device
-
-The shell SHALL persist each crawl's checklist on the device under `crawl-checks:<id>`, using that crawl's logical id. Reopening a crawl SHALL restore only its own current tasks. The shell SHALL treat only a stored value of `true` as checked. It SHALL ignore stored task ids absent from the current crawl. When device storage is unavailable, the checklist SHALL continue to work in memory across tab changes.
-
-#### Scenario: Checks persist across reloads
-
-- **WHEN** a participant checks a task and reopens the same crawl on the same device
-- **THEN** the task remains checked and the tally includes its points
-
-#### Scenario: Crawls with matching task ids remain separate
-
-- **WHEN** a participant checks a task in one crawl and opens another crawl with the same task id
-- **THEN** the second crawl starts with its own saved check state
-
-#### Scenario: Removed tasks do not return
-
-- **WHEN** a crawl's saved checks include a task id missing from its current definition
-- **THEN** the missing task does not appear in the checklist or contribute to the tally
-- **THEN** later saves for that crawl exclude the missing task id
-
-#### Scenario: Old global checks are not imported
-
-- **WHEN** the device holds only checks under `crawl-checks-v1`
-- **THEN** a crawl starts with no checked tasks
-
-#### Scenario: Unreadable storage does not break the app
-
-- **WHEN** stored checks are missing or malformed, or storage access throws
-- **THEN** the shell starts with no checks and continues to work
-
-#### Scenario: Storage failures do not lose checks on a tab change
-
-- **WHEN** a participant checks a task while storage writes fail, switches tabs, and returns to Tasks
-- **THEN** the task remains checked and the tally includes its points for that session
-
-#### Scenario: A fresh Tasks view reads newer saved checks
-
-- **WHEN** another tab saves a check while the participant views Schedule, and this shell has no unsaved edits
-- **WHEN** the participant returns to Tasks
-- **THEN** the Tasks view shows the newly saved check
-
-#### Scenario: Only true saved values count as checked
-
-- **WHEN** saved checks contain `false`, strings, or other non-true values for current task ids
-- **THEN** those tasks appear unchecked and contribute no earned points
-
-#### Scenario: Prototype properties do not count as checked
-
-- **WHEN** a task id matches an object prototype property name such as `toString` or `constructor`
-- **THEN** the task is checked only if its own saved value is literal `true`
 
 ### Requirement: Quick links and embedded map
 
@@ -276,22 +183,3 @@ The route SHALL give the shell its selected logical id. The shell SHALL obtain t
 
 - **WHEN** an earlier crawl request resolves after the route selects another crawl
 - **THEN** the shell keeps the result for the latest route selection
-
-### Requirement: Crawl introduction
-
-The Info view SHALL show a crawl's optional plain-text introduction when it is a string with non-whitespace text. It SHALL preserve Unicode text, including emoji, without interpreting markup. A missing, blank, or malformed introduction SHALL leave no introduction text and SHALL NOT prevent the crawl from loading.
-
-#### Scenario: The seed introduction appears
-
-- **WHEN** a participant opens Info for cory-trent
-- **THEN** the view shows "Hello! and Welcome!"
-
-#### Scenario: An introduction contains emoji
-
-- **WHEN** an authored introduction contains emoji
-- **THEN** Info shows those characters with the surrounding text
-
-#### Scenario: The introduction is malformed at runtime
-
-- **WHEN** the provider returns a non-string introduction with valid links
-- **THEN** Info omits the introduction and keeps the links usable

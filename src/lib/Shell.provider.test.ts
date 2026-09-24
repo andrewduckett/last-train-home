@@ -12,7 +12,6 @@ const definition: CrawlDefinition = {
 	scavengerRules: ['Share a bird photo.'],
 	map: { embed: 'https://www.google.com/maps/d/embed?mid=river', app: 'https://www.google.com/maps/d/viewer?mid=river' },
 	links: [{ label: 'Tickets', url: 'https://example.com/passes' }, { label: 'Times', url: 'https://example.com/times' }],
-	albumUrl: 'https://example.com/river-photos',
 };
 
 const source = { title: 'Identity title is different', definition };
@@ -46,8 +45,7 @@ it('renders the resolved schedule', async () => {
 	renderRiverWalk();
 	const view = await screen.findByTestId('view-schedule');
 	expect(view).toHaveTextContent('Library steps');
-	expect(screen.getByRole('link', { name: /Tickets/ })).toHaveAttribute('href', definition.links[0].url);
-	expect(screen.getByRole('link', { name: /Times/ })).toHaveAttribute('href', definition.links[1].url);
+	expect(screen.queryByRole('link', { name: /Tickets/ })).not.toBeInTheDocument();
 });
 
 it('renders the resolved venues', async () => {
@@ -68,7 +66,6 @@ it('renders the resolved scavenger checklist', async () => {
 	expect(screen.getByRole('checkbox', { name: /Find a heron/ })).toBeInTheDocument();
 	expect(screen.getByText('30 pts')).toBeInTheDocument();
 	expect(screen.getByText('Share a bird photo.')).toBeInTheDocument();
-	expect(screen.getByRole('link', { name: /Open group album/ })).toHaveAttribute('href', definition.albumUrl);
 });
 
 it('renders the resolved map', async () => {
