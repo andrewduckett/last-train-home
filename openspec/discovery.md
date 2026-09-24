@@ -27,6 +27,10 @@
   behind a store interface, generated palette tokens, ADRs under `docs/decisions/`).
   Last Train Home mirrors its shape: `Crawl` ↔ `Character`, `getCrawl(id)` ↔
   `getCharacter(id)`, `static/crawls/<id>.yaml` ↔ `static/characters/<id>.yaml`.
+- 2026-09-23 — Organizer request to give each crawl an optional introduction and a
+  less prominent home for helpful links, and to replace abbreviated venue and task
+  keys in the author-facing YAML. Organizer chose an Info tab for the introduction
+  and links.
 
 ## Scope, goals, non-goals
 
@@ -109,6 +113,12 @@ missing screen.
 4. **Deploy the site** — build + publish static assets — supported (Vite build; `wrangler.jsonc`, Cloudflare)
 5. **Iterate on edits** — change land after publish — partial (edit code + rebuild, rather than edit a data file)
 
+**Current gaps after migration stories 1–6:** The crawler can open per-crawl links,
+but they take the first space on Schedule and there is no introduction. The author
+can edit YAML, but venue places use `n`/`a` and scavenger tasks use `t`/`p`/`d`;
+those names do not explain what to enter. Both gaps matter before a second author
+creates a crawl.
+
 ## MoSCoW
 
 ### Must
@@ -133,6 +143,11 @@ missing screen.
 - **Per-crawl theming (authored accent → palette, one token source, WCAG AA)** — Crawler
   "see the plan / find the stop"; lets each crawl look distinct on the station-board base
   without hand-edited colors going unreadable.
+- **Crawl Info tab with optional introduction and authored links** — Crawler "open the
+  link → see the plan"; keeps the timetable immediately visible while making context
+  and useful destinations easy to find for each crawl.
+- **Readable venue and scavenger YAML fields** — Author "author a crawl → add a second
+  crawl"; removes code-like abbreviations before they spread to more records.
 - **A second, non-Metra crawl authored end-to-end** — Author "add a second crawl"; proves
   the generalization and flushes out schema gaps before they calcify.
 
@@ -226,13 +241,35 @@ that introduces each constraint.
   - **Added**: 2026-09-20
   - **Change**: archived 2026-09-23 — `openspec/changes/archive/2026-09-23-per-crawl-theming/`
 
-- [ ] 7. `second-crawl-proof` — a second, non-Metra crawl ships end-to-end
+- [ ] 7. `crawl-info-tab` — optional crawl introduction and helpful links live on an Info tab
+  - **Persona served**: Crawler, Author
+  - **Journey segment**: Crawler "open the link → see the plan"; Author "author a crawl"
+  - **MoSCoW**: Should
+  - **Why this story / why now**: links are already authored per crawl, but their cards sit ahead of the timetable on Schedule. A short introduction has no field or UI. Move both to an easy-to-find Info tab before another crawl needs its own guidance.
+  - **Depends on**: stories 3, 5, 6
+  - **Scope**: in: optional plain-text `definition.intro` for a few sentences, with a brief seed introduction in `cory-trent.yaml`; Info tab showing the intro and the existing safe, authored `links[]` in order; remove link cards from Schedule so it starts with the timeline; show the Info tab only when the intro or at least one valid link exists; keep the bottom navigation readable and tappable on a portrait phone; update build validation, relevant specs, and tests. / out: in-app editing, rich text, changes to the Map or Tasks tabs.
+  - **Relevant code**: `static/crawls/cory-trent.yaml`, `src/lib/Shell.svelte`, `src/lib/ScheduleView.svelte`, `src/lib/crawl/urls.js`, `src/lib/data/validate.js`, `src/lib/types.ts`, `openspec/specs/crawl-shell/spec.md`, `openspec/specs/crawl-authoring/spec.md`.
+  - **Added**: 2026-09-23
+  - **Change**: _not yet proposed_
+
+- [ ] 8. `readable-yaml-fields` — venue and scavenger fields use descriptive names
+  - **Persona served**: Author, Crawler
+  - **Journey segment**: Author "author a crawl → add a second crawl"; Crawler "find the stop → track tasks"
+  - **MoSCoW**: Should
+  - **Why this story / why now**: the seed YAML exposes one-letter keys that require code knowledge to interpret. Rename them before a second crawl copies the schema, while preserving what crawlers see and their saved task checks.
+  - **Depends on**: story 3; follows story 7 in the requested backlog order
+  - **Scope**: in: rename venue place `n`/`a` to `name`/`address` and scavenger task `t`/`p`/`d` to `title`/`points`/`description` in YAML, types, views, build validation, tests, and authoring specs; reject old keys at the build boundary; keep task `id` values and rendered content unchanged. / out: changing schedule keys, task scoring rules, or stored checklist format.
+  - **Relevant code**: `static/crawls/cory-trent.yaml`, `src/lib/types.ts`, `src/lib/VenuesView.svelte`, `src/lib/TasksView.svelte`, `src/lib/data/validate.js`, `src/lib/data/validate.test.ts`, `openspec/specs/crawl-authoring/spec.md`.
+  - **Added**: 2026-09-23
+  - **Change**: _not yet proposed_
+
+- [ ] 9. `second-crawl-proof` — a second, non-Metra crawl ships end-to-end
   - **Persona served**: Author, Crawler
   - **Journey segment**: Author "add a second crawl"; Crawler "open the link" (a different crawl)
   - **MoSCoW**: Should
   - **Why this story / why now**: proves the whole thesis — that a new outing is one YAML file, no code — and exercises "walking is just a mode" against a real record. Authoring a genuinely different crawl (e.g. a downtown walking pub crawl, no train) surfaces any remaining train-shaped assumptions before they calcify.
-  - **Depends on**: stories 4, 5, 6
-  - **Scope**: in: author `static/crawls/<id>.yaml` for a non-transit walking crawl (walk-mode moves, its own links/map/tasks/color); confirm it renders at `/<id>` with isolated checklist state; fix any schema or rendering gaps it reveals. / out: switching the default away from `cory-trent`, new features, a picker.
+  - **Depends on**: stories 4–8
+  - **Scope**: in: author `static/crawls/<id>.yaml` for a non-transit walking crawl (walk-mode moves, its own intro/links/map/tasks/color in readable fields); confirm it renders at `/<id>` with isolated checklist state; fix any schema or rendering gaps it reveals. / out: switching the default away from `cory-trent`, new features, a picker.
   - **Relevant code**: `static/crawls/<new-id>.yaml`; whichever resolver/view the new record stresses.
   - **Added**: 2026-09-20
   - **Change**: _not yet proposed_
@@ -255,6 +292,7 @@ that introduces each constraint.
 
 ## Change Log
 
+- 2026-09-23 — Added `crawl-info-tab` and `readable-yaml-fields` before the second-crawl proof at the Organizer's request. Links already come from each crawl's YAML; the Info tab changes their placement and adds an optional introduction. The planned rename keeps scavenger task ids stable so saved checklist state still matches. Reconciled stories 4 and 6 with their archived changes.
 - 2026-09-23 — Archived `generic-itinerary`. Story 5 is complete; per-crawl theming is next.
 - 2026-09-21 — Reconciled completed OpenSpec changes. Marked the SvelteKit shell and crawl-provider stories as archived, so the next unchecked story is YAML crawl routing.
 - 2026-09-20 — Initial plan from `openspec/prd.md`. Two personas (Crawler, Organizer/
