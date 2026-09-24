@@ -27,7 +27,7 @@ An HTML or Markdown field would add formatting and sanitization decisions that a
 
 ### Resolve Info visibility from usable content
 
-The shell derives its navigation from a non-empty trimmed introduction or the existing safe-link resolver's output. It appends Info after Tasks only when either is present. Schedule remains the opening tab. The navigation grid adapts to four or five columns, and phone-width checks cover both states.
+The shell derives its navigation from an introduction string with non-whitespace text or the existing safe-link resolver's output. It appends Info after Tasks only when either is present. Schedule remains the opening tab. The navigation grid adapts to four or five columns. A 320 CSS pixel check verifies complete labels, 44 by 44 CSS pixel tap targets, and no horizontal overflow.
 
 An always-present fifth tab would show an empty screen for a crawl without context or links. A header button would hide the content outside the established tab navigation.
 
@@ -45,7 +45,7 @@ Keeping a separate album field would preserve duplicate link paths and special p
 
 ## Risks / Trade-offs
 
-- [Five tabs can crowd a narrow phone] → Keep labels short, use equal-width cells, and verify the smallest supported portrait layout.
+- [Five tabs can crowd a narrow phone] → Keep labels short, use equal-width cells, and verify the layout at 320 CSS pixels.
 - [An authored link can be malformed at runtime] → Use the existing resolver for both Info visibility and rendered links.
 - [A cached old YAML file can still contain `albumUrl`] → Ignore that obsolete field at runtime. Revalidate YAML on fresh requests and deploy the app with its seed data.
 - [Moving the album adds a tab switch from Tasks] → Keep the scoring instructions in Tasks and show the album beside other links in Info.

@@ -2,7 +2,7 @@
 
 ### Requirement: Crawl introduction
 
-The Info view SHALL show a crawl's optional plain-text introduction. It SHALL preserve Unicode text, including emoji, without interpreting markup. A missing, empty, or malformed introduction SHALL leave no introduction text and SHALL NOT prevent the crawl from loading.
+The Info view SHALL show a crawl's optional plain-text introduction when it is a string with non-whitespace text. It SHALL preserve Unicode text, including emoji, without interpreting markup. A missing, blank, or malformed introduction SHALL leave no introduction text and SHALL NOT prevent the crawl from loading.
 
 #### Scenario: The seed introduction appears
 
@@ -23,7 +23,7 @@ The Info view SHALL show a crawl's optional plain-text introduction. It SHALL pr
 
 ### Requirement: Four-tab navigation
 
-The shell SHALL always present Schedule, Map, Venues, and Tasks. It SHALL add Info after those tabs only when the crawl has a non-empty introduction or a valid helpful link. The shell SHALL show one view at a time. It SHALL open on Schedule and mark the active tab.
+The shell SHALL always present Schedule, Map, Venues, and Tasks. It SHALL add Info after those tabs only when the crawl has an introduction string with non-whitespace text or a valid helpful link. The shell SHALL show one view at a time. It SHALL open on Schedule and mark the active tab.
 
 #### Scenario: App opens on the Schedule tab
 
@@ -37,12 +37,17 @@ The shell SHALL always present Schedule, Map, Venues, and Tasks. It SHALL add In
 
 #### Scenario: A crawl has Info content
 
-- **WHEN** a crawl has a non-empty introduction or at least one valid helpful link
+- **WHEN** a crawl has an introduction string with non-whitespace text or at least one valid helpful link
 - **THEN** the shell shows Info as its fifth tab
 
 #### Scenario: A crawl has no Info content
 
-- **WHEN** a crawl has no non-empty introduction and no valid helpful link
+- **WHEN** a crawl has no introduction string with non-whitespace text and no valid helpful link
+- **THEN** the shell shows only Schedule, Map, Venues, and Tasks
+
+#### Scenario: A blank or malformed introduction does not create Info
+
+- **WHEN** a crawl has a whitespace-only or non-string introduction and no valid helpful links
 - **THEN** the shell shows only Schedule, Map, Venues, and Tasks
 
 ### Requirement: Quick links and embedded map
@@ -112,8 +117,8 @@ The shell SHALL target a portrait phone used one-handed. It SHALL keep the heade
 
 #### Scenario: Five tabs fit a portrait phone
 
-- **WHEN** the Info tab is visible on a narrow portrait phone
-- **THEN** every tab label stays readable and every tab remains a usable tap target without horizontal overflow
+- **WHEN** the Info tab is visible at a 320 CSS pixel viewport width
+- **THEN** every label is fully visible, every tab has a tap target of at least 44 by 44 CSS pixels, and the page has no horizontal overflow
 
 ### Requirement: Resolve the crawl before rendering views
 
