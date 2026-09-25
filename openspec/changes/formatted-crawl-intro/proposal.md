@@ -37,4 +37,5 @@ None.
 - New pure module `src/lib/crawl/richText.ts`, with its own unit tests.
 - `src/lib/InfoView.test.ts` and `src/lib/Shell.info.test.ts`: cover the new rendering.
 - `static/crawls/cory-trent.yaml`: needs no edit, because it already uses the supported syntax.
+- `tests/fixtures/cory-trent.json` and `src/lib/data/seed.test.ts`: still expect the old intro "Hello! and Welcome!". Commit `ff4a7df` changed the seed without updating them, so `main` fails `seed.test.ts` today. This change updates them to the current seed.
 - The provider, types, validation, and CSP do not change.
