@@ -22,6 +22,6 @@
 
 ## 5. Verify
 
-- [ ] 5.1 Run `npm test`, `npm run check`, and `npm run build`, and confirm all three pass.
-- [ ] 5.2 Search `src/`, `static/`, and `tests/fixtures/` for the retired keys with `rg -n "\b(n|a|t|p|d):|\.(n|a|t|p|d)\b|\"(n|a|t|p|d)\":"`. Confirm that the only hits are the retired-key tables, their tests, `cory-trent-before.json`, and unrelated code such as `palette.test.ts`.
-- [ ] 5.3 Run `npm run preview` and open Venues and Tasks for `cory-trent` at phone width. Confirm that names, addresses, directions links, task text, points, and the 85-point total look as before.
+- [x] 5.1 Run `npm test`, `npm run check`, and `npm run build`, and confirm all three pass.
+- [x] 5.2 Search `src/`, `static/`, and `tests/fixtures/` for the retired keys with `rg -n "\b(n|a|t|p|d):|\.(n|a|t|p|d)\b|\"(n|a|t|p|d)\":"`. Confirm that the only hits are the retired-key tables, their tests, `cory-trent-before.json`, and unrelated code such as `palette.test.ts`.
+- [x] 5.3 Run `npm run preview` and open Venues and Tasks for `cory-trent` at phone width. Confirm that names, addresses, directions links, task text, points, and the 85-point total look as before.
