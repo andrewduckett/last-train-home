@@ -101,8 +101,8 @@
       "town": "Mt. Prospect",
       "places": [
         {
-          "n": "Station 34",
-          "a": "34 S Main St"
+          "name": "Station 34",
+          "address": "34 S Main St"
         }
       ]
     },
@@ -111,8 +111,8 @@
       "town": "Edison Park",
       "places": [
         {
-          "n": "Edison Park Inn",
-          "a": "6715 N Olmsted Ave"
+          "name": "Edison Park Inn",
+          "address": "6715 N Olmsted Ave"
         }
       ]
     },
@@ -121,8 +121,8 @@
       "town": "Arlington Heights",
       "places": [
         {
-          "n": "Eddie's",
-          "a": "10 E Northwest Hwy"
+          "name": "Eddie's",
+          "address": "10 E Northwest Hwy"
         }
       ]
     },
@@ -131,8 +131,8 @@
       "town": "Palatine",
       "places": [
         {
-          "n": "Tap House Grill",
-          "a": "56 W Wilson St"
+          "name": "Tap House Grill",
+          "address": "56 W Wilson St"
         }
       ]
     }
@@ -140,45 +140,45 @@
   "scavenger": [
     {
       "id": "sh-selfie",
-      "t": "The Platform Selfie",
-      "p": 10,
-      "d": "Group selfie under an official Metra station name sign."
+      "title": "The Platform Selfie",
+      "points": 10,
+      "description": "Group selfie under an official Metra station name sign."
     },
     {
       "id": "sh-toast",
-      "t": "Train Car Toast",
-      "p": 10,
-      "d": "Toast together while the train is moving."
+      "title": "Train Car Toast",
+      "points": 10,
+      "description": "Toast together while the train is moving."
     },
     {
       "id": "sh-tap",
-      "t": "Local Tap Takeover",
-      "p": 10,
-      "d": "Order a drink brewed in, from, or named for the town you're in."
+      "title": "Local Tap Takeover",
+      "points": 10,
+      "description": "Order a drink brewed in, from, or named for the town you're in."
     },
     {
       "id": "sh-stranger",
-      "t": "Cheers to a Stranger",
-      "p": 10,
-      "d": "Clink glasses with someone outside the crawl group."
+      "title": "Cheers to a Stranger",
+      "points": 10,
+      "description": "Clink glasses with someone outside the crawl group."
     },
     {
       "id": "sh-wave",
-      "t": "The Conductor Wave",
-      "p": 10,
-      "d": "Get a Metra conductor to wave back at you."
+      "title": "The Conductor Wave",
+      "points": 10,
+      "description": "Get a Metra conductor to wave back at you."
     },
     {
       "id": "sh-landmark",
-      "t": "Historic Landmark",
-      "p": 10,
-      "d": "Snap a photo with a landmark or historic sign near a stop."
+      "title": "Historic Landmark",
+      "points": 10,
+      "description": "Snap a photo with a landmark or historic sign near a stop."
     },
     {
       "id": "sh-photobomb",
-      "t": "Bonus Photobomb",
-      "p": 25,
-      "d": "Have a fellow crawler sneak a photobomb into a stranger's photo."
+      "title": "Bonus Photobomb",
+      "points": 25,
+      "description": "Have a fellow crawler sneak a photobomb into a stranger's photo."
     }
   ],
   "scavengerRules": [
