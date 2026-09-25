@@ -14,7 +14,7 @@ The product intent lives in `openspec/prd.md`. Stories are GitHub issues.
 - **Pain today**: a weak signal on a platform or in a dead zone can stall the app,
   because nothing is cached for offline use.
 - **Success looks like**: opens the shared link, lands on their crawl, taps through
-  schedule / map / venues, ticks tasks; reopening later (even offline-ish) shows the same
+  schedule / venues, ticks tasks; reopening later (even offline-ish) shows the same
   ticks, and a *different* crawl keeps its own.
 
 ### The Organizer / Author — the person who plans and publishes
@@ -45,12 +45,12 @@ Annotated against the code today. The app renders any crawl authored in
   Open the    See the     Find the    Track       Reopen      Use with a
   link     ─► plan     ─► stop     ─► tasks    ─► later     ─► weak signal
      │          │           │           │           │            │
-  supported   partial    supported   supported   supported      gap
+  supported   supported   partial    supported   supported      gap
 ```
 
 1. **Open the link** — `/<id>` or `/` renders the crawl — supported (`src/routes/[id]`, `src/lib/CrawlRoute.svelte`)
-2. **See the plan** — the stop-and-move timetable, plus an Info tab for the intro and links — partial (`ScheduleView`, `InfoView`; the intro renders as one plain paragraph, so its paragraphs and `**bold**` are lost; [#21](https://github.com/andrewduckett/last-train-home/issues/21))
-3. **Find the stop** — map embed + venue list with directions — supported (`MapView`, `VenuesView`)
+2. **See the plan** — the stop-and-move timetable, plus an Info tab for the intro and links — supported (`ScheduleView`, `InfoView`; the intro renders paragraphs and inline formatting since [#21](https://github.com/andrewduckett/last-train-home/issues/21))
+3. **Find the stop** — venue list with directions — partial (`VenuesView`; directions always open Google Maps with a hardcoded `, IL`, [#25](https://github.com/andrewduckett/last-train-home/issues/25); no station directions, [#27](https://github.com/andrewduckett/last-train-home/issues/27); the embedded `MapView` is hard to use on a phone, [#26](https://github.com/andrewduckett/last-train-home/issues/26))
 4. **Track tasks** — tap scavenger checklist, points tally — supported (`TasksView`, keyed `crawl-checks:<id>` behind `src/lib/state/store.ts`)
 5. **Reopen later** — ticks persist per device and per crawl — supported (`src/lib/state/localStorage.ts`)
 6. **Use with a weak signal** — resilient on flaky connections — gap (static files, but no offline caching; [#17](https://github.com/andrewduckett/last-train-home/issues/17))
@@ -65,7 +65,7 @@ Annotated against the code today. The app renders any crawl authored in
   partial    partial    supported   supported   supported
 ```
 
-1. **Author a crawl** — describe the event in one YAML file — partial (works, but venue and scavenger fields use one-letter keys, [#15](https://github.com/andrewduckett/last-train-home/issues/15); intro formatting is not rendered, [#21](https://github.com/andrewduckett/last-train-home/issues/21))
+1. **Author a crawl** — describe the event in one YAML file — partial (works, but venue and scavenger fields use one-letter keys, [#15](https://github.com/andrewduckett/last-train-home/issues/15); stops can't carry a station, [#27](https://github.com/andrewduckett/last-train-home/issues/27); intro formatting shipped in [#21](https://github.com/andrewduckett/last-train-home/issues/21))
 2. **Add a second crawl** — a new, independent event — partial (supported by routing and per-crawl state, but no second crawl has been authored yet; [#16](https://github.com/andrewduckett/last-train-home/issues/16))
 3. **Set the default (`/`)** — choose which crawl greets people — supported (one line: `defaultCrawl` in `src/lib/config.ts`)
 4. **Deploy the site** — build + publish static assets — supported (`npm run build` validates every crawl; `wrangler.jsonc`, Cloudflare)
