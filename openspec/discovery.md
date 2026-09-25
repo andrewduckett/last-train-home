@@ -11,9 +11,8 @@ The product intent lives in `openspec/prd.md`. Stories are GitHub issues.
   platform, connectivity spotty.
 - **Goal**: know what's next and when to move, find the current stop, and tick off
   scavenger tasks to watch the group's points climb — with almost no reading.
-- **Pain today**: the app works, but only for the one hardcoded event; a different outing
-  means a different build. The checklist uses one global key, so a second crawl would
-  overwrite the first's ticks on the same device.
+- **Pain today**: a weak signal on a platform or in a dead zone can stall the app,
+  because nothing is cached for offline use.
 - **Success looks like**: opens the shared link, lands on their crawl, taps through
   schedule / map / venues, ticks tasks; reopening later (even offline-ish) shows the same
   ticks, and a *different* crawl keeps its own.
@@ -25,8 +24,9 @@ The product intent lives in `openspec/prd.md`. Stories are GitHub issues.
   code for each event.
 - **Goal**: stand up a new crawl by writing one data file, set which crawl greets people
   at `/`, deploy, and share a clean link.
-- **Pain today**: a "new crawl" means editing `src/data.js`/`src/config.js` (code, not
-  data) and effectively forking the app; there is no id, no route, no second record.
+- **Pain today**: a new crawl is one YAML file, but venue and scavenger fields use
+  one-letter keys (`n`, `a`, `t`, `p`, `d`) that need code knowledge to fill in, and
+  no second crawl has yet proved the schema.
 - **Success looks like**: adds `static/crawls/<id>.yaml`, the crawl is live at `/<id>`,
   the default at `/` is a one-line change, and no component changed.
 
