@@ -17,13 +17,13 @@ definition:
     - stop: Stop 1
       town: Town
       places:
-        - n: Cafe
-          a: 1 Main St
+        - name: Cafe
+          address: 1 Main St
   scavenger:
     - id: photo
-      t: Take a photo
-      p: 10
-      d: Share it
+      title: Take a photo
+      points: 10
+      description: Share it
   scavengerRules:
     - Post the photo.
   links: []
@@ -82,13 +82,34 @@ it.each([
 	['definition.schedule[0].tag', '      tag: Meet\n'],
 	['definition.schedule[0].title', '      title: First stop\n'],
 	['definition.venues[0].town', '      town: Town\n'],
-	['definition.venues[0].places[0].a', '          a: 1 Main St\n'],
-	['definition.scavenger[0].t', '      t: Take a photo\n'],
-	['definition.scavenger[0].d', '      d: Share it\n'],
+	['definition.venues[0].places[0].name', '        - name: Cafe\n'],
+	['definition.venues[0].places[0].address', '          address: 1 Main St\n'],
+	['definition.scavenger[0].title', '      title: Take a photo\n'],
+	['definition.scavenger[0].description', '      description: Share it\n'],
 ])('identifies an invalid %s type', (field, authoredLine) => {
 	const source = validSource.replace(authoredLine, authoredLine.replace(/:.*/, ': 42'));
 	expect(() => validateCrawlSource('example.yaml', source)).toThrow(
 		new RegExp(`example\\.yaml.*${field.replaceAll('.', '\\.').replaceAll('[', '\\[').replaceAll(']', '\\]')}`, 'i'),
+	);
+});
+
+it.each([
+	['definition.venues[0].places[0].n', 'name', '          address: 1 Main St\n', '          n: Cafe\n'],
+	['definition.venues[0].places[0].a', 'address', '          address: 1 Main St\n', '          a: 1 Main St\n'],
+	['definition.scavenger[0].t', 'title', '      points: 10\n', '      t: Take a photo\n'],
+	['definition.scavenger[0].p', 'points', '      points: 10\n', '      p: 10\n'],
+	['definition.scavenger[0].d', 'description', '      points: 10\n', '      d: Share it\n'],
+])('rejects the retired key %s and names %s', (field, replacement, authoredLine, retiredLine) => {
+	const source = validSource.replace(authoredLine, authoredLine + retiredLine);
+	expect(() => validateCrawlSource('example.yaml', source)).toThrow(
+		`example.yaml: invalid ${field} (renamed to ${replacement})`,
+	);
+});
+
+it('identifies a non-numeric scavenger points value', () => {
+	const source = validSource.replace('      points: 10\n', '      points: ten\n');
+	expect(() => validateCrawlSource('example.yaml', source)).toThrow(
+		'example.yaml: invalid definition.scavenger[0].points',
 	);
 });
 
@@ -109,7 +130,7 @@ it('rejects a non-string scavenger rule', () => {
 it('rejects duplicate venue stop labels', () => {
 	const source = validSource.replace(
 		'  scavenger:\n',
-		'    - stop: Stop 1\n      town: Another Town\n      places:\n        - n: Pub\n          a: 2 Main St\n  scavenger:\n',
+		'    - stop: Stop 1\n      town: Another Town\n      places:\n        - name: Pub\n          address: 2 Main St\n  scavenger:\n',
 	);
 	expect(() => validateCrawlSource('example.yaml', source)).toThrow(
 		/example\.yaml.*definition\.venues.*stop/i,
@@ -118,18 +139,18 @@ it('rejects duplicate venue stop labels', () => {
 
 it('rejects duplicate place names within a venue', () => {
 	const source = validSource.replace(
-		'          a: 1 Main St\n',
-		'          a: 1 Main St\n        - n: Cafe\n          a: 2 Main St\n',
+		'          address: 1 Main St\n',
+		'          address: 1 Main St\n        - name: Cafe\n          address: 2 Main St\n',
 	);
 	expect(() => validateCrawlSource('example.yaml', source)).toThrow(
-		/example\.yaml.*definition\.venues.*places.*n/i,
+		/example\.yaml: invalid definition\.venues\[0\]\.places\.name duplicate/,
 	);
 });
 
 it('rejects duplicate scavenger task ids', () => {
 	const source = validSource.replace(
 		'  scavengerRules:\n',
-		'    - id: photo\n      t: Another photo\n      p: 5\n      d: Share another\n  scavengerRules:\n',
+		'    - id: photo\n      title: Another photo\n      points: 5\n      description: Share another\n  scavengerRules:\n',
 	);
 	expect(() => validateCrawlSource('example.yaml', source)).toThrow(
 		/example\.yaml.*definition\.scavenger.*id/i,
@@ -137,9 +158,9 @@ it('rejects duplicate scavenger task ids', () => {
 });
 
 it('rejects a non-positive scavenger point total', () => {
-	const source = validSource.replace('      p: 10\n', '      p: 0\n');
+	const source = validSource.replace('      points: 10\n', '      points: 0\n');
 	expect(() => validateCrawlSource('example.yaml', source)).toThrow(
-		/example\.yaml.*definition\.scavenger.*p/i,
+		/example\.yaml: invalid definition\.scavenger\.points total/,
 	);
 });
 

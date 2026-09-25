@@ -16,6 +16,22 @@ function invalid(fileName, field) {
 	throw new Error(`${fileName}: invalid ${field}`);
 }
 
+/** Retired one-letter keys, mapped to the descriptive keys that replace them. */
+const RETIRED_PLACE_KEYS = { n: 'name', a: 'address' };
+const RETIRED_TASK_KEYS = { t: 'title', p: 'points', d: 'description' };
+
+/**
+ * @param {string} fileName
+ * @param {string} field
+ * @param {Record<string, unknown>} record
+ * @param {Record<string, string>} retiredKeys
+ */
+function rejectRetiredKeys(fileName, field, record, retiredKeys) {
+	for (const [retired, replacement] of Object.entries(retiredKeys)) {
+		if (retired in record) invalid(fileName, `${field}.${retired} (renamed to ${replacement})`);
+	}
+}
+
 /** @param {string} fileName @param {string} field @param {unknown} value */
 function asRecord(fileName, field, value) {
 	if (!isRecord(value)) invalid(fileName, field);
@@ -113,10 +129,11 @@ export function validateCrawlSource(fileName, source) {
 		places.forEach((placeEntry, placeIndex) => {
 			const placeField = `${field}.places[${placeIndex}]`;
 			const place = asRecord(fileName, placeField, placeEntry);
-			const name = asString(fileName, `${placeField}.n`, place.n);
-			if (seenPlaces.has(name)) invalid(fileName, `${field}.places.n duplicate`);
+			rejectRetiredKeys(fileName, placeField, place, RETIRED_PLACE_KEYS);
+			const name = asString(fileName, `${placeField}.name`, place.name);
+			if (seenPlaces.has(name)) invalid(fileName, `${field}.places.name duplicate`);
 			seenPlaces.add(name);
-			asString(fileName, `${placeField}.a`, place.a);
+			asString(fileName, `${placeField}.address`, place.address);
 		});
 	});
 	const scavenger = asArray(fileName, 'definition.scavenger', definition.scavenger);
@@ -125,15 +142,16 @@ export function validateCrawlSource(fileName, source) {
 	scavenger.forEach((entry, index) => {
 		const field = `definition.scavenger[${index}]`;
 		const task = asRecord(fileName, field, entry);
+		rejectRetiredKeys(fileName, field, task, RETIRED_TASK_KEYS);
 		const id = asString(fileName, `${field}.id`, task.id);
 		if (seenTaskIds.has(id)) invalid(fileName, 'definition.scavenger.id duplicate');
 		seenTaskIds.add(id);
-		asString(fileName, `${field}.t`, task.t);
-		totalPoints += asFiniteNumber(fileName, `${field}.p`, task.p);
-		asString(fileName, `${field}.d`, task.d);
+		asString(fileName, `${field}.title`, task.title);
+		totalPoints += asFiniteNumber(fileName, `${field}.points`, task.points);
+		asString(fileName, `${field}.description`, task.description);
 	});
 	if (!Number.isFinite(totalPoints) || totalPoints <= 0) {
-		invalid(fileName, 'definition.scavenger.p total');
+		invalid(fileName, 'definition.scavenger.points total');
 	}
 	const rules = asArray(fileName, 'definition.scavengerRules', definition.scavengerRules);
 	rules.forEach((rule, index) => {
