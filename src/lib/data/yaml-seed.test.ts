@@ -7,7 +7,7 @@ import { parseJsonYaml } from './yaml.js';
 it('preserves every authored seed value in YAML', () => {
 	const source = readFileSync(resolve('static/crawls/cory-trent.yaml'), 'utf8');
 	expect(parseJsonYaml(source)).toEqual({
-		title: 'Last Train Home',
+		title: 'Cory & Trent: Last Train Home',
 		color: 'amber',
 		definition: expectedDefinition,
 	});
