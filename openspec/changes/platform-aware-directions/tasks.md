@@ -2,8 +2,8 @@
 
 - [x] 1.1 Write failing tests in `src/lib/crawl/directions.test.ts` for `detectMapsPlatform`. Expect `'apple'` for user agents that name an iPhone, iPad, iPod, or Macintosh, including an iPad in desktop mode. Expect `'other'` for Android, Windows, the jsdom default, an empty string, and `undefined`. Verify that the tests fail because the module is missing.
 - [x] 1.2 Implement `detectMapsPlatform` in `src/lib/crawl/directions.ts`. Verify that the 1.1 tests pass. Commit as `feat:`.
-- [ ] 1.3 Write failing tests for `directionsUrl` and `opensInNewTab`. Cover the exact Apple URL (`https://maps.apple.com/?q=…`) and Google URL (`https://www.google.com/maps/search/?api=1&query=…`), joining parts with `, `, and encoding `&`, `#`, and `?` in authored text so it cannot add URL parameters. Expect `opensInNewTab` to be `false` for `'apple'` and `true` for `'other'`. Verify that the tests fail for the right reason.
-- [ ] 1.4 Implement `directionsUrl` and `opensInNewTab`. Verify that all `directions` tests pass. Commit as `feat:`.
+- [x] 1.3 Write failing tests for `directionsUrl` and `opensInNewTab`. Cover the exact Apple URL (`https://maps.apple.com/?q=…`) and Google URL (`https://www.google.com/maps/search/?api=1&query=…`), joining parts with `, `, and encoding `&`, `#`, and `?` in authored text so it cannot add URL parameters. Expect `opensInNewTab` to be `false` for `'apple'` and `true` for `'other'`. Verify that the tests fail for the right reason.
+- [x] 1.4 Implement `directionsUrl` and `opensInNewTab`. Verify that all `directions` tests pass. Commit as `feat:`.
 
 ## 2. Venues view and seed data
 

@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { detectMapsPlatform } from './directions.js';
+import { detectMapsPlatform, directionsUrl, opensInNewTab } from './directions.js';
 
 const userAgents = {
 	iPhone: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1',
@@ -26,4 +26,34 @@ it.each(['android', 'windows', 'jsdom'] as const)('detects another device from t
 
 it.each([undefined, ''])('falls back to another device for the user agent %j', (userAgent) => {
 	expect(detectMapsPlatform(userAgent)).toBe('other');
+});
+
+const seedPlace = ['Station 34', '34 S Main St', 'Mt. Prospect, IL'];
+
+it('builds a Google Maps search from the authored parts', () => {
+	expect(directionsUrl(seedPlace, 'other')).toBe(
+		'https://www.google.com/maps/search/?api=1&query=Station%2034%2C%2034%20S%20Main%20St%2C%20Mt.%20Prospect%2C%20IL',
+	);
+});
+
+it('builds an Apple Maps search from the authored parts', () => {
+	expect(directionsUrl(seedPlace, 'apple')).toBe(
+		'https://maps.apple.com/?q=Station%2034%2C%2034%20S%20Main%20St%2C%20Mt.%20Prospect%2C%20IL',
+	);
+});
+
+it.each(['other', 'apple'] as const)('keeps authored text inside the %s query parameter', (platform) => {
+	const url = new URL(directionsUrl(['Pub & Grill #2?', '1 Main St', 'River Town'], platform));
+	const param = platform === 'apple' ? 'q' : 'query';
+	expect(url.searchParams.get(param)).toBe('Pub & Grill #2?, 1 Main St, River Town');
+	expect(url.hash).toBe('');
+	expect([...url.searchParams.keys()]).toEqual(platform === 'apple' ? ['q'] : ['api', 'query']);
+});
+
+it('opens a Google Maps search in a new tab', () => {
+	expect(opensInNewTab('other')).toBe(true);
+});
+
+it('opens an Apple Maps search in the same tab', () => {
+	expect(opensInNewTab('apple')).toBe(false);
 });
