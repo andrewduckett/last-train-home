@@ -51,21 +51,43 @@ Each run carries its own `strong` and `em` flags. So `**a *b* c**` becomes three
 1. Normalize `\r\n` to `\n`.
 2. Split into paragraphs on one or more blank lines, where a blank line is empty or holds only whitespace. Drop empty paragraphs at the start and end.
 3. Split each paragraph into lines. Trim trailing whitespace from each line.
-4. Scan each line for delimiter runs of `*`. A run of length 1, 2, or 3 can open when the next character is not whitespace and it is not at the end of the line. It can close when the previous character is not whitespace.
-5. Match each closer with the nearest open opener of the same length, using a stack. A length-3 run toggles both flags.
-6. Emit unmatched runs, and runs longer than 3, as literal text.
+4. Pair the markers in each line, using the rules in the next section.
+5. Emit every asterisk that did not pair as literal text.
 
-Each run's flags come from the set of open, matched spans that cover it.
+### Pairing markers
 
-### Delimiter details kept simple
+A marker is a run of one or more `*` characters. A marker longer than 3 is literal text. A marker can **close** when a non-whitespace character comes right before it. A marker can **open** when a non-whitespace character comes right after it.
 
-- Delimiter runs must match in length. `**a*` does not match, so it renders literally. This avoids CommonMark's rule for splitting runs.
-- Intraword markers such as `Cory*and*Trent` follow the flanking rule and render as italic. Authors rarely write this, and it matches what they would expect from Markdown.
+The parser scans each line left to right and keeps a stack of open markers. Each marker counts how many of its asterisks are still unpaired. For each marker:
+
+1. If it can close, it pairs with the marker on top of the stack. Each pairing step takes 2 asterisks from each side if both have 2 or more, and 1 otherwise. Asterisks come from the inner side of each marker. A 2-asterisk pairing makes a bold span, and a 1-asterisk pairing makes an italic span. The parser pops a stack marker when all its asterisks are paired. The closer keeps pairing with the new top until it runs out or the stack is empty.
+2. If asterisks are left and the marker can open, the parser pushes it onto the stack with those asterisks.
+3. Otherwise, the leftover asterisks are literal.
+
+The closer always pairs with the top of the stack, so no marker ever sits between a closer and its partner. A marker that can both open and close, such as the middle `*` in `a*b*c`, tries to close first.
+
+After pairing, each span of text is bold if any bold span encloses it, and italic if any italic span encloses it.
+
+Worked examples:
+
+| Line | Result |
+| --- | --- |
+| `***wow***` | "wow" bold and italic |
+| `*italic **both***` | "italic " italic; "both" bold and italic |
+| `a*b*c` | "b" italic |
+| `**a*` | a literal `*`, then "a" italic |
+| `*a **b* c**` | "a b c" italic, no asterisks left |
+| `2 * 3 * 4` | all literal: no marker can open or close |
+
+This is a small subset of CommonMark's emphasis rules. It drops CommonMark's punctuation checks and its "multiple of 3" rule.
+
+- **Why this over same-length matching:** same-length matching turns `*italic **both***` into literal asterisks, which surprises authors.
+- **Why this over full CommonMark:** the full rules need punctuation classes and more cases. A trusted author writing a short intro does not need them.
 
 ## Risks / Trade-offs
 
 - [An author writes Markdown the parser does not support, such as a link or a list] → The text renders literally and stays readable. The `crawl-shell` spec lists the supported syntax.
-- [The rules differ from CommonMark in edge cases, such as unequal delimiter lengths] → Unit tests pin the chosen behavior, and every case still renders.
+- [The rules differ from CommonMark in edge cases, such as asterisks next to punctuation] → Unit tests pin the chosen behavior, and every case still renders.
 - [A later story wants formatting in other fields] → The parser does not depend on the intro, so another view can reuse it. This change does not wire it in anywhere else.
 
 ## Migration Plan

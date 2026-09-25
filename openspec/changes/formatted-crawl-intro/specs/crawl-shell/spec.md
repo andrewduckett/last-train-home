@@ -9,9 +9,9 @@ The Info view SHALL render a small set of authored formatting:
 - A blank line SHALL start a new paragraph. A line that holds only whitespace SHALL count as blank.
 - A single line break inside a paragraph SHALL show as a line break.
 - Text between `**` markers SHALL show as bold. Text between `*` markers SHALL show as italic. Text between `***` markers SHALL show as bold and italic.
-- A marker SHALL count only when it hugs its text. An opening marker SHALL NOT be followed by whitespace, and a closing marker SHALL NOT be preceded by whitespace.
+- A marker SHALL count only when it touches its text. An opening marker SHALL have a non-whitespace character right after it. A closing marker SHALL have a non-whitespace character right before it.
 - Markers SHALL pair only within one line.
-- A marker without a partner SHALL stay as literal text.
+- Any asterisk left without a partner SHALL stay as literal text.
 
 The Info view SHALL show all other markup as literal text, including HTML tags. Unusual or unbalanced formatting SHALL NOT prevent the introduction or the crawl from rendering.
 
@@ -40,6 +40,16 @@ The Info view SHALL show all other markup as literal text, including HTML tags. 
 
 - **WHEN** an introduction contains `***last call***` or `**bold *both* bold**`
 - **THEN** Info shows "last call" and "both" in bold and italic, and the rest of the bold phrase in bold
+
+#### Scenario: Bold closes inside italic
+
+- **WHEN** an introduction contains `*see you **there***`
+- **THEN** Info shows "see you " in italic and "there" in bold and italic, without asterisks
+
+#### Scenario: Markers inside a word render
+
+- **WHEN** an introduction contains `Cory*and*Trent`
+- **THEN** Info shows "and" in italic between "Cory" and "Trent", without asterisks
 
 #### Scenario: Spaced asterisks stay literal
 

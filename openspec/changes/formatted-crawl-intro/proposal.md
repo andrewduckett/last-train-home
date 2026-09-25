@@ -4,11 +4,11 @@ The Info tab shows the crawl introduction as one plain paragraph. In the live se
 
 ## What Changes
 
-- In the introduction, a blank line starts a new paragraph. A line that holds only spaces counts as blank.
+- In the introduction, a blank line starts a new paragraph. A line that holds only whitespace counts as blank.
 - A single line break inside a paragraph becomes a line break on screen.
 - `**text**` shows as bold, and `*text*` shows as italic.
-- A marker counts only when it hugs its text: an opening marker is not followed by a space, and a closing marker is not preceded by one. So `2 * 3 * 4` stays literal.
-- A marker with no partner stays as literal text and never breaks the page.
+- A marker counts only when it touches its text. An opening marker needs a non-whitespace character right after it. A closing marker needs one right before it. So `2 * 3 * 4` stays literal.
+- Any asterisk left without a partner stays as literal text and never breaks the page.
 - Markers pair only within one line.
 - Raw HTML in the introduction stays literal text, as it does today.
 - The app renders the result as Svelte elements. It adds no `{@html}`, no new dependency, and no change to the content security policy.
