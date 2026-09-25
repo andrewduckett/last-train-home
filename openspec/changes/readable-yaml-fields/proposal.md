@@ -43,4 +43,4 @@ None.
 - Tests and fixtures: `validate.test.ts`, `validate-generic.test.ts`, `Shell.provider.test.ts`, `VenuesView.test.ts`, and `tests/fixtures/cory-trent.json`.
 - `openspec/discovery.md`: the Author's "pain today" note about one-letter keys no longer applies.
 - No change to the provider, the checklist store, routing, theming, or the content security policy.
-- A crawl file kept outside this repo with old keys will fail the build until its author renames them.
+- The build checks only files in `static/crawls/`. An author who copies an old-key crawl into that folder sees the build fail until they rename the keys.

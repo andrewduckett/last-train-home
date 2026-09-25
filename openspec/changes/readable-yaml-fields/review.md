@@ -39,8 +39,12 @@ VERDICT: APPROVE_WITH_CHANGES
 2. Add wrong-type `name` coverage to the new spec scenario.
 3. Correct the accepted-versus-proposed status statements in `adr.md`.
 
-CHANGES_APPLIED: no
+CHANGES_APPLIED: yes
 
 ## Rebuttals
 
-None.
+- Moderate 1 (external-file build claim): fixed by Required Change 1. `proposal.md` and `design.md` now say the build checks only `static/crawls/`. Accepted by reviewer: the re-check confirmed the change is applied.
+- Moderate 2 (`name` wrong-type coverage): fixed by Required Change 2. Accepted by reviewer: the re-check confirmed the change is applied.
+- Moderate 3 (accepted versus proposed ADRs): fixed by Required Change 3. Accepted by reviewer: the re-check confirmed the change is applied.
+- Suggestion 1 (parity test chain): declined for the artifacts, so the verdict stays valid. The tasks run `yaml-seed.test.ts` alongside the parity test, so both links in the chain stay covered.
+- Suggestion 2 ("ADR review completed for this change"): declined. The schema requires this exact sentence in the manifest.

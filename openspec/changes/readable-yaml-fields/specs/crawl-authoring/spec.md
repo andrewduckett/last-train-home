@@ -21,7 +21,7 @@ Each venue place SHALL have a string `name` and a string `address`. Each scaveng
 
 #### Scenario: A descriptive field has the wrong type
 
-- **WHEN** a place's `address` or a task's `title` or `description` is not a string, or a task's `points` is not a finite number
+- **WHEN** a place's `name` or `address`, or a task's `title` or `description`, is not a string, or a task's `points` is not a finite number
 - **THEN** build validation fails and identifies that field by its descriptive key
 
 #### Scenario: Saved checks survive the rename
