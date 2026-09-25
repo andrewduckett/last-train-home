@@ -98,7 +98,7 @@
   "venues": [
     {
       "stop": "Stop 1",
-      "town": "Mt. Prospect",
+      "town": "Mt. Prospect, IL",
       "places": [
         {
           "name": "Station 34",
@@ -108,7 +108,7 @@
     },
     {
       "stop": "Stop 2",
-      "town": "Edison Park",
+      "town": "Edison Park, IL",
       "places": [
         {
           "name": "Edison Park Inn",
@@ -118,7 +118,7 @@
     },
     {
       "stop": "Stop 3",
-      "town": "Arlington Heights",
+      "town": "Arlington Heights, IL",
       "places": [
         {
           "name": "Eddie's",
@@ -128,7 +128,7 @@
     },
     {
       "stop": "Stop 4",
-      "town": "Palatine",
+      "town": "Palatine, IL",
       "places": [
         {
           "name": "Tap House Grill",

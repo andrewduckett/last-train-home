@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type { Crawl } from './types.js';
+	import { detectMapsPlatform, directionsUrl, opensInNewTab } from './crawl/directions.js';
 
 	let { crawl }: { crawl: Crawl } = $props();
 	let definition = $derived(crawl.definition);
 
-	function mapsUrl(name: string, address: string, town: string): string {
-		return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name}, ${address}, ${town}, IL`)}`;
-	}
+	const platform = detectMapsPlatform(globalThis.navigator?.userAgent);
+	const newTab = opensInNewTab(platform);
 </script>
 
 <div data-testid="view-venues" class="venues-view">
@@ -31,9 +31,9 @@
 							<div class="place-address">{place.address}</div>
 						</div>
 						<a
-							href={mapsUrl(place.name, place.address, venue.town)}
-							target="_blank"
-							rel="noopener noreferrer"
+							href={directionsUrl([place.name, place.address, venue.town], platform)}
+							target={newTab ? '_blank' : undefined}
+							rel={newTab ? 'noopener noreferrer' : undefined}
 							class="directions-link"
 						>
 							Directions

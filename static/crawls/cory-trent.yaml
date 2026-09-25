@@ -77,22 +77,22 @@ definition:
       note: Tap House Grill
   venues:
     - stop: Stop 1
-      town: Mt. Prospect
+      town: Mt. Prospect, IL
       places:
         - name: Station 34
           address: 34 S Main St
     - stop: Stop 2
-      town: Edison Park
+      town: Edison Park, IL
       places:
         - name: Edison Park Inn
           address: 6715 N Olmsted Ave
     - stop: Stop 3
-      town: Arlington Heights
+      town: Arlington Heights, IL
       places:
         - name: Eddie's
           address: 10 E Northwest Hwy
     - stop: Stop 4
-      town: Palatine
+      town: Palatine, IL
       places:
         - name: Tap House Grill
           address: 56 W Wilson St

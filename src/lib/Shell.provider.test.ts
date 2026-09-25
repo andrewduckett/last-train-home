@@ -55,7 +55,7 @@ it('renders the resolved venues', async () => {
 	expect(screen.getByTestId('view-venues')).toHaveTextContent('Canal Cafe');
 	expect(screen.getByText('7 River Rd')).toBeInTheDocument();
 	expect(screen.getByRole('link', { name: 'Directions' })).toHaveAttribute(
-		'href', 'https://www.google.com/maps/search/?api=1&query=Canal%20Cafe%2C%207%20River%20Rd%2C%20River%20Town%2C%20IL',
+		'href', 'https://www.google.com/maps/search/?api=1&query=Canal%20Cafe%2C%207%20River%20Rd%2C%20River%20Town',
 	);
 });
 

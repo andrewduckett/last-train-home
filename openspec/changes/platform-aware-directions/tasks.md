@@ -7,9 +7,9 @@
 
 ## 2. Venues view and seed data
 
-- [ ] 2.1 Update `src/lib/VenuesView.test.ts`. On the jsdom default user agent, expect each link to be a Google search for name, address, and town with no added `IL`, with `target="_blank"` and `rel="noopener noreferrer"`. Add a test that stubs `navigator.userAgent` as an iPhone and expects Apple Maps links with no `target`. Update the River Town expectation in `src/lib/Shell.provider.test.ts` to drop `IL`. Verify that these tests fail against the current view.
-- [ ] 2.2 In `src/lib/VenuesView.svelte`, replace `mapsUrl` with the directions module. Detect the platform once, and set `target` and `rel` only when `opensInNewTab` is true. Verify that the 2.1 tests pass.
-- [ ] 2.3 Append `, IL` to each seed town in `static/crawls/cory-trent.yaml` and `tests/fixtures/cory-trent.json`. In `src/lib/Shell.parity.test.ts`, append `, IL` to each town from the frozen snapshot before comparing, and leave the four pinned Directions URLs unchanged. Verify with `npm run validate:crawls` and `npx vitest run src/lib/Shell.parity.test.ts src/lib/data`. Commit 2.1 to 2.3 together as `feat:`, so no commit has a failing suite.
+- [x] 2.1 Update `src/lib/VenuesView.test.ts`. On the jsdom default user agent, expect each link to be a Google search for name, address, and town with no added `IL`, with `target="_blank"` and `rel="noopener noreferrer"`. Add a test that stubs `navigator.userAgent` as an iPhone and expects Apple Maps links with no `target`. Update the River Town expectation in `src/lib/Shell.provider.test.ts` to drop `IL`. Verify that these tests fail against the current view.
+- [x] 2.2 In `src/lib/VenuesView.svelte`, replace `mapsUrl` with the directions module. Detect the platform once, and set `target` and `rel` only when `opensInNewTab` is true. Verify that the 2.1 tests pass.
+- [x] 2.3 Append `, IL` to each seed town in `static/crawls/cory-trent.yaml` and `tests/fixtures/cory-trent.json`. In `src/lib/Shell.parity.test.ts`, append `, IL` to each town from the frozen snapshot before comparing, and leave the four pinned Directions URLs unchanged. Verify with `npm run validate:crawls` and `npx vitest run src/lib/Shell.parity.test.ts src/lib/data`. Commit 2.1 to 2.3 together as `feat:`, so no commit has a failing suite.
 
 ## 3. Docs
 
