@@ -19,13 +19,18 @@ it('resolves the original seed content through the production provider', async (
 	vi.stubGlobal('fetch', fetchCrawl);
 	await expect(getCrawl('cory-trent')).resolves.toEqual({
 		status: 'found',
-		crawl: { id: 'cory-trent', title: 'Last Train Home', color: 'amber', definition: expectedDefinition },
+		crawl: {
+			id: 'cory-trent',
+			title: 'Cory & Trent: Last Train Home',
+			color: 'amber',
+			definition: expectedDefinition,
+		},
 	});
 	expect(fetchCrawl).toHaveBeenCalledWith('/crawls/cory-trent.yaml');
 });
 
 it('publishes the welcome without an album placeholder', () => {
-	expect(expectedDefinition.intro).toBe('Hello! and Welcome!');
+	expect(expectedDefinition.intro).toContain("Cory & Trent are getting married!");
 	expect(expectedDefinition).not.toHaveProperty('albumUrl');
 	expect(expectedDefinition.links.map((link) => link.label)).toEqual(['Ventra', 'Metra']);
 });

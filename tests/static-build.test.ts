@@ -8,7 +8,7 @@ it('contains the SPA fallback shell', () => {
 
 it('contains the cory-trent YAML record', () => {
 	const source = readFileSync(resolve('build/crawls/cory-trent.yaml'), 'utf8');
-	expect(source).toContain('title: Last Train Home');
+	expect(source).toContain('title: "Cory & Trent: Last Train Home"');
 });
 
 it('contains the static security headers', () => {

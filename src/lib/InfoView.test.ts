@@ -36,3 +36,48 @@ it('treats a malformed link list as empty', () => {
 	expect(screen.getByText('Welcome')).toBeInTheDocument();
 	expect(screen.queryByRole('link')).not.toBeInTheDocument();
 });
+
+it('wraps intro paragraphs in a single card container', () => {
+	const { container } = show('One\n\nTwo', []);
+	const card = container.querySelector('.intro-card');
+	expect(card?.tagName).not.toBe('P');
+	expect(card?.querySelectorAll(':scope > p')).toHaveLength(2);
+});
+
+it('renders one paragraph per blank-line-separated block', () => {
+	const { container } = show('First paragraph\n\nSecond paragraph', []);
+	const paragraphs = container.querySelectorAll('.intro-card p');
+	expect(paragraphs).toHaveLength(2);
+	expect(paragraphs[0]).toHaveTextContent('First paragraph');
+	expect(paragraphs[1]).toHaveTextContent('Second paragraph');
+});
+
+it('renders a line break inside one paragraph', () => {
+	const { container } = show('Line one\nLine two', []);
+	const paragraphs = container.querySelectorAll('.intro-card p');
+	expect(paragraphs).toHaveLength(1);
+	expect(paragraphs[0].querySelectorAll('br')).toHaveLength(1);
+	expect(paragraphs[0]).toHaveTextContent('Line oneLine two');
+});
+
+it('renders a bold marker without literal asterisks', () => {
+	const { container } = show('**Bold** and plain', []);
+	const card = container.querySelector('.intro-card');
+	expect(card?.textContent).not.toContain('*');
+	expect(card?.querySelector('strong')).toHaveTextContent('Bold');
+});
+
+it('renders an italic marker without literal asterisks', () => {
+	const { container } = show('*Italic* and plain', []);
+	const card = container.querySelector('.intro-card');
+	expect(card?.textContent).not.toContain('*');
+	expect(card?.querySelector('em')).toHaveTextContent('Italic');
+});
+
+it('renders a run that is both bold and italic', () => {
+	const { container } = show('***Both***', []);
+	const card = container.querySelector('.intro-card');
+	const strong = card?.querySelector('strong');
+	expect(strong).toHaveTextContent('Both');
+	expect(strong?.querySelector('em')).toHaveTextContent('Both');
+});
