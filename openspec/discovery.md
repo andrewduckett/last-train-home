@@ -45,11 +45,11 @@ Annotated against the code today. The app renders any crawl authored in
   Open the    See the     Find the    Track       Reopen      Use with a
   link     ─► plan     ─► stop     ─► tasks    ─► later     ─► weak signal
      │          │           │           │           │            │
-  supported  supported   supported   supported   supported      gap
+  supported   partial    supported   supported   supported      gap
 ```
 
 1. **Open the link** — `/<id>` or `/` renders the crawl — supported (`src/routes/[id]`, `src/lib/CrawlRoute.svelte`)
-2. **See the plan** — the stop-and-move timetable, plus an Info tab for the intro and links — supported (`ScheduleView`, `InfoView`)
+2. **See the plan** — the stop-and-move timetable, plus an Info tab for the intro and links — partial (`ScheduleView`, `InfoView`; the intro renders as one plain paragraph, so its paragraphs and `**bold**` are lost; [#21](https://github.com/andrewduckett/last-train-home/issues/21))
 3. **Find the stop** — map embed + venue list with directions — supported (`MapView`, `VenuesView`)
 4. **Track tasks** — tap scavenger checklist, points tally — supported (`TasksView`, keyed `crawl-checks:<id>` behind `src/lib/state/store.ts`)
 5. **Reopen later** — ticks persist per device and per crawl — supported (`src/lib/state/localStorage.ts`)
@@ -65,7 +65,7 @@ Annotated against the code today. The app renders any crawl authored in
   partial    partial    supported   supported   supported
 ```
 
-1. **Author a crawl** — describe the event in one YAML file — partial (works, but venue and scavenger fields use one-letter keys; [#15](https://github.com/andrewduckett/last-train-home/issues/15))
+1. **Author a crawl** — describe the event in one YAML file — partial (works, but venue and scavenger fields use one-letter keys, [#15](https://github.com/andrewduckett/last-train-home/issues/15); intro formatting is not rendered, [#21](https://github.com/andrewduckett/last-train-home/issues/21))
 2. **Add a second crawl** — a new, independent event — partial (supported by routing and per-crawl state, but no second crawl has been authored yet; [#16](https://github.com/andrewduckett/last-train-home/issues/16))
 3. **Set the default (`/`)** — choose which crawl greets people — supported (one line: `defaultCrawl` in `src/lib/config.ts`)
 4. **Deploy the site** — build + publish static assets — supported (`npm run build` validates every crawl; `wrangler.jsonc`, Cloudflare)
