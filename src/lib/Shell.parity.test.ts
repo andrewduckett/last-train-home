@@ -5,6 +5,18 @@ import seed from '../../tests/fixtures/cory-trent.json';
 import before from '../../tests/fixtures/cory-trent-before.json';
 import { seedShellProps } from '../../tests/fixtures/seed-provider.js';
 
+const beforeVenues = before.venues.map((venue) => ({
+	...venue,
+	places: venue.places.map((place) => ({ name: place.n, address: place.a })),
+}));
+
+const beforeScavenger = before.scavenger.map((task) => ({
+	id: task.id,
+	title: task.t,
+	points: task.p,
+	description: task.d,
+}));
+
 async function openTab(tab: string) {
 	const rendered = render(Shell, seedShellProps);
 	await screen.findByTestId('view-schedule');
@@ -44,7 +56,7 @@ it('preserves the quick-link destinations', async () => {
 });
 
 it('preserves all seed venues', async () => {
-	expect(seed.venues).toEqual(before.venues);
+	expect(seed.venues).toEqual(beforeVenues);
 	const { container } = await openTab('venues');
 	const cards = container.querySelectorAll('.venue-card');
 	expect(cards).toHaveLength(seed.venues.length);
@@ -53,8 +65,8 @@ it('preserves all seed venues', async () => {
 		expect(card.getByText(venue.stop)).toBeInTheDocument();
 		expect(card.getByText(venue.town)).toBeInTheDocument();
 		for (const place of venue.places) {
-			expect(card.getByText(place.n)).toBeInTheDocument();
-			expect(card.getByText(place.a)).toBeInTheDocument();
+			expect(card.getByText(place.name)).toBeInTheDocument();
+			expect(card.getByText(place.address)).toBeInTheDocument();
 		}
 	});
 });
@@ -71,15 +83,15 @@ it('preserves the seed directions destinations', async () => {
 });
 
 it('preserves every seed scavenger task', async () => {
-	expect(seed.scavenger).toEqual(before.scavenger);
+	expect(seed.scavenger).toEqual(beforeScavenger);
 	const { container } = await openTab('tasks');
 	const rows = container.querySelectorAll('.check-row');
 	expect(rows).toHaveLength(seed.scavenger.length);
 	seed.scavenger.forEach((task, index) => {
 		const row = within(rows[index] as HTMLElement);
-		expect(row.getByText(task.t)).toBeInTheDocument();
-		expect(row.getByText(task.d)).toBeInTheDocument();
-		expect(row.getByText(`${task.p} pts`)).toBeInTheDocument();
+		expect(row.getByText(task.title)).toBeInTheDocument();
+		expect(row.getByText(task.description)).toBeInTheDocument();
+		expect(row.getByText(`${task.points} pts`)).toBeInTheDocument();
 	});
 });
 

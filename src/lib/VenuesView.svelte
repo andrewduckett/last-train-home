@@ -17,7 +17,7 @@
 				<span class="venue-town font-board">{venue.town}</span>
 			</div>
 			<div class="venue-places">
-				{#each venue.places as place, idx (place.n)}
+				{#each venue.places as place, idx (place.name)}
 					{#if idx > 0}
 						<div class="or-divider">
 							<span class="or-line"></span>
@@ -27,11 +27,11 @@
 					{/if}
 					<div class="place-row">
 						<div class="place-info">
-							<div class="place-name">{place.n}</div>
-							<div class="place-address">{place.a}</div>
+							<div class="place-name">{place.name}</div>
+							<div class="place-address">{place.address}</div>
 						</div>
 						<a
-							href={mapsUrl(place.n, place.a, venue.town)}
+							href={mapsUrl(place.name, place.address, venue.town)}
 							target="_blank"
 							rel="noopener noreferrer"
 							class="directions-link"

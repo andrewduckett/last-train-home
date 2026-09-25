@@ -18,8 +18,8 @@ describe('VenuesView', () => {
 
 		for (const venue of crawl.venues) {
 			for (const place of venue.places) {
-				const expected = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${place.n}, ${place.a}, ${venue.town}, IL`)}`;
-				expect(hrefs, `Expected link for ${place.n} in ${venue.town}`).toContain(expected);
+				const expected = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${place.name}, ${place.address}, ${venue.town}, IL`)}`;
+				expect(hrefs, `Expected link for ${place.name} in ${venue.town}`).toContain(expected);
 			}
 		}
 	});

@@ -7,8 +7,8 @@ import type { CrawlDefinition } from './types.js';
 const definition: CrawlDefinition = {
 	appTitle: 'River Walk', line: 'Library → Riverside',
 	schedule: [{ time: '1:00 PM', kind: 'stop', tag: 'Meet', title: 'Library steps', note: 'Bring a camera' }],
-	venues: [{ stop: 'First', town: 'River Town', places: [{ n: 'Canal Cafe', a: '7 River Rd' }] }],
-	scavenger: [{ id: 'river-photo', t: 'Find a heron', p: 30, d: 'Photograph it from the path' }],
+	venues: [{ stop: 'First', town: 'River Town', places: [{ name: 'Canal Cafe', address: '7 River Rd' }] }],
+	scavenger: [{ id: 'river-photo', title: 'Find a heron', points: 30, description: 'Photograph it from the path' }],
 	scavengerRules: ['Share a bird photo.'],
 	map: { embed: 'https://www.google.com/maps/d/embed?mid=river', app: 'https://www.google.com/maps/d/viewer?mid=river' },
 	links: [{ label: 'Tickets', url: 'https://example.com/passes' }, { label: 'Times', url: 'https://example.com/times' }],
