@@ -8,6 +8,7 @@ Every Directions link on the Venues tab opens Google Maps and adds `, IL` to the
 - On every other device, Directions opens a Google Maps search, as it does today. Google Maps is also the fallback when the app cannot tell the device.
 - The search query is the place's name, address, and town, exactly as the author wrote them. The app no longer adds `, IL`.
 - Directions still opens a map **search**, not a route. The Crawler sees the pin before starting a route.
+- An Apple Maps link opens in the same tab, so iOS hands it to the Maps app without leaving an empty Safari tab. A Google Maps link still opens in a new tab.
 - The seed crawl writes its state into each town, for example `Mt. Prospect, IL`. So the seed's Google links stay exactly the same, and its Venues cards now show the state.
 - One small, tested module builds the link. The provider stays free of it.
 
@@ -15,7 +16,7 @@ Out of scope:
 
 - A setting for the Crawler to choose a maps app.
 - Turn-by-turn directions links.
-- `geo:` links, Waze, and other map providers.
+- `geo:` links, Waze, and other maps apps.
 - Directions to stations, which #27 adds using this module.
 
 ## Capabilities
@@ -26,7 +27,7 @@ None.
 
 ### Modified Capabilities
 
-- `crawl-shell`: the "Venue list with directions" requirement changes. Today it requires a Google Maps search with `IL` added. After this change, the query holds only the authored name, address, and town, and Apple devices get Apple Maps.
+- `crawl-shell`: the "Venue list with directions" requirement changes. Today it requires a Google Maps search with `IL` added, in a new tab. After this change, the query holds only the authored name, address, and town. Apple devices get Apple Maps in the same tab.
 
 `crawl-authoring` does not change. Build validation already accepts any town text, including one with a state.
 

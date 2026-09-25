@@ -2,14 +2,19 @@
 
 ### Requirement: Venue list with directions
 
-The Venues view SHALL list each stop with its venue names and addresses. Each venue SHALL show a directions link that opens a map search in a new browser tab. The search query SHALL be the venue's name, street address, and town, as authored, separated by a comma and a space. The app SHALL NOT add any other text to the query, such as a state.
+The Venues view SHALL list each stop with its venue names and addresses. Each venue SHALL show a directions link that opens a map search. The search query SHALL be the venue's name, street address, and town, as authored, separated by a comma and a space. The app SHALL NOT add any other text to the query, such as a state.
 
-On an Apple device, the link SHALL open an Apple Maps search at `https://maps.apple.com/` with the query in its `q` parameter. An Apple device is one whose user agent names an iPhone, iPad, iPod, or Macintosh. On any other device, and when the app cannot read the user agent, the link SHALL open a Google Maps search at `https://www.google.com/maps/search/?api=1` with the query in its `query` parameter.
+On an Apple device, the link SHALL open an Apple Maps search at `https://maps.apple.com/` with the query in its `q` parameter, in the same browser tab. An Apple device is one whose user agent names an iPhone, iPad, iPod, or Macintosh. On any other device, and when the app cannot read the user agent, the link SHALL open a Google Maps search at `https://www.google.com/maps/search/?api=1` with the query in its `query` parameter, in a new browser tab.
 
 #### Scenario: Directions link opens a map search
 
-- **WHEN** a participant taps a venue's directions link
-- **THEN** the browser opens the venue's map search in a new tab
+- **WHEN** a participant on a non-Apple device taps a venue's directions link
+- **THEN** the browser opens the venue's Google Maps search in a new tab
+
+#### Scenario: An Apple Maps link opens in the same tab
+
+- **WHEN** a participant on an Apple device taps a venue's directions link
+- **THEN** the link has no new-tab target, so iOS or macOS can hand the search to the Maps app without leaving an empty tab
 
 #### Scenario: An iPhone gets Apple Maps
 

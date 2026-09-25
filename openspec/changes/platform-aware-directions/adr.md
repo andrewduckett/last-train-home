@@ -7,8 +7,8 @@
 
 ADR review completed for this change. The change makes no major durable architectural decision.
 
-- Choosing a maps provider by device is a requirement from the epic. The `crawl-shell` spec owns it.
-- Detecting the device from the user agent, and the two link formats, are cheap to change later. `design.md` records why the author chose them.
+- Choosing a maps app by device is a requirement from the epic. The `crawl-shell` spec owns it.
+- Detecting the device from the user agent, the two link formats, and the tab behavior are cheap to change later. `design.md` records why the author chose them.
 - Building the link in a domain module, not in the provider, follows ADR 0003.
 - A link to another site needs no change to the content security policy, so ADR 0002 still holds as written.
 

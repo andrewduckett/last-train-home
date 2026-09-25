@@ -12,7 +12,7 @@ Three facts shape the approach:
 
 **Goals:**
 
-- Keep the link builder pure, so unit tests cover both providers without faking `navigator`.
+- Keep the link builder pure, so its unit tests cover both maps apps without faking `navigator`. Only the view tests fake the user agent.
 - Keep device detection in one small function that tests can call with any user-agent string.
 - Keep the seed's Google links byte-for-byte the same.
 
@@ -23,7 +23,7 @@ Three facts shape the approach:
 
 ## Decisions
 
-### One module, two functions
+### One module, three functions
 
 `src/lib/crawl/directions.ts` exports:
 
@@ -31,6 +31,7 @@ Three facts shape the approach:
 type MapsPlatform = 'apple' | 'other';
 function detectMapsPlatform(userAgent: string | undefined): MapsPlatform;
 function directionsUrl(parts: string[], platform: MapsPlatform): string;
+function opensInNewTab(platform: MapsPlatform): boolean;
 ```
 
 `VenuesView` calls `detectMapsPlatform(navigator.userAgent)` once. It then calls `directionsUrl([place.name, place.address, venue.town], platform)` for each place.
@@ -51,7 +52,18 @@ function directionsUrl(parts: string[], platform: MapsPlatform): string;
 
 - Apple: `https://maps.apple.com/?q=<query>`. Apple's newer `/search?query=` form needs iOS 18.4 or later. The older `q` form works on every version.
 - Google: `https://www.google.com/maps/search/?api=1&query=<query>`, unchanged.
-- The query is the parts joined with `, ` and encoded with `encodeURIComponent`, as today. `URLSearchParams` would encode spaces as `+` and change the seed's links.
+- `directionsUrl` joins the parts with `, ` and encodes the result with `encodeURIComponent`, as the view does today. `URLSearchParams` would encode spaces as `+` and change the seed's links. Encoding also keeps authored text from adding its own URL parameters.
+
+### Open Apple Maps in the same tab
+
+An Apple Maps link has no `target`. A Google Maps link keeps `target="_blank"` and `rel="noopener noreferrer"`.
+
+- **Why:** on an iPhone, iPad, or Mac in Safari, the system hands `maps.apple.com` to the Maps app. A new tab would then stay behind, empty. With no `target`, the crawl page stays as it was.
+- **Why Google keeps a new tab:** that is today's behavior, and Android hands the link to Google Maps from a new tab without trouble.
+- **Cost:** a browser that does not hand off, such as Chrome on a Mac or an in-app browser, replaces the crawl page with Apple Maps. The Crawler taps Back to return. Saved checks live in local storage, so nothing is lost.
+- **Alternative considered:** a new tab for both. It matches Google, but it can leave an empty tab on the phone, which is the main target.
+
+`opensInNewTab(platform)` holds this rule, so the view and the stations story (#27) share it. The view reads it to set `target` and `rel`.
 
 ### Move the state into the seed's data
 
@@ -61,7 +73,7 @@ Each seed town gains `, IL`, for example `Mt. Prospect, IL`. The seed's Google q
 
 ## Risks / Trade-offs
 
-- [A new tab to `maps.apple.com` may leave an empty Safari tab behind when iOS hands off to the Maps app] → Keep `target="_blank"` to match Google's behavior. Check the handoff on a real iPhone before archive. If it misbehaves, a follow-up can drop `target` for Apple links only.
+- [iOS might not hand a same-tab `maps.apple.com` link to the Maps app in some browsers] → The Crawler still sees the Apple Maps search on the web and taps Back to return. A task checks the handoff on a real iPhone, in Safari and in Chrome, before archive.
 - [Without a state, a query can match the wrong place when the phone is far from the crawl] → Each app favors results near the phone, and on the day the Crawler is nearby. Authors who want certainty write the state into the town, as the seed now does.
 - [A Mac user may prefer Google Maps] → The Mac gets Apple Maps, as the epic decided. Desktop is a bonus target, and a maps-app setting is out of scope.
 - [A non-Apple browser sends a Macintosh user agent] → That browser gets Apple Maps on the web. Apple Maps on the web may not support every browser, but this case is rare.
