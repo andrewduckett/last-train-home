@@ -6,6 +6,7 @@
 
 ## 2. Seed data
 
+- [x] 2.0 Restore a green baseline. Commit `e5103fe` changed the seed `appTitle` on `main` without updating `tests/fixtures/cory-trent.json`, so `yaml-seed.test.ts` and `seed.test.ts` failed before this change. Sync the fixture's `appTitle`, and drop the parity assertion that pins the old title, since the retitle was deliberate. Verify that `npm test` passes. Commit as `test:`.
 - [ ] 2.1 Rename the keys in `static/crawls/cory-trent.yaml` (4 places, 7 tasks) and in `tests/fixtures/cory-trent.json`. Leave every value and task `id` unchanged. Verify with `npm run validate:crawls` and `npx vitest run src/lib/data/yaml-seed.test.ts src/lib/data/seed.test.ts`. Commit as `feat:`.
 - [ ] 2.2 Leave `tests/fixtures/cory-trent-before.json` unchanged. In `src/lib/Shell.parity.test.ts`, map each old place and task to the new keys before comparing with the seed, and read rendered text from the new fields. Verify that the venue and task parity tests fail until the views change.
 

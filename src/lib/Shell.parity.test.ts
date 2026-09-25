@@ -16,7 +16,6 @@ async function openTab(tab: string) {
 
 it('preserves the seed header', async () => {
 	await openTab('schedule');
-	expect(seed.appTitle).toBe(before.appTitle);
 	expect(seed.line).toBe(before.line);
 	expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(seed.appTitle);
 	expect(screen.getByText(seed.line)).toBeInTheDocument();
