@@ -51,3 +51,69 @@ it('returns no paragraphs for an entirely blank source', () => {
 it('returns no paragraphs for an empty string', () => {
 	expect(parseRichText('')).toEqual([]);
 });
+
+type RunTuple = [text: string, strong: boolean, em: boolean];
+const line = (...runs: RunTuple[]) => runs.map(([text, strong, em]) => ({ text, strong, em }));
+const oneLineParagraph = (...runs: RunTuple[]) => [[line(...runs)]];
+
+it('makes bold and italic from ***wow***', () => {
+	expect(parseRichText('***wow***')).toEqual(oneLineParagraph(['wow', true, true]));
+});
+
+it('closes bold inside an open italic span', () => {
+	expect(parseRichText('*italic **both***')).toEqual(
+		oneLineParagraph(['italic ', false, true], ['both', true, true]),
+	);
+});
+
+it('pairs a marker inside a word', () => {
+	expect(parseRichText('a*b*c')).toEqual(
+		oneLineParagraph(['a', false, false], ['b', false, true], ['c', false, false]),
+	);
+});
+
+it('leaves an unpaired opening asterisk literal next to a paired one', () => {
+	expect(parseRichText('**a*')).toEqual(oneLineParagraph(['*', false, false], ['a', false, true]));
+});
+
+it('lets an outer opener skip past an inner pair to reach its own closer', () => {
+	expect(parseRichText('*a **b* c**')).toEqual(oneLineParagraph(['a b c', false, true]));
+});
+
+it('keeps spaced asterisks entirely literal', () => {
+	expect(parseRichText('2 * 3 * 4')).toEqual(oneLineParagraph(['2 * 3 * 4', false, false]));
+});
+
+it('renders **bold** as bold', () => {
+	expect(parseRichText('**bold**')).toEqual(oneLineParagraph(['bold', true, false]));
+});
+
+it('renders *italic* as italic', () => {
+	expect(parseRichText('*italic*')).toEqual(oneLineParagraph(['italic', false, true]));
+});
+
+it('nests an italic span inside a bold span', () => {
+	expect(parseRichText('**a *b* c**')).toEqual(
+		oneLineParagraph(['a ', true, false], ['b', true, true], [' c', true, false]),
+	);
+});
+
+it('leaves one leftover asterisk literal after an unbalanced closer', () => {
+	expect(parseRichText('**bold***')).toEqual(oneLineParagraph(['bold', true, false], ['*', false, false]));
+});
+
+it('keeps a run of more than 3 asterisks entirely literal', () => {
+	expect(parseRichText('****text****')).toEqual(oneLineParagraph(['****text****', false, false]));
+});
+
+it('keeps an opening marker literal when no closer follows', () => {
+	expect(parseRichText("**Don't forget")).toEqual(oneLineParagraph(["**Don't forget", false, false]));
+});
+
+it('keeps a closing-shaped marker literal when no opener precedes it', () => {
+	expect(parseRichText('lone*')).toEqual(oneLineParagraph(['lone*', false, false]));
+});
+
+it('does not pair markers split across two lines', () => {
+	expect(parseRichText('**Meet\nearly**')).toEqual([[line(['**Meet', false, false]), line(['early**', false, false])]]);
+});
