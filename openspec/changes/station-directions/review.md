@@ -41,6 +41,14 @@ VERDICT: APPROVE_WITH_CHANGES
 4. Update `design.md` to clarify how the `Shell.parity.test.ts` will reliably filter out the new Metra stations and Meetup stop when comparing against the frozen snapshot, or redesign the parity test approach for this specific view.
 5. Fix the identified passive voice instances in `proposal.md`, `design.md`, and `adr.md` to comply with ISO 24495 Plain Language standards.
 
-CHANGES_APPLIED: no
+CHANGES_APPLIED: yes
 
 ## Rebuttals
+
+- Critical (query encoding): fixed by Required Change 1. The spec now requires percent-encoding, and a new scenario covers `Pub & Grill #2?`. Accepted by reviewer: the re-check confirmed the change is applied.
+- Moderate (untestable "no word" clause): fixed by Required Change 2. The principle stays in the proposal and design. Accepted by reviewer.
+- Moderate (empty `places` list): fixed by Required Change 3. Accepted by reviewer.
+- Moderate (parity test filtering): fixed by Required Change 4. The design gives the exact label filter. Accepted by reviewer.
+- Suggestions (passive voice): fixed in `proposal.md` by Required Change 5. The sentence cited in `design.md` was in `proposal.md`, where it is fixed. Declined for `adr.md`, because the schema requires "ADR review completed for this change" word for word. Accepted by reviewer.
+- Suggestion (rename `places` to `stops`): declined. The product owner chose a "Places" tab whose key matches. Accepted by reviewer.
+
