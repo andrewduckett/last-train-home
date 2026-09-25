@@ -5,8 +5,10 @@ import seed from '../../tests/fixtures/cory-trent.json';
 import before from '../../tests/fixtures/cory-trent-before.json';
 import { seedShellProps } from '../../tests/fixtures/seed-provider.js';
 
+// The seed now writes the state into each town, which the app used to append.
 const beforeVenues = before.venues.map((venue) => ({
 	...venue,
+	town: `${venue.town}, IL`,
 	places: venue.places.map((place) => ({ name: place.n, address: place.a })),
 }));
 
