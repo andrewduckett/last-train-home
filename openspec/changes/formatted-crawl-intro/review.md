@@ -50,13 +50,13 @@ VERDICT: APPROVE_WITH_CHANGES
 5. In `design.md`, rewrite "when all its asterisks are paired" to active voice (e.g., "when it pairs all its asterisks").
 6. In `adr.md`, rewrite "why they were chosen" to active voice (e.g., "why the author chose them").
 
-CHANGES_APPLIED: no
+CHANGES_APPLIED: yes
 
 ## Rebuttals
 
 
 
-- Critical 1 (markers longer than 3): fixed by Required Changes 1 and 2. The spec now says a run of more than 3 asterisks stays entirely literal, and the scenario "A long asterisk run stays literal" covers `****text****`.
-- Critical 2 (`***` scope): fixed by Required Change 3. The proposal now lists `***text***` as bold and italic.
-- Moderate 1 (passive voice): fixed by Required Changes 4, 5, and 6 in `design.md` and `adr.md`.
+- Critical 1 (markers longer than 3): fixed by Required Changes 1 and 2. The spec now says a run of more than 3 asterisks stays entirely literal, and the scenario "A long asterisk run stays literal" covers `****text****`. Accepted by reviewer: the round 2 re-check confirmed the change is applied.
+- Critical 2 (`***` scope): fixed by Required Change 3. The proposal now lists `***text***` as bold and italic. Accepted by reviewer: the round 2 re-check confirmed the change is applied.
+- Moderate 1 (passive voice): fixed by Required Changes 4, 5, and 6 in `design.md` and `adr.md`. Accepted by reviewer: the round 2 re-check confirmed the change is applied.
 - Suggestion 1 (unbalanced pairing scenario): declined for the spec, so the verdict stays valid. The parser unit tests will cover `**bold***` and the design's worked examples.
