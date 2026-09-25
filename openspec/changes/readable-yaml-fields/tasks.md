@@ -1,8 +1,8 @@
 ## 1. Build validation (test-first)
 
-- [ ] 1.1 Move the inline test data to the new keys: `validSource` in `src/lib/data/validate.test.ts` and the fixture in `src/lib/data/validate-generic.test.ts`. Update the field paths in the wrong-type table to `places[0].address`, `scavenger[0].title`, and `scavenger[0].description`, and add `places[0].name` and `scavenger[0].points`. Update the duplicate-place and points-total tests to expect `places.name` and `scavenger.points`. Verify that these tests fail against the current validator.
-- [ ] 1.2 Add failing tests in `validate.test.ts` for each retired key: `n` and `a` on a place, and `t`, `p`, and `d` on a task. Each test expects the error to name the file, the old field path, and `renamed to <new key>`. Verify that the tests fail for the right reason.
-- [ ] 1.3 In `src/lib/data/validate.js`, add the retired-key tables from the design and check them before each place and task. Validate `name`, `address`, `title`, `points`, and `description`, and rename the two error labels. Verify that all `validate*.test.ts` tests pass. Commit as `feat:`.
+- [x] 1.1 Move the inline test data to the new keys: `validSource` in `src/lib/data/validate.test.ts` and the fixture in `src/lib/data/validate-generic.test.ts`. Update the field paths in the wrong-type table to `places[0].address`, `scavenger[0].title`, and `scavenger[0].description`, and add `places[0].name` and `scavenger[0].points`. Update the duplicate-place and points-total tests to expect `places.name` and `scavenger.points`. Verify that these tests fail against the current validator.
+- [x] 1.2 Add failing tests in `validate.test.ts` for each retired key: `n` and `a` on a place, and `t`, `p`, and `d` on a task. Each test expects the error to name the file, the old field path, and `renamed to <new key>`. Verify that the tests fail for the right reason.
+- [x] 1.3 In `src/lib/data/validate.js`, add the retired-key tables from the design and check them before each place and task. Validate `name`, `address`, `title`, `points`, and `description`, and rename the two error labels. Verify that all `validate*.test.ts` tests pass. Commit as `feat:`.
 
 ## 2. Seed data
 
