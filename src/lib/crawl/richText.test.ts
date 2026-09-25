@@ -1,3 +1,6 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { parse } from 'yaml';
 import { expect, it } from 'vitest';
 import { parseRichText } from './richText.js';
 
@@ -116,4 +119,15 @@ it('keeps a closing-shaped marker literal when no opener precedes it', () => {
 
 it('does not pair markers split across two lines', () => {
 	expect(parseRichText('**Meet\nearly**')).toEqual([[line(['**Meet', false, false]), line(['early**', false, false])]]);
+});
+
+it('parses the seed intro into three paragraphs with one bold run', () => {
+	const source = readFileSync(resolve('static/crawls/cory-trent.yaml'), 'utf8');
+	const intro = parse(source).definition.intro as string;
+
+	const paragraphs = parseRichText(intro);
+
+	expect(paragraphs).toHaveLength(3);
+	const boldRuns = paragraphs[2][0].filter((run) => run.strong);
+	expect(boldRuns).toEqual([{ text: "Don't forget", strong: true, em: false }]);
 });
