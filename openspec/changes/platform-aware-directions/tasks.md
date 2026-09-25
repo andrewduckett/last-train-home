@@ -21,3 +21,4 @@
 - [x] 4.2 Confirm that `src/` has no hardcoded `IL`, apart from test data, with `rg -n "\bIL\b" src`. Confirm that `git diff main -- svelte.config.js static/_headers` is empty.
 - [x] 4.3 Run `npm run preview` and open Venues for `cory-trent` at phone width in desktop Chrome. Confirm that each town shows `, IL` and that each Directions link opens a Google Maps search in a new tab.
 - [ ] 4.4 Ask the user to open the deployed or previewed Venues tab on a real iPhone, in Safari and in Chrome. Confirm that Directions opens the Maps app, and that returning to the browser shows the crawl page with no empty tab. Record the result in the PR before archive.
+  - Deferred: on 2026-09-25 the user chose to archive before running this check. It has not been run. It is tracked in PR #30.
