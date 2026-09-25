@@ -7,7 +7,7 @@ A Crawler can't get directions to the train today. The Venues tab lists only bar
 - **BREAKING (authoring):** `definition.venues` becomes `definition.places`. Each group keeps `stop` and `town`, and its `places` list becomes `locations`.
 - A location has `name`, `address`, and an optional `label`. The author writes the label, such as "Train" or "Bar", and the tab shows it as a small tag.
 - The build rejects the retired keys and names the key that replaces each one. It also rejects a stop with no locations.
-- The tab is renamed from Venues to **Places**, and its beer icon becomes a neutral pin.
+- The app renames the tab from Venues to **Places**, and replaces its beer icon with a neutral pin.
 - Locations at a stop render as a plain list. The "OR" divider between them goes, because a station and a bar at one stop are not alternatives.
 - Every location gets the same platform-aware Directions link. Its query is the location's name, address, and the stop's town.
 - The seed crawl gains its Metra stations:
@@ -35,11 +35,11 @@ None.
 - `crawl-authoring`:
   - The build validates `places`, `locations`, and the optional `label`.
   - It rejects the retired keys, and it rejects a stop with no locations.
-  - The two requirements that say "venue" are renamed to say "place".
+  - This change renames the two requirements that say "venue" so they say "place".
 - `crawl-shell`:
   - The tab list names Places instead of Venues.
   - "Venue list with directions" becomes "Place list with directions". It lists each stop's locations with their labels, and no longer shows an "OR" divider.
-  - The seed scenario for the tab is renamed to match.
+  - The seed scenario for the tab now describes the Places tab. It keeps its old name, because the OpenSpec validator matches scenarios by name.
 
 ## Impact
 
@@ -51,4 +51,4 @@ None.
 - Tests that build crawls inline, the parity test, and the tab tests all move to the new names.
 - `openspec/discovery.md` and the `crawl-shell` spec's Purpose line: the tab name changes.
 - No change to the provider, the directions module, the checklist store, or the content security policy.
-- A crawl kept outside this repo with the old keys will fail the build once it is added to `static/crawls/`.
+- If an author adds an old-key crawl to `static/crawls/`, the build fails until the author renames the keys.

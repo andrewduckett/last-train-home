@@ -46,9 +46,9 @@ The shell SHALL always present Schedule, Map, Places, and Tasks. It SHALL add In
 
 ### Requirement: Place list with directions
 
-The Places view SHALL list each stop in authored order, with its stop label and town. Under each stop, it SHALL list that stop's locations in authored order. Each location SHALL show its name and address. When a location has a label, the view SHALL show the label as a tag beside the name. The view SHALL NOT mark the locations at one stop as alternatives to each other. The app SHALL NOT supply any word for a kind of location, such as "station" or "bar".
+The Places view SHALL list each stop in authored order, with its stop label and town. Under each stop, it SHALL list that stop's locations in authored order. Each location SHALL show its name and address. When a location has a label, the view SHALL show the label as a tag beside the name. The view SHALL NOT mark the locations at one stop as alternatives to each other.
 
-Each location SHALL show a directions link that opens a map search. The search query SHALL be the location's name, its street address, and its stop's town, as authored, separated by a comma and a space. The app SHALL NOT add any other text to the query, such as a state or a label.
+Each location SHALL show a directions link that opens a map search. The search query SHALL be the location's name, its street address, and its stop's town, as authored, separated by a comma and a space. The app SHALL NOT add any other text to the query, such as a state or a label. The app SHALL percent-encode the query, so authored characters such as `&`, `=`, `#`, and `?` stay inside the query parameter.
 
 On an Apple device, the link SHALL open an Apple Maps search at `https://maps.apple.com/` with the query in its `q` parameter, in the same browser tab. An Apple device is one whose user agent names an iPhone, iPad, iPod, or Macintosh. On any other device, the link SHALL open a Google Maps search in a new browser tab. The same rule SHALL apply when the app cannot read the user agent. The Google link SHALL use `https://www.google.com/maps/search/?api=1` with the query in its `query` parameter.
 
@@ -86,6 +86,11 @@ On an Apple device, the link SHALL open an Apple Maps search at `https://maps.ap
 
 - **WHEN** a crawl outside Illinois lists a location named `Canal Cafe`, labeled `Cafe`, at `7 River Rd`, in a stop whose town is `River Town`
 - **THEN** the directions query is exactly `Canal Cafe, 7 River Rd, River Town`
+
+#### Scenario: Authored punctuation stays in the query
+
+- **WHEN** a location is named `Pub & Grill #2?`
+- **THEN** its directions link keeps the whole name inside the query parameter and adds no other parameter or fragment
 
 #### Scenario: A label shows as a tag
 
