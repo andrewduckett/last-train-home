@@ -18,7 +18,7 @@
 
 ## 4. Docs
 
-- [ ] 4.1 In `openspec/discovery.md`, update the Author's "pain today" note and the journey step that cite #15, so neither says the keys are one-letter. Commit as `docs:`.
+- [x] 4.1 In `openspec/discovery.md`, update the Author's "pain today" note and the journey step that cite #15, so neither says the keys are one-letter. Commit as `docs:`.
 
 ## 5. Verify
 

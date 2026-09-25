@@ -24,9 +24,8 @@ The product intent lives in `openspec/prd.md`. Stories are GitHub issues.
   code for each event.
 - **Goal**: stand up a new crawl by writing one data file, set which crawl greets people
   at `/`, deploy, and share a clean link.
-- **Pain today**: a new crawl is one YAML file, but venue and scavenger fields use
-  one-letter keys (`n`, `a`, `t`, `p`, `d`) that need code knowledge to fill in, and
-  no second crawl has yet proved the schema.
+- **Pain today**: a new crawl is one YAML file with descriptive keys, but no second
+  crawl has yet proved the schema.
 - **Success looks like**: adds `static/crawls/<id>.yaml`, the crawl is live at `/<id>`,
   the default at `/` is a one-line change, and no component changed.
 
@@ -65,7 +64,7 @@ Annotated against the code today. The app renders any crawl authored in
   partial    partial    supported   supported   supported
 ```
 
-1. **Author a crawl** — describe the event in one YAML file — partial (works, but venue and scavenger fields use one-letter keys, [#15](https://github.com/andrewduckett/last-train-home/issues/15); stops can't carry a station, [#27](https://github.com/andrewduckett/last-train-home/issues/27); intro formatting shipped in [#21](https://github.com/andrewduckett/last-train-home/issues/21))
+1. **Author a crawl** — describe the event in one YAML file — partial (works, but stops can't carry a station, [#27](https://github.com/andrewduckett/last-train-home/issues/27); intro formatting shipped in [#21](https://github.com/andrewduckett/last-train-home/issues/21); descriptive venue and scavenger keys shipped in [#15](https://github.com/andrewduckett/last-train-home/issues/15))
 2. **Add a second crawl** — a new, independent event — partial (supported by routing and per-crawl state, but no second crawl has been authored yet; [#16](https://github.com/andrewduckett/last-train-home/issues/16))
 3. **Set the default (`/`)** — choose which crawl greets people — supported (one line: `defaultCrawl` in `src/lib/config.ts`)
 4. **Deploy the site** — build + publish static assets — supported (`npm run build` validates every crawl; `wrangler.jsonc`, Cloudflare)
