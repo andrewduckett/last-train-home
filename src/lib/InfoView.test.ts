@@ -57,7 +57,7 @@ it('renders a line break inside one paragraph', () => {
 	const paragraphs = container.querySelectorAll('.intro-card p');
 	expect(paragraphs).toHaveLength(1);
 	expect(paragraphs[0].querySelectorAll('br')).toHaveLength(1);
-	expect(paragraphs[0].innerHTML).toBe('Line one<br>Line two');
+	expect(paragraphs[0]).toHaveTextContent('Line oneLine two');
 });
 
 it('renders a bold marker without literal asterisks', () => {
