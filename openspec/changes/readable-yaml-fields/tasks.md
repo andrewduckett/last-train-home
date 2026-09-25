@@ -8,12 +8,12 @@
 
 - [x] 2.0 Restore a green baseline. Commit `e5103fe` changed the seed `appTitle` on `main` without updating `tests/fixtures/cory-trent.json`, so `yaml-seed.test.ts` and `seed.test.ts` failed before this change. Sync the fixture's `appTitle`, and drop the parity assertion that pins the old title, since the retitle was deliberate. Verify that `npm test` passes. Commit as `test:`.
 - [x] 2.1 Rename the keys in `static/crawls/cory-trent.yaml` (4 places, 7 tasks) and in `tests/fixtures/cory-trent.json`. Leave every value and task `id` unchanged. Verify with `npm run validate:crawls` and `npx vitest run src/lib/data/yaml-seed.test.ts src/lib/data/seed.test.ts`. Commit as `feat:`.
-- [ ] 2.2 Leave `tests/fixtures/cory-trent-before.json` unchanged. In `src/lib/Shell.parity.test.ts`, map each old place and task to the new keys before comparing with the seed, and read rendered text from the new fields. Verify that the venue and task parity tests fail until the views change.
+- [x] 2.2 Leave `tests/fixtures/cory-trent-before.json` unchanged. In `src/lib/Shell.parity.test.ts`, map each old place and task to the new keys before comparing with the seed, and read rendered text from the new fields. Verify that the venue and task parity tests fail until the views change.
 
 ## 3. Types and views
 
-- [ ] 3.1 Rename the fields of `VenuePlace` and `ScavengerTask` in `src/lib/types.ts`. Update `VenuesView.svelte` (keyed list, name, address, directions link) and `TasksView.svelte` (total, earned, title, description, points). Verify that `npm run check` passes.
-- [ ] 3.2 Update `src/lib/VenuesView.test.ts` and `src/lib/Shell.provider.test.ts` to the new keys. Verify that these tests and `Shell.parity.test.ts` pass. Commit as `refactor:`.
+- [x] 3.1 Rename the fields of `VenuePlace` and `ScavengerTask` in `src/lib/types.ts`. Update `VenuesView.svelte` (keyed list, name, address, directions link) and `TasksView.svelte` (total, earned, title, description, points). Verify that `npm run check` passes.
+- [x] 3.2 Update `src/lib/VenuesView.test.ts` and `src/lib/Shell.provider.test.ts` to the new keys. Verify that these tests and `Shell.parity.test.ts` pass. Commit as `refactor:`.
 - [ ] 3.3 Add a test in `src/lib/Shell.checks.test.ts` that saves checks for two seed task ids under the `cory-trent` crawl, opens Tasks, and finds those two rows checked with the matching earned points. Verify that it passes. Commit as `test:`.
 
 ## 4. Docs

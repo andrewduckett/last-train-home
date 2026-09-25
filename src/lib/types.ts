@@ -13,8 +13,8 @@ export interface QuickLink { label: string; hint?: string; url: string }
 export interface CrawlMap { embed: string; app: string }
 
 export interface VenuePlace {
-	n: string;
-	a: string;
+	name: string;
+	address: string;
 }
 
 export interface VenueStop {
@@ -25,9 +25,9 @@ export interface VenueStop {
 
 export interface ScavengerTask {
 	id: string;
-	t: string;
-	p: number;
-	d: string;
+	title: string;
+	points: number;
+	description: string;
 }
 
 export interface CrawlDefinition {

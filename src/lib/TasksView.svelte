@@ -6,9 +6,9 @@
 
 	let { scavenger, scavengerRules } = $derived(crawl.definition);
 
-	let total = $derived(scavenger.reduce((s, i) => s + i.p, 0));
+	let total = $derived(scavenger.reduce((s, i) => s + i.points, 0));
 
-	let earned = $derived(scavenger.reduce((s, i) => s + (Object.hasOwn(controller.checks, i.id) ? i.p : 0), 0));
+	let earned = $derived(scavenger.reduce((s, i) => s + (Object.hasOwn(controller.checks, i.id) ? i.points : 0), 0));
 	let pct = $derived(Math.round((earned / total) * 100));
 
 	function resetScavenger() {
@@ -69,13 +69,13 @@
 						</svg>
 					</span>
 					<span class="check-label">
-						<span class="check-title" style="color: var(--ink)">{item.t}</span>
-						{#if item.d}
-							<span class="check-desc" style="color: var(--muted)">{item.d}</span>
+						<span class="check-title" style="color: var(--ink)">{item.title}</span>
+						{#if item.description}
+							<span class="check-desc" style="color: var(--muted)">{item.description}</span>
 						{/if}
 					</span>
 					<span class="check-pts font-board" style="color: {checked ? 'var(--good)' : 'var(--muted)'}">
-						{item.p} pts
+						{item.points} pts
 					</span>
 				</label>
 			{/each}
