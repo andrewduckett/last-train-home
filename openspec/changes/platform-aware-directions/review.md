@@ -30,12 +30,16 @@ VERDICT: APPROVE_WITH_CHANGES
 
 ## Required Changes (if APPROVE WITH CHANGES)
 
-CHANGES_APPLIED: no
+CHANGES_APPLIED: yes
 
 - Rewrite the "Directions link opens a map search" and "An Apple Maps link opens in the same tab" scenarios in `specs/crawl-shell/spec.md` to assert the rendered link attributes (`target="_blank"` or no target) rather than the post-click browser behavior.
 - Split the 35-word sentence in `specs/crawl-shell/spec.md` starting with "On any other device..." into shorter sentences.
 
 ## Rebuttals
+
+- Round 2 Critical (scenario testability): fixed by Required Change 1. Both scenarios now assert the rendered `href` and `target`. Accepted by reviewer: the re-check confirmed the change is applied.
+- Round 2 Moderate (35-word sentence): fixed by Required Change 2. Accepted by reviewer: the re-check confirmed the change is applied.
+- Round 1 rebuttals, judged by the reviewer this round:
 
 - **Moderate 2 (term variation)**: ACCEPTED. Maintaining consistency with existing specs ("participant") while using the persona name ("Crawler") in discovery documents is contextually correct.
 - **Moderate 3 (design Context restates the proposal)**: ACCEPTED. The Context section naturally summarizes the immediate motivation to ground the reader before detailing the technical solution.
