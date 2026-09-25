@@ -68,7 +68,7 @@ The checklist store keys each check by task `id`. This change does not rename `i
 
 ## Risks / Trade-offs
 
-- [An author keeps a crawl file outside this repo with old keys] → The build fails with a message that names each replacement key. The fix is a find-and-replace.
+- [An author has an old-key crawl file outside this repo] → The build does not see that file. Once the author adds it to `static/crawls/`, the build fails with a message that names each replacement key. The fix is a find-and-replace.
 - [A view reads a field that validation no longer checks, or the reverse] → `svelte-check` catches a view that reads a removed type field. The parity and view tests catch a blank render.
 - [Short keys also appear in unrelated code, such as `a` in `palette.test.ts`] → The rename is by hand, file by file, not a repo-wide search and replace.
 

@@ -9,12 +9,12 @@ ADR review completed for this change. The change makes no major durable architec
 
 - The new key names are a requirement, not a fork between approaches. The `crawl-authoring` spec owns them.
 - Rejecting the retired keys at the build, rather than translating them in the provider, follows ADR 0003 and ADR 0004. Those ADRs keep the provider free of definition knowledge and make the build the check on authored records.
-- Keeping task ids stable, so saved checks survive, follows ADR 0005.
+- Keeping task ids stable, so saved checks survive, matches ADR 0005. That ADR is still proposed, so this change relies on the current checklist code, not on the ADR.
 - The retired-key table and the error text are cheap to change later. `design.md` records why the author chose them.
 
 ## In-Force ADRs Reviewed
 
-No ADR supersedes another, so all seven are in force.
+No ADR supersedes another. ADRs 0001 to 0004 are accepted and in force. ADRs 0005 to 0007 are proposed, and the reviewer read them as context.
 
 - 0001 Static-first SvelteKit on Cloudflare static assets (accepted)
 - 0002 Strict CSP via build-time script hashing (accepted)
