@@ -5,6 +5,7 @@ import CrawlRoute from './CrawlRoute.svelte';
 import { defaultCrawl } from './config.js';
 import { createCrawlProvider } from './data/provider.js';
 import { crawl as seed } from '../../tests/fixtures/cory-trent.js';
+import { seedShellProps } from '../../tests/fixtures/seed-provider.js';
 
 beforeEach(() => {
 	localStorage.clear();
@@ -22,6 +23,18 @@ async function openTasks() {
 function firstCheck() {
 	return screen.getAllByRole('checkbox')[0] as HTMLInputElement;
 }
+
+it('keeps seed checks saved before the key rename', async () => {
+	localStorage.setItem('crawl-checks:cory-trent', '{"sh-selfie":true,"sh-photobomb":true}');
+	render(Shell, seedShellProps);
+	await openTasks();
+	const checked = screen.getAllByRole('checkbox').filter((box) => (box as HTMLInputElement).checked);
+	expect(checked.map((box) => box.closest('label')?.querySelector('.check-title')?.textContent)).toEqual([
+		'The Platform Selfie',
+		'Bonus Photobomb',
+	]);
+	expect(document.querySelector('.tally-pts')).toHaveTextContent(/^35\s*\/\s*85 pts$/);
+});
 
 it('ignores the old global key', async () => {
 	localStorage.setItem('crawl-checks-v1', '{"sh-selfie":true}');

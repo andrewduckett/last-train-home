@@ -14,7 +14,7 @@
 
 - [x] 3.1 Rename the fields of `VenuePlace` and `ScavengerTask` in `src/lib/types.ts`. Update `VenuesView.svelte` (keyed list, name, address, directions link) and `TasksView.svelte` (total, earned, title, description, points). Verify that `npm run check` passes.
 - [x] 3.2 Update `src/lib/VenuesView.test.ts` and `src/lib/Shell.provider.test.ts` to the new keys. Verify that these tests and `Shell.parity.test.ts` pass. Commit as `refactor:`.
-- [ ] 3.3 Add a test in `src/lib/Shell.checks.test.ts` that saves checks for two seed task ids under the `cory-trent` crawl, opens Tasks, and finds those two rows checked with the matching earned points. Verify that it passes. Commit as `test:`.
+- [x] 3.3 Add a test in `src/lib/Shell.checks.test.ts` that saves checks for two seed task ids under the `cory-trent` crawl, opens Tasks, and finds those two rows checked with the matching earned points. Verify that it passes. Commit as `test:`.
 
 ## 4. Docs
 
