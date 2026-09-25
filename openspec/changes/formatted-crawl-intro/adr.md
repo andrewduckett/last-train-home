@@ -9,7 +9,7 @@ ADR review completed for this change. The change makes no major durable architec
 
 - Rendering authored text only as Svelte text nodes, with no `{@html}`, follows the posture that ADR 0002 already records.
 - Interpreting `intro` in a domain module, not in the provider, follows ADR 0003.
-- The parser's syntax rules and its flat-run output are easy to change later. `design.md` records why they were chosen.
+- The parser's syntax rules and its flat-run output are easy to change later. `design.md` records why the author chose them.
 
 ## In-Force ADRs Reviewed
 

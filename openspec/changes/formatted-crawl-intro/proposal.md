@@ -6,7 +6,7 @@ The Info tab shows the crawl introduction as one plain paragraph. In the live se
 
 - In the introduction, a blank line starts a new paragraph. A line that holds only whitespace counts as blank.
 - A single line break inside a paragraph becomes a line break on screen.
-- `**text**` shows as bold, and `*text*` shows as italic.
+- `**text**` shows as bold, `*text*` shows as italic, and `***text***` shows as bold and italic.
 - A marker counts only when it touches its text. An opening marker needs a non-whitespace character right after it. A closing marker needs one right before it. So `2 * 3 * 4` stays literal.
 - Any asterisk left without a partner stays as literal text and never breaks the page.
 - Markers pair only within one line.

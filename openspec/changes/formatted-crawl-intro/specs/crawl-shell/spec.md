@@ -11,6 +11,7 @@ The Info view SHALL render a small set of authored formatting:
 - Text between `**` markers SHALL show as bold. Text between `*` markers SHALL show as italic. Text between `***` markers SHALL show as bold and italic.
 - A marker SHALL count only when it touches its text. An opening marker SHALL have a non-whitespace character right after it. A closing marker SHALL have a non-whitespace character right before it.
 - Markers SHALL pair only within one line.
+- A run of more than 3 asterisks SHALL stay entirely as literal text.
 - Any asterisk left without a partner SHALL stay as literal text.
 
 The Info view SHALL show all other markup as literal text, including HTML tags. Unusual or unbalanced formatting SHALL NOT prevent the introduction or the crawl from rendering.
@@ -55,6 +56,11 @@ The Info view SHALL show all other markup as literal text, including HTML tags. 
 
 - **WHEN** an introduction contains `2 * 3 * 4 drinks`
 - **THEN** Info shows `2 * 3 * 4 drinks` as written, without italic text
+
+#### Scenario: A long asterisk run stays literal
+
+- **WHEN** an introduction contains `****text****`
+- **THEN** Info shows `****text****` as written, without bold or italic text
 
 #### Scenario: An unmatched marker stays literal
 

@@ -60,7 +60,7 @@ A marker is a run of one or more `*` characters. A marker longer than 3 is liter
 
 The parser scans each line left to right and keeps a stack of open markers. Each marker counts how many of its asterisks are still unpaired. For each marker:
 
-1. If it can close, it pairs with the marker on top of the stack. Each pairing step takes 2 asterisks from each side if both have 2 or more, and 1 otherwise. Asterisks come from the inner side of each marker. A 2-asterisk pairing makes a bold span, and a 1-asterisk pairing makes an italic span. The parser pops a stack marker when all its asterisks are paired. The closer keeps pairing with the new top until it runs out or the stack is empty.
+1. If it can close, it pairs with the marker on top of the stack. Each pairing step takes 2 asterisks from each side if both have 2 or more, and 1 otherwise. Asterisks come from the inner side of each marker. A 2-asterisk pairing makes a bold span, and a 1-asterisk pairing makes an italic span. The parser pops a stack marker when it pairs all its asterisks. The closer keeps pairing with the new top until it runs out or the stack is empty.
 2. If asterisks are left and the marker can open, the parser pushes it onto the stack with those asterisks.
 3. Otherwise, the leftover asterisks are literal.
 
@@ -92,4 +92,4 @@ This is a small subset of CommonMark's emphasis rules. It drops CommonMark's pun
 
 ## Migration Plan
 
-No migration is needed. Existing intros without markers render as before, but multi-line text now keeps its paragraph breaks. Rollback is a plain revert.
+This change requires no migration. Existing intros without markers render as before, but multi-line text now keeps its paragraph breaks. Rollback is a plain revert.
