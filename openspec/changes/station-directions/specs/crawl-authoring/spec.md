@@ -21,7 +21,7 @@ The build SHALL reject definitions that violate the current views' keyed-list an
 
 ### Requirement: Use descriptive place and scavenger keys
 
-Each crawl definition SHALL have a `places` list. Each entry in `places` SHALL have a string `stop`, a string `town`, and a `locations` list with at least one location. Each location SHALL have a string `name` and a string `address`. A location MAY have a `label`, which SHALL be a non-empty string when present. Each scavenger task SHALL have a string `id`, a string `title`, a finite number `points`, and a string `description`.
+Each crawl definition SHALL have a `places` list, which MAY be empty. Each entry in `places` SHALL have a string `stop`, a string `town`, and a `locations` list with at least one location. Each location SHALL have a string `name` and a string `address`. A location MAY have a `label`, which SHALL be a non-empty string when present. Each scavenger task SHALL have a string `id`, a string `title`, a finite number `points`, and a string `description`.
 
 The build SHALL reject each retired key and SHALL name the key that replaces it:
 
@@ -35,6 +35,11 @@ Each rejection SHALL identify the record, the old field, and the key that replac
 #### Scenario: A crawl uses the descriptive keys
 
 - **WHEN** every stop has `stop`, `town`, and at least one location, every location has `name` and `address`, and every task has `id`, `title`, `points`, and `description`
+- **THEN** build validation accepts the crawl
+
+#### Scenario: A crawl lists no places
+
+- **WHEN** a definition has an empty `places` list
 - **THEN** build validation accepts the crawl
 
 #### Scenario: A crawl keeps the old venues list

@@ -98,7 +98,10 @@ The CSV lists Edison Park under Chicago, because it is a Chicago neighborhood. T
 
 ### Parity with the frozen snapshot
 
-`tests/fixtures/cory-trent-before.json` stays frozen. It holds only the four bars. `Shell.parity.test.ts` will compare the seed's `Bar` locations, in stop order, against the snapshot's venues. Its four pinned Google links for the bars stay unchanged. A separate test checks the Meetup stop and the four station rows.
+`tests/fixtures/cory-trent-before.json` stays frozen. It holds only the four bars. `Shell.parity.test.ts` will pick out the seed's bars with one filter: every location whose label is `Bar`, taken in stop order. In code, that is `seed.places.flatMap((stop) => stop.locations.filter((location) => location.label === 'Bar').map((location) => ({ stop: stop.stop, town: stop.town, location })))`. The test maps the snapshot's four venues to the same shape and expects the two lists to be equal. It keeps its four pinned Google links for the bars and checks them against the rendered Directions links of the `Bar` rows only.
+
+- **Why a label filter:** the filter needs no knowledge of stop positions. So adding the Meetup stop and the stations does not change how the test finds the bars.
+- A separate test checks the Meetup stop and the four `Train` rows, with their exact names, addresses, and links.
 
 ### Spec scenario names
 
