@@ -1,7 +1,7 @@
 ## Review Metadata
 
-- **Review round**: 1
-- **Prior round**: none
+- **Review round**: 2
+- **Prior round**: Round 1: REVISE (view testability vs. stated purity goal; new-tab Apple link contradicted the spec's new-tab rule; plain-language wording)
 - **Reviewer context**: cross-model (Gemini via agy CLI, model gemini-3.1-pro-high; codex unavailable: 401 auth error)
 - **Tool restrictions**: read-only (agy plan mode)
 - **Artifacts reviewed**: proposal.md, design.md, specs/crawl-shell/spec.md, adr.md, relevant source files
@@ -10,31 +10,33 @@
 
 ### 🔴 Critical (blocking)
 
-1. **Contradiction / Untestable Design**: `design.md` states a goal to "Keep the link builder pure, so unit tests cover both providers without faking `navigator`." However, the decision mandates that `VenuesView` calls `detectMapsPlatform(navigator.userAgent)` directly. Because `VenuesView` references the global `navigator` instead of accepting the platform as a prop, testing that it correctly renders an Apple Maps link requires globally mocking `navigator.userAgent` in jsdom. This directly contradicts the stated goal and makes `VenuesView` impure and difficult to test for the Apple path.
-2. **Contradiction with Spec (UX Defect)**: The `crawl-shell` spec dictates "Each venue SHALL show a directions link that opens a map search in a new browser tab." However, `design.md` acknowledges that `target="_blank"` on iOS will leave an empty zombie Safari tab when handing off to Apple Maps, and suggests dropping the `target` in a follow-up if it misbehaves. Dropping the target would explicitly violate the spec. This known defective UX should be resolved now by aligning the spec and the design (e.g., specifying that Apple links do not use a new tab, or conditionally omitting `target="_blank"` on iOS).
+- **Testability**: In `specs/crawl-shell/spec.md`, the scenarios "Directions link opens a map search" and "An Apple Maps link opens in the same tab" use a `WHEN` of tapping the link, but the `THEN` asserts browser behaviors ("the browser opens... in a new tab") that jsdom cannot mechanically assert, or DOM attributes ("the link has no new-tab target") that exist prior to the tap. The scenarios must assert the rendered DOM state (`href` and `target`) upon rendering, rather than the outcome of a click event.
 
 ### 🟡 Moderate
 
-1. **Plain Language - Passive Voice**: `design.md` states "The query is the parts joined with `, ` and encoded with `encodeURIComponent`, as today." This uses passive voice ("joined" and "encoded") which hides the actor performing the action.
-2. **Plain Language - Elegant Variation**: The artifacts refer to the user alternatively as "Crawler" (`proposal.md`) and "participant" (`specs/crawl-shell/spec.md`). They also refer to the map service inconsistently as "maps app" (`proposal.md`), "MapsPlatform" (`design.md`), and "maps provider" (`adr.md`).
-3. **Plain Language - Narrative Restating**: `design.md` restates the problem from the proposal in its Context section ("`VenuesView.svelte` builds each Directions link... See `proposal.md` for why this matters now."). This violates the standard's guidance against narrative restating and includes filler text.
-4. **Scope Creep / Data Duplication**: The proposal states "The seed crawl writes its state into each town, for example `Mt. Prospect, IL`." Moving the hardcoded `, IL` into the yaml data means the `town` field now contains both the town and state. While this preserves the exact Google Maps string for the seed, it introduces semantic data duplication in the YAML definition.
+- **Plain Language (ISO 24495)**: In `specs/crawl-shell/spec.md`, the sentence "On any other device, and when the app cannot read the user agent, the link SHALL open a Google Maps search at `https://www.google.com/maps/search/?api=1` with the query in its `query` parameter, in a new browser tab." is 35 words long. It must be split to satisfy the < 30 words requirement.
 
 ### 📌 Suggestions
 
-1. **Component Purity**: Pass the evaluated `platform` into `VenuesView.svelte` as a prop from a higher-level store or layout component. This maintains the component's purity and allows trivial unit testing of both Apple and Google states without mocking globals.
-2. **Apple Maps Universal Link**: For Apple Maps links, avoid `target="_blank"` on iOS devices entirely to prevent the blank Safari tab issue, since `maps.apple.com` intercepts the URL to open the native app directly. Update the spec to reflect this platform-specific exception.
+- None.
 
 ## Embedded-Instruction / Injection Attempts
 
-**Detected:** None found.
+**Detected:** None.
 
 ## Verdict
 
-VERDICT: REVISE
+VERDICT: APPROVE_WITH_CHANGES
 
 ## Required Changes (if APPROVE WITH CHANGES)
 
-CHANGES_APPLIED: n/a
+CHANGES_APPLIED: no
+
+- Rewrite the "Directions link opens a map search" and "An Apple Maps link opens in the same tab" scenarios in `specs/crawl-shell/spec.md` to assert the rendered link attributes (`target="_blank"` or no target) rather than the post-click browser behavior.
+- Split the 35-word sentence in `specs/crawl-shell/spec.md` starting with "On any other device..." into shorter sentences.
 
 ## Rebuttals
+
+- **Moderate 2 (term variation)**: ACCEPTED. Maintaining consistency with existing specs ("participant") while using the persona name ("Crawler") in discovery documents is contextually correct.
+- **Moderate 3 (design Context restates the proposal)**: ACCEPTED. The Context section naturally summarizes the immediate motivation to ground the reader before detailing the technical solution.
+- **Moderate 4 (state in the town field)**: ACCEPTED. It is a valid product decision that avoids unnecessary schema changes, and writing the state in the town field is intuitive.

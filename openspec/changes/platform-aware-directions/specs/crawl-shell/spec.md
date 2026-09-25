@@ -4,17 +4,17 @@
 
 The Venues view SHALL list each stop with its venue names and addresses. Each venue SHALL show a directions link that opens a map search. The search query SHALL be the venue's name, street address, and town, as authored, separated by a comma and a space. The app SHALL NOT add any other text to the query, such as a state.
 
-On an Apple device, the link SHALL open an Apple Maps search at `https://maps.apple.com/` with the query in its `q` parameter, in the same browser tab. An Apple device is one whose user agent names an iPhone, iPad, iPod, or Macintosh. On any other device, and when the app cannot read the user agent, the link SHALL open a Google Maps search at `https://www.google.com/maps/search/?api=1` with the query in its `query` parameter, in a new browser tab.
+On an Apple device, the link SHALL open an Apple Maps search at `https://maps.apple.com/` with the query in its `q` parameter, in the same browser tab. An Apple device is one whose user agent names an iPhone, iPad, iPod, or Macintosh. On any other device, the link SHALL open a Google Maps search in a new browser tab. The same rule SHALL apply when the app cannot read the user agent. The Google link SHALL use `https://www.google.com/maps/search/?api=1` with the query in its `query` parameter.
 
 #### Scenario: Directions link opens a map search
 
-- **WHEN** a participant on a non-Apple device taps a venue's directions link
-- **THEN** the browser opens the venue's Google Maps search in a new tab
+- **WHEN** the Venues view renders on a non-Apple device
+- **THEN** each directions link has a Google Maps search `href`, `target="_blank"`, and `rel="noopener noreferrer"`
 
 #### Scenario: An Apple Maps link opens in the same tab
 
-- **WHEN** a participant on an Apple device taps a venue's directions link
-- **THEN** the link has no new-tab target, so iOS or macOS can hand the search to the Maps app without leaving an empty tab
+- **WHEN** the Venues view renders on an Apple device
+- **THEN** each directions link has an Apple Maps search `href` and no `target` attribute
 
 #### Scenario: An iPhone gets Apple Maps
 
