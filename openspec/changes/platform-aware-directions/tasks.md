@@ -13,7 +13,7 @@
 
 ## 3. Docs
 
-- [ ] 3.1 In `openspec/discovery.md`, update the "Find the stop" journey step so it no longer says directions always open Google Maps with a hardcoded `, IL`. Commit as `docs:`.
+- [x] 3.1 In `openspec/discovery.md`, update the "Find the stop" journey step so it no longer says directions always open Google Maps with a hardcoded `, IL`. Commit as `docs:`.
 
 ## 4. Verify
 
