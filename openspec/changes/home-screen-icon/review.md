@@ -37,7 +37,7 @@ VERDICT: APPROVE_WITH_CHANGES
 
 ## Required Changes (if APPROVE WITH CHANGES)
 
-CHANGES_APPLIED: no
+CHANGES_APPLIED: yes
 
 1. In proposal, design, and spec, state that Android acceptance uses Chrome’s user-initiated installation path, with no promise of browser install promotion. Require a device check that installs from `/cory-trent`, launches the icon, and confirms both `/cory-trent` and standalone display. State that a failed check requires revising the manifest strategy and spec before implementation is accepted.
 2. Make `generate:icons --check` run before any icon-generating build in the required local and CI verification sequence; document that order in the design. Keep the test’s stale-file assertion, but do not present a post-build test as the gate for committed files.
@@ -56,3 +56,5 @@ All four required changes are applied. The first suggestion is applied, and the 
 - **📌 Add an online-launch scenario** — declined. The proposal already lists offline support as out of scope (#17), and no requirement promises an offline launch. A scenario that only restates an exclusion adds no testable behavior.
 
 Round-1 re-check (same reviewer) confirmed items 1 to 4 and accepted the declined suggestion. It flagged one actor-hiding passive: "before the change is accepted". The author fixed the phrase in the spec, the proposal, and the design. Each now says "before the repository owner merges the change", and the proposal and design name the implementer as the one who revises the plan.
+
+Round-1 second re-check (same reviewer, gpt-6-sol via codex): `RECHECK: PASS`. Required Changes 1 to 4 are applied, the applied suggestion adds no problem, and the reviewer accepts the declined suggestion.
