@@ -1,18 +1,21 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, fireEvent, screen } from '@testing-library/svelte';
-import { seedShellProps } from '../../tests/fixtures/seed-provider.js';
+import { buildRecord } from '../../tests/fixtures/crawl-builders.js';
+import { recordProvider } from '../../tests/fixtures/crawl-provider.js';
 import Shell from './Shell.svelte';
+
+const shellProps = { id: 'lantern-loop', getCrawl: recordProvider({ 'lantern-loop': buildRecord() }).getCrawl };
 
 describe('Shell navigation', () => {
 	it('opens on the Schedule tab', async () => {
-		render(Shell, seedShellProps);
+		render(Shell, shellProps);
 		await screen.findByTestId('view-schedule');
 		expect(screen.getByRole('button', { name: /schedule/i })).toHaveAttribute('aria-current', 'page');
 		expect(screen.queryByTestId('view-schedule')).not.toBeNull();
 	});
 
 	it('tapping a tab switches the view and marks it active', async () => {
-		render(Shell, seedShellProps);
+		render(Shell, shellProps);
 		await screen.findByTestId('view-schedule');
 		const placesBtn = screen.getByRole('button', { name: /places/i });
 		await fireEvent.click(placesBtn);
@@ -22,7 +25,7 @@ describe('Shell navigation', () => {
 	});
 
 	it('shows a Places tab with a pin icon in place of Venues', async () => {
-		render(Shell, seedShellProps);
+		render(Shell, shellProps);
 		await screen.findByTestId('view-schedule');
 		const placesBtn = screen.getByRole('button', { name: /places/i });
 		expect(placesBtn.querySelector('[data-icon="map-pin"]')).not.toBeNull();
@@ -30,7 +33,7 @@ describe('Shell navigation', () => {
 	});
 
 	it('shows no Map tab', async () => {
-		render(Shell, seedShellProps);
+		render(Shell, shellProps);
 		await screen.findByTestId('view-schedule');
 		expect(screen.getAllByRole('button').map((button) => button.querySelector('.nav-label')?.textContent?.trim()).filter(Boolean)).toEqual(['Schedule', 'Places', 'Tasks', 'Info']);
 		expect(screen.queryByRole('button', { name: /map/i })).not.toBeInTheDocument();
@@ -38,7 +41,7 @@ describe('Shell navigation', () => {
 
 	it('tapping a tab scrolls to top', async () => {
 		const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
-		render(Shell, seedShellProps);
+		render(Shell, shellProps);
 		await screen.findByTestId('view-schedule');
 		await fireEvent.click(screen.getByRole('button', { name: /tasks/i }));
 		expect(scrollTo).toHaveBeenCalledWith(0, 0);
@@ -51,7 +54,7 @@ describe('Shell icons', () => {
 	const TAB_ICONS = [['Schedule', 'clock'], ['Places', 'map-pin'], ['Tasks', 'checklist'], ['Info', 'info']];
 
 	async function renderShell() {
-		const rendered = render(Shell, seedShellProps);
+		const rendered = render(Shell, shellProps);
 		await screen.findByTestId('view-schedule');
 		return rendered.container;
 	}
