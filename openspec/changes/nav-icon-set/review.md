@@ -59,3 +59,5 @@ Round-1 re-check (same reviewer) failed two items, and the author fixed both:
 - **Item 4** — the plan omitted the header ink color and full opacity. The Verification table now checks the header icon rule for `color: var(--board-ink)`. It also checks that no nav rule sets `opacity` below 1.
 
 Round-1 second re-check (same reviewer, gpt-6-sol via codex): `RECHECK: PASS`. Required Changes 1 to 4 and both suggestions are applied, with no new plain-language problem. The reviewer accepts every fix.
+
+Post-review factual correction (author, approved by the user during apply): `design.md` decision 1 said the Bold preset uses 2 units of padding. The skill's Bold preset uses 2.5, so the design now says 2.5. No requirement, test, or task changes.

@@ -25,7 +25,7 @@ Three constraints shape the approach:
 
 ### 1. Generate the set with the Bold preset, then commit the SVGs and the style spec
 
-The implementer runs `icon-set-generator` with the Bold preset: a 24-unit grid, a 2.5-unit stroke, round caps and joins, a 2-unit corner radius, and 2 units of padding. The set holds `clock`, `map-pin`, `checklist`, `info`, and `train`. The five `.svg` files and `style-spec.json` go in `src/lib/icons/`.
+The implementer runs `icon-set-generator` with the Bold preset: a 24-unit grid, a 2.5-unit stroke, round caps and joins, a 2-unit corner radius, and 2.5 units of padding. The set holds `clock`, `map-pin`, `checklist`, `info`, and `train`. The five `.svg` files and `style-spec.json` go in `src/lib/icons/`.
 
 The skill's `preview.html` goes in `.workspace/icons/` for review and stays out of the repo and the build.
 
