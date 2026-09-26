@@ -26,7 +26,7 @@
 ## 4. Docs
 
 - [x] 4.1 In `openspec/discovery.md`, update the "Find the stop" journey step: the embedded map is gone, and the route map is an Info link, shipped in #26. Commit as `docs:`.
-- [ ] 4.2 In `openspec/specs/crawl-shell/spec.md`, update the Purpose line so it lists Schedule, Places, and Tasks, with no Map. Verify with `openspec validate crawl-shell --type spec --strict`. Commit as `docs:`.
+- [x] 4.2 In `openspec/specs/crawl-shell/spec.md`, update the Purpose line so it lists Schedule, Places, and Tasks, with no Map. Verify with `openspec validate crawl-shell --type spec --strict`. Commit as `docs:`.
 
 ## 5. Verify
 
