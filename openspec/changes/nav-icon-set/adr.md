@@ -7,7 +7,7 @@
 
 This change makes no major durable architectural decision, and it conflicts with no ADR.
 
-- **The design makes four choices, and each is cheap to reverse.** It uses the Bold preset, renders icons inline through one component, colors each tab button with a token, and tests the SVG style rules. Each choice lives in a few files. An engineer can read each one from the code. Replacing the icons later touches only the icon folder and `Shell.svelte`.
+- **The design makes four choices, and each is cheap to reverse.** It uses the Bold preset, renders icons inline through one component, colors each tab button with a token, and tests the SVG style rules. Each choice lives in a few files. Replacing the icons later touches only the icon folder and `Shell.svelte`.
 - **ADR 0002 (accepted) sets the CSP posture.** Inline SVG markup is not a script. The icons add no inline script and no cross-origin source, so 0002 holds as written. The icon test also rejects `<script>` elements and `on*` attributes in the SVG files.
 - **ADR 0007 (proposed) keeps every UI color in one palette source.** The SVGs carry no color values, only `currentColor`. The shell colors them with existing tokens, so the palette source stays the only place colors live. The existing contrast pairs already cover the two tokens the icons use.
 - **ADRs 0001 and 0003 to 0006** cover hosting, the provider, crawl records, device checks, and the itinerary. This change touches none of them.
@@ -26,4 +26,4 @@ No ADR supersedes another. ADRs 0001 to 0004 are accepted and in force. ADRs 000
 
 ## New Durable ADRs Created
 
-- None. This change introduces no major durable architectural decision, and it creates no new repository-level ADR file.
+- None.
