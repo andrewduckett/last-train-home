@@ -9,7 +9,7 @@
 
 - [x] 2.1 Write `tests/authored-crawls.test.ts` first. Against a temporary directory of generated records, it checks that valid records with any content pass, that a new file is found, that a broken record fails and names its file, and that a missing default id fails and names the id. Against `static/crawls`, it checks that the directory passes. Verify it fails.
 - [x] 2.2 Add `checkAuthoredCrawls(directory, defaultId)` in `tests/fixtures/authored-crawls.ts`, per design D3. Verify 2.1 passes.
-- [ ] 2.3 In `tests/static-build.test.ts`, replace the title check with "each authored file appears in `build/crawls/` with identical bytes". Verify with `npm run build` then `npx vitest run tests/static-build.test.ts`.
+- [x] 2.3 In `tests/static-build.test.ts`, replace the title check with "each authored file appears in `build/crawls/` with identical bytes". Verify with `npm run build` then `npx vitest run tests/static-build.test.ts`.
 
 ## 3. Move tests to generated crawls
 

@@ -6,9 +6,12 @@ it('contains the SPA fallback shell', () => {
 	expect(existsSync(resolve('build/index.html'))).toBe(true);
 });
 
-it('contains the cory-trent YAML record', () => {
-	const source = readFileSync(resolve('build/crawls/cory-trent.yaml'), 'utf8');
-	expect(source).toContain('title: "Cory & Trent: Last Train Home"');
+it('publishes every authored crawl unchanged', () => {
+	const authored = readdirSync(resolve('static/crawls')).filter((name) => name.endsWith('.yaml'));
+	expect(authored.length).toBeGreaterThan(0);
+	for (const name of authored) {
+		expect(readFileSync(resolve('build/crawls', name)), name).toEqual(readFileSync(resolve('static/crawls', name)));
+	}
 });
 
 it('contains the static security headers', () => {
