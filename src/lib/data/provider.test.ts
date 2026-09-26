@@ -76,7 +76,7 @@ it('preserves uninterpreted identity strings', async () => {
 it('carries every definition field through untouched', async () => {
 	const definition = {
 		appTitle: 'Different header', line: 'A → B',
-		schedule: [{ custom: 'entry' }], venues: ['uninterpreted'],
+		schedule: [{ custom: 'entry' }], places: ['uninterpreted'],
 		scavenger: null, scavengerRules: ['Keep this rule'],
 		map: { embed: 'embed', app: 'viewer' }, links: [{ label: 'Tickets', url: 'tickets' }], albumUrl: 'photos',
 		extraAuthoredField: { keep: true },

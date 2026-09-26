@@ -5,12 +5,22 @@ import seed from '../../tests/fixtures/cory-trent.json';
 import before from '../../tests/fixtures/cory-trent-before.json';
 import { seedShellProps } from '../../tests/fixtures/seed-provider.js';
 
-// The seed now writes the state into each town, which the app used to append.
-const beforeVenues = before.venues.map((venue) => ({
-	...venue,
-	town: `${venue.town}, IL`,
-	places: venue.places.map((place) => ({ name: place.n, address: place.a })),
-}));
+// The snapshot holds only the bars. The seed now writes the state into each
+// town, which the app used to append.
+const beforeBars = before.venues.flatMap((venue) =>
+	venue.places.map((place) => ({
+		stop: venue.stop,
+		town: `${venue.town}, IL`,
+		location: { name: place.n, address: place.a, label: 'Bar' },
+	})),
+);
+
+// Find the bars by their authored label, so added stops and stations do not move them.
+const seedBars = seed.places.flatMap((stop) =>
+	stop.locations
+		.filter((location) => location.label === 'Bar')
+		.map((location) => ({ stop: stop.stop, town: stop.town, location })),
+);
 
 const beforeScavenger = before.scavenger.map((task) => ({
 	id: task.id,
@@ -57,25 +67,47 @@ it('preserves the quick-link destinations', async () => {
 	expect(screen.getByRole('link', { name: /Metra/ })).toHaveAttribute('href', seed.links[1].url);
 });
 
-it('preserves all seed venues', async () => {
-	expect(seed.venues).toEqual(beforeVenues);
-	const { container } = await openTab('venues');
-	const cards = container.querySelectorAll('.venue-card');
-	expect(cards).toHaveLength(seed.venues.length);
-	seed.venues.forEach((venue, index) => {
-		const card = within(cards[index] as HTMLElement);
-		expect(card.getByText(venue.stop)).toBeInTheDocument();
-		expect(card.getByText(venue.town)).toBeInTheDocument();
-		for (const place of venue.places) {
-			expect(card.getByText(place.name)).toBeInTheDocument();
-			expect(card.getByText(place.address)).toBeInTheDocument();
-		}
-	});
+function barRows(container: HTMLElement) {
+	return [...container.querySelectorAll('.location-row')].filter(
+		(row) => row.querySelector('.location-label')?.textContent === 'Bar',
+	) as HTMLElement[];
+}
+
+it('preserves all seed bars', async () => {
+	expect(seedBars).toEqual(beforeBars);
+	const { container } = await openTab('places');
+	const cards = [...container.querySelectorAll('.stop-card')] as HTMLElement[];
+	for (const bar of seedBars) {
+		const card = cards.find((element) => within(element).queryByText(bar.stop));
+		expect(card, `card for ${bar.stop}`).toBeDefined();
+		expect(within(card!).getByText(bar.town)).toBeInTheDocument();
+		expect(within(card!).getByText(bar.location.name)).toBeInTheDocument();
+		expect(within(card!).getByText(bar.location.address)).toBeInTheDocument();
+	}
 });
 
-it('preserves the seed directions destinations', async () => {
-	await openTab('venues');
-	const links = screen.getAllByRole('link', { name: 'Directions' });
+it('shows the Meetup stop and each station before its bar', async () => {
+	const { container } = await openTab('places');
+	const cards = [...container.querySelectorAll('.stop-card')].map((card) => ({
+		stop: card.querySelector('.stop-label')?.textContent,
+		locations: [...card.querySelectorAll('.location-row')].map((row) => [
+			row.querySelector('.location-name')?.textContent,
+			row.querySelector('.location-address')?.textContent,
+			row.querySelector('.location-label')?.textContent,
+		]),
+	}));
+	expect(cards).toEqual([
+		{ stop: 'Meetup', locations: [['Palatine Metra Station', '137 W Wood St', 'Train']] },
+		{ stop: 'Stop 1', locations: [['Mount Prospect Metra Station', '13 E Northwest Hwy', 'Train'], ['Station 34', '34 S Main St', 'Bar']] },
+		{ stop: 'Stop 2', locations: [['Edison Park Metra Station', '6730 N Olmsted Ave', 'Train'], ['Edison Park Inn', '6715 N Olmsted Ave', 'Bar']] },
+		{ stop: 'Stop 3', locations: [['Arlington Heights Metra Station', '45 W Northwest Hwy', 'Train'], ["Eddie's", '10 E Northwest Hwy', 'Bar']] },
+		{ stop: 'Stop 4', locations: [['Palatine Metra Station', '137 W Wood St', 'Train'], ['Tap House Grill', '56 W Wilson St', 'Bar']] },
+	]);
+});
+
+it('preserves the seed bar directions destinations', async () => {
+	const { container } = await openTab('places');
+	const links = barRows(container).map((row) => within(row).getByRole('link', { name: 'Directions' }));
 	expect(links.map((link) => decodeURIComponent(link.getAttribute('href')!))).toEqual([
 		'https://www.google.com/maps/search/?api=1&query=Station 34, 34 S Main St, Mt. Prospect, IL',
 		'https://www.google.com/maps/search/?api=1&query=Edison Park Inn, 6715 N Olmsted Ave, Edison Park, IL',

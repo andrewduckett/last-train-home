@@ -12,15 +12,16 @@ export interface ScheduleEntry {
 export interface QuickLink { label: string; hint?: string; url: string }
 export interface CrawlMap { embed: string; app: string }
 
-export interface VenuePlace {
+export interface StopLocation {
 	name: string;
 	address: string;
+	label?: string;
 }
 
-export interface VenueStop {
+export interface PlaceStop {
 	stop: string;
 	town: string;
-	places: VenuePlace[];
+	locations: StopLocation[];
 }
 
 export interface ScavengerTask {
@@ -35,7 +36,7 @@ export interface CrawlDefinition {
 	line: string;
 	intro?: string;
 	schedule: ScheduleEntry[];
-	venues: VenueStop[];
+	places: PlaceStop[];
 	scavenger: ScavengerTask[];
 	scavengerRules: string[];
 	links: QuickLink[];

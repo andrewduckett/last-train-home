@@ -7,7 +7,7 @@ import type { CrawlDefinition } from './types.js';
 const definition: CrawlDefinition = {
 	appTitle: 'River Walk', line: 'Library → Riverside',
 	schedule: [{ time: '1:00 PM', kind: 'stop', tag: 'Meet', title: 'Library steps', note: 'Bring a camera' }],
-	venues: [{ stop: 'First', town: 'River Town', places: [{ name: 'Canal Cafe', address: '7 River Rd' }] }],
+	places: [{ stop: 'First', town: 'River Town', locations: [{ name: 'Canal Cafe', address: '7 River Rd' }] }],
 	scavenger: [{ id: 'river-photo', title: 'Find a heron', points: 30, description: 'Photograph it from the path' }],
 	scavengerRules: ['Share a bird photo.'],
 	map: { embed: 'https://www.google.com/maps/d/embed?mid=river', app: 'https://www.google.com/maps/d/viewer?mid=river' },
@@ -48,11 +48,11 @@ it('renders the resolved schedule', async () => {
 	expect(screen.queryByRole('link', { name: /Tickets/ })).not.toBeInTheDocument();
 });
 
-it('renders the resolved venues', async () => {
+it('renders the resolved places', async () => {
 	renderRiverWalk();
 	await screen.findByTestId('view-schedule');
-	await fireEvent.click(screen.getByRole('button', { name: /Venues/ }));
-	expect(screen.getByTestId('view-venues')).toHaveTextContent('Canal Cafe');
+	await fireEvent.click(screen.getByRole('button', { name: /Places/ }));
+	expect(screen.getByTestId('view-places')).toHaveTextContent('Canal Cafe');
 	expect(screen.getByText('7 River Rd')).toBeInTheDocument();
 	expect(screen.getByRole('link', { name: 'Directions' })).toHaveAttribute(
 		'href', 'https://www.google.com/maps/search/?api=1&query=Canal%20Cafe%2C%207%20River%20Rd%2C%20River%20Town',
@@ -76,7 +76,7 @@ it('renders the resolved map', async () => {
 	expect(screen.getByTestId('map-viewer-link')).toHaveAttribute('href', definition.map.app);
 });
 
-it('keeps venues and tasks usable when itinerary fields are malformed', async () => {
+it('keeps places and tasks usable when itinerary fields are malformed', async () => {
 	const malformed = { ...definition, schedule: null, links: 'invalid', map: { embed: 'javascript:alert(1)', app: 'https://www.google.com/maps/d/viewer' } };
 	render(Shell, { id: 'river-walk', getCrawl: createCrawlProvider(() => ({ title: 'River Walk', definition: malformed })).getCrawl });
 	expect(await screen.findByTestId('view-schedule')).toHaveTextContent('Schedule unavailable.');
@@ -84,8 +84,8 @@ it('keeps venues and tasks usable when itinerary fields are malformed', async ()
 	await fireEvent.click(screen.getByRole('button', { name: /Map/ }));
 	expect(screen.getByTestId('view-map')).toHaveTextContent('Map unavailable.');
 	expect(screen.queryByTitle('Crawl route map')).not.toBeInTheDocument();
-	await fireEvent.click(screen.getByRole('button', { name: /Venues/ }));
-	expect(screen.getByTestId('view-venues')).toHaveTextContent('Canal Cafe');
+	await fireEvent.click(screen.getByRole('button', { name: /Places/ }));
+	expect(screen.getByTestId('view-places')).toHaveTextContent('Canal Cafe');
 	await fireEvent.click(screen.getByRole('button', { name: /Tasks/ }));
 	expect(screen.getByRole('checkbox', { name: /Find a heron/ })).toBeInTheDocument();
 });
@@ -97,7 +97,7 @@ it('shows a loading state until the provider resolves', async () => {
 	render(Shell, { id: 'river-walk', getCrawl: async (id) => { await pending; return provider.getCrawl(id); } });
 	expect(screen.getByRole('status')).toHaveTextContent('Loading crawl…');
 	expect(screen.queryByRole('heading', { level: 1 })).not.toBeInTheDocument();
-	for (const tab of ['schedule', 'map', 'venues', 'tasks']) {
+	for (const tab of ['schedule', 'map', 'places', 'tasks']) {
 		expect(screen.queryByTestId(`view-${tab}`)).not.toBeInTheDocument();
 	}
 	release();
@@ -113,9 +113,9 @@ it.each([
 	render(Shell, { id: 'river-walk', getCrawl: createCrawlProvider(retrieve).getCrawl });
 	await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent(message));
 	expect(screen.queryByRole('heading', { level: 1 })).not.toBeInTheDocument();
-	for (const tab of ['schedule', 'map', 'venues', 'tasks']) {
+	for (const tab of ['schedule', 'map', 'places', 'tasks']) {
 		await fireEvent.click(screen.getByRole('button', { name: new RegExp(tab, 'i') }));
-		for (const view of ['schedule', 'map', 'venues', 'tasks']) {
+		for (const view of ['schedule', 'map', 'places', 'tasks']) {
 			expect(screen.queryByTestId(`view-${view}`)).not.toBeInTheDocument();
 		}
 	}
@@ -126,7 +126,7 @@ it('reuses one resolved crawl across tab switches', async () => {
 	const provider = createCrawlProvider(() => source);
 	render(Shell, { id: 'river-walk', getCrawl: (id) => { calls.push(id); return provider.getCrawl(id); } });
 	await screen.findByTestId('view-schedule');
-	for (const tab of ['venues', 'tasks', 'map', 'schedule']) {
+	for (const tab of ['places', 'tasks', 'map', 'schedule']) {
 		await fireEvent.click(screen.getByRole('button', { name: new RegExp(tab, 'i') }));
 		expect(screen.getByTestId(`view-${tab}`)).toBeInTheDocument();
 	}

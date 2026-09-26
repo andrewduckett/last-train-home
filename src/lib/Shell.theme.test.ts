@@ -5,7 +5,7 @@ import { createCrawlProvider } from './data/provider.js';
 import type { CrawlResult } from './types.js';
 
 const definition = {
-	appTitle: 'A crawl', line: 'A → B', schedule: [], venues: [], scavenger: [],
+	appTitle: 'A crawl', line: 'A → B', schedule: [], places: [], scavenger: [],
 	scavengerRules: [], map: { embed: '', app: '' }, links: [], albumUrl: '',
 };
 const record = (color?: string) => ({ title: 'A crawl', color, definition });

@@ -95,44 +95,79 @@
       "note": "Tap House Grill"
     }
   ],
-  "venues": [
+  "places": [
+    {
+      "stop": "Meetup",
+      "town": "Palatine, IL",
+      "locations": [
+        {
+          "name": "Palatine Metra Station",
+          "address": "137 W Wood St",
+          "label": "Train"
+        }
+      ]
+    },
     {
       "stop": "Stop 1",
       "town": "Mt. Prospect, IL",
-      "places": [
+      "locations": [
+        {
+          "name": "Mount Prospect Metra Station",
+          "address": "13 E Northwest Hwy",
+          "label": "Train"
+        },
         {
           "name": "Station 34",
-          "address": "34 S Main St"
+          "address": "34 S Main St",
+          "label": "Bar"
         }
       ]
     },
     {
       "stop": "Stop 2",
       "town": "Edison Park, IL",
-      "places": [
+      "locations": [
+        {
+          "name": "Edison Park Metra Station",
+          "address": "6730 N Olmsted Ave",
+          "label": "Train"
+        },
         {
           "name": "Edison Park Inn",
-          "address": "6715 N Olmsted Ave"
+          "address": "6715 N Olmsted Ave",
+          "label": "Bar"
         }
       ]
     },
     {
       "stop": "Stop 3",
       "town": "Arlington Heights, IL",
-      "places": [
+      "locations": [
+        {
+          "name": "Arlington Heights Metra Station",
+          "address": "45 W Northwest Hwy",
+          "label": "Train"
+        },
         {
           "name": "Eddie's",
-          "address": "10 E Northwest Hwy"
+          "address": "10 E Northwest Hwy",
+          "label": "Bar"
         }
       ]
     },
     {
       "stop": "Stop 4",
       "town": "Palatine, IL",
-      "places": [
+      "locations": [
+        {
+          "name": "Palatine Metra Station",
+          "address": "137 W Wood St",
+          "label": "Train"
+        },
         {
           "name": "Tap House Grill",
-          "address": "56 W Wilson St"
+          "address": "56 W Wilson St",
+          "label": "Bar"
         }
       ]
     }
