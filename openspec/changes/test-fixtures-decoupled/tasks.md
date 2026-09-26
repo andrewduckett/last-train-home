@@ -13,7 +13,7 @@
 
 ## 3. Move tests to generated crawls
 
-- [ ] 3.1 Rewrite `src/lib/data/seed.test.ts`: keep the missing-id and unsafe-id cases, and serve a generated record as YAML for the production-binding case. Delete `src/lib/data/yaml-seed.test.ts`. Verify both data test files pass or are gone.
+- [x] 3.1 Rewrite `src/lib/data/seed.test.ts`: keep the missing-id and unsafe-id cases, and serve a generated record as YAML for the production-binding case. Delete `src/lib/data/yaml-seed.test.ts`. Verify both data test files pass or are gone.
 - [ ] 3.2 Replace the seed case in `src/lib/crawl/richText.test.ts` with a built intro of three paragraphs and one bold phrase. Verify the file passes.
 - [ ] 3.3 Rewrite `src/lib/Shell.seed-theme.test.ts` to render `/` and `/<id>` for a generated `amber` record served under `defaultCrawl`. Rename it to describe any crawl. Verify it passes.
 - [ ] 3.4 Move `src/lib/Shell.test.ts` and `src/lib/Shell.layout.test.ts` to `recordProvider` with a generated record. Verify both pass.
