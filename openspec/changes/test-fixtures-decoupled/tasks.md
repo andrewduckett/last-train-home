@@ -33,6 +33,6 @@
 ## 6. Verify
 
 - [x] 6.0 Check once, not as a standing test, that no builder default string appears in any authored crawl, so the builders copy no authored content. Record the result in the PR description.
-- [ ] 6.1 Confirm the theming requirement "Keep shared surfaces consistent across crawls" is covered by the existing test in `src/lib/theme/palette.test.ts`. Record the test name in the PR description.
-- [ ] 6.2 Temporarily change the title, intro, a link, and the color in `static/crawls/cory-trent.yaml`, then run `npm test`. Verify the suite passes, then restore the file.
-- [ ] 6.3 Run `npm test`, `npm run check`, and `npm run build`. Verify all three succeed.
+- [x] 6.1 Confirm the theming requirement "Keep shared surfaces consistent across crawls" is covered by the existing test in `src/lib/theme/palette.test.ts`. Record the test name in the PR description.
+- [x] 6.2 Temporarily change the title, intro, a link, and the color in `static/crawls/cory-trent.yaml`, then run `npm test`. Verify the suite passes, then restore the file.
+- [x] 6.3 Run `npm test`, `npm run check`, and `npm run build`. Verify all three succeed.
