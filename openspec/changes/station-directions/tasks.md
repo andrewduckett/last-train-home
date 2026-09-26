@@ -26,7 +26,7 @@
 ## 3. Docs
 
 - [x] 3.1 In `openspec/discovery.md`, update the "Find the stop" journey step: the tab is now Places, and station directions shipped in #27. Commit as `docs:`.
-- [ ] 3.2 In `openspec/specs/crawl-shell/spec.md`, update the Purpose line so it names Places instead of Venues. Verify with `openspec validate crawl-shell --type spec --strict`. Commit as `docs:`.
+- [x] 3.2 In `openspec/specs/crawl-shell/spec.md`, update the Purpose line so it names Places instead of Venues. Verify with `openspec validate crawl-shell --type spec --strict`. Commit as `docs:`.
 
 ## 4. Verify
 
