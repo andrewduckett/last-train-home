@@ -9,29 +9,27 @@
 	const newTab = opensInNewTab(platform);
 </script>
 
-<div data-testid="view-venues" class="venues-view">
-	{#each definition.venues as venue (venue.stop)}
-		<div class="venue-card">
-			<div class="venue-header">
-				<span class="venue-stop font-display">{venue.stop}</span>
-				<span class="venue-town font-board">{venue.town}</span>
+<div data-testid="view-places" class="places-view">
+	{#each definition.places as stop (stop.stop)}
+		<div class="stop-card">
+			<div class="stop-header">
+				<span class="stop-label font-display">{stop.stop}</span>
+				<span class="stop-town font-board">{stop.town}</span>
 			</div>
-			<div class="venue-places">
-				{#each venue.places as place, idx (place.name)}
-					{#if idx > 0}
-						<div class="or-divider">
-							<span class="or-line"></span>
-							<span class="or-text">OR</span>
-							<span class="or-line"></span>
-						</div>
-					{/if}
-					<div class="place-row">
-						<div class="place-info">
-							<div class="place-name">{place.name}</div>
-							<div class="place-address">{place.address}</div>
+			<div class="stop-locations">
+				{#each stop.locations as location (location.name)}
+					<div class="location-row">
+						<div class="location-info">
+							<div class="location-title">
+								<span class="location-name">{location.name}</span>
+								{#if location.label}
+									<span class="location-label">{location.label}</span>
+								{/if}
+							</div>
+							<div class="location-address">{location.address}</div>
 						</div>
 						<a
-							href={directionsUrl([place.name, place.address, venue.town], platform)}
+							href={directionsUrl([location.name, location.address, stop.town], platform)}
 							target={newTab ? '_blank' : undefined}
 							rel={newTab ? 'noopener noreferrer' : undefined}
 							class="directions-link"
@@ -46,13 +44,13 @@
 </div>
 
 <style>
-	.venues-view {
+	.places-view {
 		display: flex;
 		flex-direction: column;
 		gap: 16px;
 	}
 
-	.venue-card {
+	.stop-card {
 		border-radius: 16px;
 		overflow: hidden;
 		background: var(--surface);
@@ -60,7 +58,7 @@
 		box-shadow: 0 1px 2px var(--shadow);
 	}
 
-	.venue-header {
+	.stop-header {
 		display: flex;
 		align-items: baseline;
 		gap: 8px;
@@ -68,44 +66,23 @@
 		background: var(--board);
 	}
 
-	.venue-stop {
+	.stop-label {
 		font-weight: 700;
 		font-size: 17px;
 		letter-spacing: 0.04em;
 		color: var(--board-accent);
 	}
 
-	.venue-town {
+	.stop-town {
 		font-size: 13px;
 		color: var(--board-muted);
 	}
 
-	.venue-places {
+	.stop-locations {
 		padding: 8px;
 	}
 
-	.or-divider {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		padding: 4px 12px;
-		margin: 4px 0;
-	}
-
-	.or-line {
-		height: 1px;
-		flex: 1;
-		background: var(--line);
-	}
-
-	.or-text {
-		font-size: 11px;
-		font-weight: 700;
-		letter-spacing: 0.15em;
-		color: var(--muted);
-	}
-
-	.place-row {
+	.location-row {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -113,11 +90,26 @@
 		padding: 10px 12px;
 	}
 
-	.place-info {
+	/* A plain rule between rows; locations at one stop are not alternatives. */
+	.location-row + .location-row {
+		border-top: 1px solid var(--line);
+	}
+
+	.location-info {
 		min-width: 0;
 	}
 
-	.place-name {
+	.location-title {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 4px 8px;
+		min-width: 0;
+	}
+
+	.location-name {
+		min-width: 0;
+		max-width: 100%;
 		font-weight: 600;
 		font-size: 16px;
 		color: var(--ink);
@@ -126,7 +118,19 @@
 		white-space: nowrap;
 	}
 
-	.place-address {
+	.location-label {
+		flex: 0 0 auto;
+		font-size: 11px;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		line-height: 1.4;
+		padding: 0 7px;
+		border-radius: 999px;
+		color: var(--muted);
+		border: 1px solid var(--line);
+	}
+
+	.location-address {
 		font-size: 13px;
 		color: var(--muted);
 	}

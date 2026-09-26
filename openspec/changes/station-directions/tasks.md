@@ -6,8 +6,8 @@
 
 ## 2. Seed, types, and the Places tab
 
-- [ ] 2.1 Rewrite the seed's venues in `static/crawls/cory-trent.yaml` and `tests/fixtures/cory-trent.json` as `places`, following the design's seed table. Use the station names and addresses exactly as the design lists them. Verify with `npm run validate:crawls` and `npx vitest run src/lib/data`.
-- [ ] 2.2 Rename `src/lib/VenuesView.svelte` and its test to `PlacesView` with `git mv`. Update the tests first, one behavior each:
+- [x] 2.1 Rewrite the seed's venues in `static/crawls/cory-trent.yaml` and `tests/fixtures/cory-trent.json` as `places`, following the design's seed table. Use the station names and addresses exactly as the design lists them. Verify with `npm run validate:crawls` and `npx vitest run src/lib/data`.
+- [x] 2.2 Rename `src/lib/VenuesView.svelte` and its test to `PlacesView` with `git mv`. Update the tests first, one behavior each:
   - A labeled location shows its label as a tag, and an unlabeled one shows no tag.
   - Locations at one stop have no "OR" divider.
   - A single-location stop renders its card and link.
@@ -16,7 +16,7 @@
   - A location named `Pub & Grill #2?` keeps its whole name in the query parameter.
 
   In `Shell.test.ts`, expect a Places tab with the 📍 icon and no Venues tab. Move `Shell.provider.test.ts` and the inline crawls in `CrawlRoute.test.ts`, `Shell.theme.test.ts`, `Shell.info.test.ts`, and `provider.test.ts` to `places`. In `Shell.parity.test.ts`, use the design's `Bar` label filter against the frozen snapshot, and add a test for the Meetup stop and the four `Train` rows. Verify that these tests fail against the current code.
-- [ ] 2.3 Implement the design:
+- [x] 2.3 Implement the design:
   - `StopLocation` and `PlaceStop` types, and `CrawlDefinition.places`, in `src/lib/types.ts`.
   - `PlacesView.svelte`, with a `view-places` test id, a tag for labels, no divider, and `directionsUrl([location.name, location.address, stop.town], platform)`.
   - The Places tab in `Shell.svelte`: id `places`, label and title "Places", icon 📍.

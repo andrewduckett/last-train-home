@@ -14,11 +14,19 @@ describe('Shell navigation', () => {
 	it('tapping a tab switches the view and marks it active', async () => {
 		render(Shell, seedShellProps);
 		await screen.findByTestId('view-schedule');
-		const venuesBtn = screen.getByRole('button', { name: /venues/i });
-		await fireEvent.click(venuesBtn);
-		expect(venuesBtn).toHaveAttribute('aria-current', 'page');
-		expect(screen.queryByTestId('view-venues')).not.toBeNull();
+		const placesBtn = screen.getByRole('button', { name: /places/i });
+		await fireEvent.click(placesBtn);
+		expect(placesBtn).toHaveAttribute('aria-current', 'page');
+		expect(screen.queryByTestId('view-places')).not.toBeNull();
 		expect(screen.queryByTestId('view-schedule')).toBeNull();
+	});
+
+	it('shows a Places tab with a pin icon in place of Venues', async () => {
+		render(Shell, seedShellProps);
+		await screen.findByTestId('view-schedule');
+		const placesBtn = screen.getByRole('button', { name: /places/i });
+		expect(placesBtn.querySelector('.nav-icon')).toHaveTextContent('📍');
+		expect(screen.queryByRole('button', { name: /venues/i })).not.toBeInTheDocument();
 	});
 
 	it('tapping a tab scrolls to top', async () => {

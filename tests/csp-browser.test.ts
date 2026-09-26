@@ -57,11 +57,11 @@ describe('browser boot and tab switching', () => {
 		expect(screen.getByTestId('view-schedule')).toBeInTheDocument();
 	});
 
-	it('switching to Venues tab shows the venues view', async () => {
+	it('switching to Places tab shows the places view', async () => {
 		render(Shell, seedShellProps);
 		await screen.findByTestId('view-schedule');
-		await fireEvent.click(screen.getByRole('button', { name: /venues/i }));
-		expect(screen.getByTestId('view-venues')).toBeInTheDocument();
+		await fireEvent.click(screen.getByRole('button', { name: /places/i }));
+		expect(screen.getByTestId('view-places')).toBeInTheDocument();
 		expect(screen.queryByTestId('view-schedule')).toBeNull();
 	});
 

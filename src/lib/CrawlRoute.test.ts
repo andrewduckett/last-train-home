@@ -11,7 +11,7 @@ function record(title: string) {
 			appTitle: title,
 			line: 'A → B',
 			schedule: [],
-			venues: [],
+			places: [],
 			scavenger: [],
 			scavengerRules: [],
 			map: { embed: 'https://www.google.com/maps/embed', app: 'https://www.google.com/maps/d/viewer' },

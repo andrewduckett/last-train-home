@@ -4,7 +4,7 @@
 	import type { CrawlResult } from './types.js';
 	import ScheduleView from './ScheduleView.svelte';
 	import MapView from './MapView.svelte';
-	import VenuesView from './VenuesView.svelte';
+	import PlacesView from './PlacesView.svelte';
 	import TasksView from './TasksView.svelte';
 	import InfoView from './InfoView.svelte';
 	import { resolveLinks } from './crawl/urls.js';
@@ -33,7 +33,7 @@
 	const BASE_TABS = [
 		{ id: 'schedule', label: 'Schedule', icon: '🕑' },
 		{ id: 'map', label: 'Map', icon: '🗺️' },
-		{ id: 'venues', label: 'Venues', icon: '🍺' },
+		{ id: 'places', label: 'Places', icon: '📍' },
 		{ id: 'tasks', label: 'Tasks', icon: '✅' },
 	] as const;
 	const INFO_TAB = { id: 'info', label: 'Info', icon: 'ℹ️' } as const;
@@ -45,7 +45,7 @@
 	const TITLES: Record<TabId, string> = {
 		schedule: 'Schedule',
 		map: 'Route Map',
-		venues: 'Venues',
+		places: 'Places',
 		tasks: 'Tasks',
 		info: 'Info',
 	};
@@ -82,8 +82,8 @@
 				<ScheduleView crawl={result.crawl} />
 			{:else if activeTab === 'map'}
 				<MapView crawl={result.crawl} />
-			{:else if activeTab === 'venues'}
-				<VenuesView crawl={result.crawl} />
+			{:else if activeTab === 'places'}
+				<PlacesView crawl={result.crawl} />
 			{:else if activeTab === 'tasks' && checksController}
 				<TasksView crawl={result.crawl} controller={checksController} />
 			{:else if activeTab === 'info' && hasInfo}
