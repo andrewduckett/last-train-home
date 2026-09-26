@@ -36,3 +36,4 @@
 - [x] 6.1 Confirm the theming requirement "Keep shared surfaces consistent across crawls" is covered by the existing test in `src/lib/theme/palette.test.ts`. Record the test name in the PR description.
 - [x] 6.2 Temporarily change the title, intro, a link, and the color in `static/crawls/cory-trent.yaml`, then run `npm test`. Verify the suite passes, then restore the file.
 - [x] 6.3 Run `npm test`, `npm run check`, and `npm run build`. Verify all three succeed.
+- [x] 6.4 Replace example text copied from the live crawl in older inline tests (`InfoView`, `directions`, `richText`) and in the `Crawl introduction` scenarios with invented text. Verify a search of tests and delta specs finds no authored names, and the affected tests pass.

@@ -108,7 +108,7 @@ it('keeps a run of more than 3 asterisks entirely literal', () => {
 });
 
 it('keeps an opening marker literal when no closer follows', () => {
-	expect(parseRichText("**Don't forget")).toEqual(oneLineParagraph(["**Don't forget", false, false]));
+	expect(parseRichText("**Bring a jacket")).toEqual(oneLineParagraph(["**Bring a jacket", false, false]));
 });
 
 it('keeps a closing-shaped marker literal when no opener precedes it', () => {

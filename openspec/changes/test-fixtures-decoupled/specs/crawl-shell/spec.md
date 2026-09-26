@@ -186,8 +186,8 @@ The Info view SHALL show all other markup as literal text, including HTML tags. 
 
 #### Scenario: Markers inside a word render
 
-- **WHEN** an introduction contains `Cory*and*Trent`
-- **THEN** Info shows "and" in italic between "Cory" and "Trent", without asterisks
+- **WHEN** an introduction contains `Harbor*and*Mill`
+- **THEN** Info shows "and" in italic between "Harbor" and "Mill", without asterisks
 
 #### Scenario: Spaced asterisks stay literal
 
@@ -201,8 +201,8 @@ The Info view SHALL show all other markup as literal text, including HTML tags. 
 
 #### Scenario: An unmatched marker stays literal
 
-- **WHEN** an introduction contains `**Don't forget` with no closing marker
-- **THEN** Info shows `**Don't forget` as written, and the rest of the introduction renders
+- **WHEN** an introduction contains `**Bring a jacket` with no closing marker
+- **THEN** Info shows `**Bring a jacket` as written, and the rest of the introduction renders
 
 #### Scenario: Markers do not pair across lines
 
