@@ -7,7 +7,7 @@ function source(change: (definition: Record<string, any>) => void = () => {}) {
 		appTitle: 'Walk', line: 'Park → Cafe',
 		schedule: [{ kind: 'move', time: 'Noon', title: 'To cafe', mode: '15 min walk' }],
 		links: [], map: { embed: 'https://www.google.com/maps/d/embed?mid=x', app: 'https://www.google.com/maps/d/viewer?mid=x' },
-		venues: [{ stop: 'Cafe', town: 'Town', places: [{ name: 'Cafe', address: '1 Main' }] }],
+		places: [{ stop: 'Cafe', town: 'Town', locations: [{ name: 'Cafe', address: '1 Main' }] }],
 		scavenger: [{ id: 'photo', title: 'Photo', points: 10, description: 'Share it' }], scavengerRules: ['Share.'],
 	};
 	change(definition);
