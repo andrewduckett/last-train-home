@@ -12,22 +12,22 @@
 
 ## 3. Shell icons and colors (test-first)
 
-- [ ] 3.1 Run `rg -n "🕑|📍|✅|ℹ️|🚆" src tests`, and list each test that matches an emoji.
-- [ ] 3.2 Add failing Shell tests for the first, second, fourth, and fifth rows of the design's Verification table:
+- [x] 3.1 Run `rg -n "🕑|📍|✅|ℹ️|🚆" src tests`, and list each test that matches an emoji.
+- [x] 3.2 Add failing Shell tests for the first, second, fourth, and fifth rows of the design's Verification table:
   - each tab shows its `data-icon`, and the tab bar holds no emoji;
   - the header shows `train`, and the header holds no emoji;
   - no icon span has an inline style other than its size, and each SVG uses `currentColor`;
   - `getByRole('button', { name })` finds each tab by its exact label.
 
   Change the Places test in `Shell.test.ts` to expect `[data-icon="map-pin"]`. Verify that the new tests fail against the emoji shell.
-- [ ] 3.3 Add failing checks to `tests/static-build.test.ts`, following the design's Verification table:
+- [x] 3.3 Add failing checks to `tests/static-build.test.ts`, following the design's Verification table:
   - the built CSS gives the nav button `color: var(--board-muted)`, the active button `color: var(--board-accent)`, and the header icon `color: var(--board-ink)`;
   - no nav rule sets `opacity` below 1;
   - `build/` holds no copy of the five icon files;
   - an icon's path data appears in the JavaScript bundle.
 
   Run `npm run build`, and verify that the checks fail against the current shell.
-- [ ] 3.4 Update `src/lib/Shell.svelte` as design decision 3 describes. Swap each tab's emoji for an icon name, and render `Icon` in the tab and the header. Move the color onto `.nav-btn` and `.nav-btn-active`, and remove the inline opacity. Give `.header-icon` the board ink color. Run `npm run build`, then verify that `npm test` passes. Commit 3.2 to 3.4 as `feat:`.
+- [x] 3.4 Update `src/lib/Shell.svelte` as design decision 3 describes. Swap each tab's emoji for an icon name, and render `Icon` in the tab and the header. Move the color onto `.nav-btn` and `.nav-btn-active`, and remove the inline opacity. Give `.header-icon` the board ink color. Run `npm run build`, then verify that `npm test` passes. Commit 3.2 to 3.4 as `feat:`.
 
 ## 4. Verify
 
