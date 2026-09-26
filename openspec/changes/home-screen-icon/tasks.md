@@ -20,12 +20,12 @@
 
   Run `npm run build`, and verify that the new tests fail.
 - [x] 2.2 In `package.json`, add `generate:icons`, make `dev` run it after `generate:palette`, and make `build` run `node scripts/generate-app-icons.mjs --check` first. Add the four head tags from design decision 4 to `src/app.html`. Run `npm run build`, then verify that `npm test` passes, including the unchanged CSP tests. Commit as `feat:`.
-- [ ] 2.3 Prove the build gate. Append one character to `static/favicon.svg`, run `npm run build`, and confirm that it fails before Vite runs and names `favicon.svg`. Restore the file with `git checkout static/favicon.svg`, and confirm that `npm run build` passes.
+- [x] 2.3 Prove the build gate. Append one character to `static/favicon.svg`, run `npm run build`, and confirm that it fails before Vite runs and names `favicon.svg`. Restore the file with `git checkout static/favicon.svg`, and confirm that `npm run build` passes.
 
 ## 3. Verify
 
-- [ ] 3.1 Run `npm test`, `npm run check`, and `npm run build`, and confirm that all three pass.
-- [ ] 3.2 Render the five app icon files at their real sizes in headless Chrome, with the favicon at 16 and 32 pixels. Check that the train is centered, that the maskable train sits inside the 80% safe-zone circle, and that the favicon reads at 16 pixels. Show the user the render.
+- [x] 3.1 Run `npm test`, `npm run check`, and `npm run build`, and confirm that all three pass.
+- [x] 3.2 Render the five app icon files at their real sizes in headless Chrome, with the favicon at 16 and 32 pixels. Check that the train is centered, that the maskable train sits inside the 80% safe-zone circle, and that the favicon reads at 16 pixels. Show the user the render.
 - [ ] 3.3 Ask the user before uploading. With their yes, run `npx wrangler versions upload` and give them the preview URL. Verify that the preview serves `/manifest.webmanifest` and `/apple-touch-icon.png` over HTTPS.
 - [ ] 3.4 Ask the user to run the device checks on the preview URL, and wait for their results:
   - **iPhone, Safari**: open `/cory-trent`, then Share → Add to Home Screen. Confirm the train icon, then open it. Confirm there is no address bar, that the header text sits below the status bar, and that the app shows `/cory-trent`.
