@@ -20,8 +20,8 @@
 
 ## 3. Content Security Policy (test-first)
 
-- [ ] 3.1 In `tests/csp-build.test.ts`, add failing checks: the built policy's `frame-src` is exactly `'none'`, and no directive names `https://www.google.com`. Run `npm run build`, then verify that the checks fail against today's policy.
-- [ ] 3.2 In `svelte.config.js`, set `'frame-src': ['none']`. Run `npm run build`, and verify that `tests/csp-build.test.ts` passes. Commit as `feat:`.
+- [x] 3.1 In `tests/csp-build.test.ts`, add failing checks: the built policy's `frame-src` is exactly `'none'`, and no directive names `https://www.google.com`. Run `npm run build`, then verify that the checks fail against today's policy.
+- [x] 3.2 In `svelte.config.js`, set `'frame-src': ['none']`. Run `npm run build`, and verify that `tests/csp-build.test.ts` passes. Commit as `feat:`.
 
 ## 4. Docs
 

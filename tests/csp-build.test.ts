@@ -19,6 +19,7 @@ let metaCspContent = '';
 let scriptSrcDirective = '';
 let inlineScripts: string[] = [];
 let cspHashes: string[] = [];
+let cspDirectives: Record<string, string[]> = {};
 let metaPosition = -1;
 let firstScriptPosition = -1;
 
@@ -77,6 +78,7 @@ beforeAll(() => {
 			const [key, ...vals] = part.trim().split(/\s+/);
 			if (key) directives[key.toLowerCase()] = vals;
 		});
+		cspDirectives = directives;
 
 		// Effective script-src = script-src || script-src-elem || default-src (folded together)
 		const effectiveScriptSrc = [
@@ -127,6 +129,15 @@ describe('build-output CSP assertions', () => {
 	it('build/_headers does NOT contain script-src', () => {
 		const headers = readFileSync(HEADERS_FILE, 'utf8');
 		expect(headers).not.toMatch(/script-src/);
+	});
+
+	it('the policy allows no frames', () => {
+		expect(cspDirectives['frame-src']).toEqual(["'none'"]);
+	});
+
+	it('the policy names no map provider', () => {
+		const sources = Object.values(cspDirectives).flat();
+		expect(sources.filter((source) => source.includes('www.google.com'))).toEqual([]);
 	});
 
 	it('index.html has a <meta> CSP tag', () => {
