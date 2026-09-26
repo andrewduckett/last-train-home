@@ -31,5 +31,5 @@
 ## 5. Verify
 
 - [ ] 5.1 Run `npm test`, `npm run check`, and `npm run build`, and confirm all three pass.
-- [ ] 5.2 Run `rg -n -i "MapView|CrawlMap|resolveMap|isMap(Embed|Viewer)Url|frame-src|www\.google\.com/maps/d/embed" src static tests svelte.config.js`. Confirm that the only hits are the new CSP checks, the retired-`map` validation and its tests, and the frozen `cory-trent-before.json`.
+- [ ] 5.2 Run `rg -n -i "MapView|CrawlMap|resolveMap|isMap(Embed|Viewer)Url|frame-src|www\.google\.com/maps/d/embed" src static tests svelte.config.js`. Confirm that the only hits are the `frame-src 'none'` line in `svelte.config.js`, the new CSP checks, the retired-`map` validation and its tests, and the frozen `cory-trent-before.json`.
 - [ ] 5.3 Run `npm run preview` and open `cory-trent` in Chrome. Confirm these things: the tab bar shows Schedule, Places, Tasks, and Info, with no Map tab; Info lists Ventra, Metra, and Route map in that order; Route map opens the My Maps viewer in a new tab; the served policy has `frame-src 'none'`.
