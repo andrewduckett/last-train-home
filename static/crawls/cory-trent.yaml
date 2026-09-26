@@ -131,6 +131,10 @@ definition:
       title: Local Tap Takeover
       points: 10
       description: Order a drink brewed in, from, or named for the town you're in.
+    - id: sh-service
+      title: Sevice with a Smile!
+      points: 10
+      description: Take a selfie with a Bartender or Server.
     - id: sh-stranger
       title: Cheers to a Stranger
       points: 10
@@ -148,7 +152,7 @@ definition:
       points: 25
       description: Have a fellow crawler sneak a photobomb into a stranger's photo.
   scavengerRules:
-    - Every challenge only counts as a photo posted to the shared group album.
+    - Share your tasks in the shared Google Photo Album.
     - Tick each one off here once you've uploaded it to see your tally.
   links:
     - label: Ventra
