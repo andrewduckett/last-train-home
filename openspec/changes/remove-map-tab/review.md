@@ -43,7 +43,7 @@ VERDICT: APPROVE_WITH_CHANGES
 
 ## Required Changes (if APPROVE WITH CHANGES)
 
-CHANGES_APPLIED: no
+CHANGES_APPLIED: yes
 
 1. In `specs/crawl-shell/spec.md`, remove the phrase ", in that order" from the `Tab navigation` requirement to avoid scope creep.
 2. In `specs/crawl-authoring/spec.md`, remove the narrative justification ", because the app no longer embeds a map" from the `Validate schedule and quick-link fields` requirement text.
@@ -55,4 +55,9 @@ CHANGES_APPLIED: no
 
 ## Rebuttals
 
-None.
+- Required Changes 1, 2, 4, and 5: applied. Accepted by reviewer: the re-check confirmed each one.
+- Required Change 7, author versus organizer: applied. "organizer" appeared only in `specs/crawl-shell/spec.md`, and both occurrences now say "author". Accepted by reviewer.
+- Required Change 3 (passive "authorized by one of those hashes"): rebutted. That sentence belongs to the unmodified requirement "Content Security Policy authorizes scripts by origin or build hash", and it does not appear in this change's `deployment` delta. Accepted by reviewer.
+- Required Change 6 (filler sentences): rebutted. The schema's design instruction asks the Context section to point to the proposal for motivation, and the ADR manifest template requires "ADR review completed for this change" word for word. Accepted by reviewer.
+- Required Change 7, Crawler versus participant: rebutted. Proposals use the discovery persona name, and specs keep their established "participant". Accepted by reviewer.
+- Moderate (keep `map` and render `map.app` as a link): rebutted. The product owner chose to remove `definition.map`, a map-specific field does not belong in a generic schema, and only one crawl needs migrating. Accepted by reviewer.
