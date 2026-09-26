@@ -2,8 +2,8 @@
 
 - [x] 1.1 Write `tests/fixtures/crawl-builders.test.ts` first. It checks that `buildRecord()` passes `validateCrawlSource`, that its defaults name no transit agency, that overrides replace only the given fields, and that each call returns a fresh object. Verify it fails.
 - [x] 1.2 Add `tests/fixtures/crawl-builders.ts` with `buildDefinition`, `buildRecord`, and the item builders from design D1. Verify 1.1 passes.
-- [ ] 1.3 Write tests for `recordProvider`, `toCrawlYaml`, and `yamlProvider`: a known id resolves to found with the given content, and an unknown id returns not-found. Verify they fail.
-- [ ] 1.4 Add `tests/fixtures/crawl-provider.ts` with the three helpers from design D2. Verify 1.3 passes.
+- [x] 1.3 Write tests for `recordProvider`, `toCrawlYaml`, and `yamlProvider`: a known id resolves to found with the given content, and an unknown id returns not-found. Verify they fail.
+- [x] 1.4 Add `tests/fixtures/crawl-provider.ts` with the three helpers from design D2. Verify 1.3 passes.
 
 ## 2. Contract check for authored crawls
 
