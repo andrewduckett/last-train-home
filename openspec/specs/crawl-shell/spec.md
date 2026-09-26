@@ -2,13 +2,18 @@
 
 ## Purpose
 
-The crawl shell is the phone screen a participant uses on the day. It renders one crawl across Schedule, Map, Places, and Tasks. An Info tab appears when the crawl has an introduction or a valid quick link.
+The crawl shell is the phone screen a participant uses on the day. It renders one crawl across Schedule, Places, and Tasks. An Info tab appears when the crawl has an introduction or a valid quick link.
 
 ## Requirements
 
-### Requirement: Four-tab navigation
+### Requirement: Tab navigation
 
-The shell SHALL always present Schedule, Map, Places, and Tasks. It SHALL add Info after those tabs only when the crawl has an introduction string with non-whitespace text or a valid quick link. The shell SHALL show one view at a time. It SHALL open on Schedule and mark the active tab. Each new crawl selection SHALL reset the active tab to Schedule.
+The shell SHALL always present Schedule, Places, and Tasks. It SHALL NOT present a Map tab. It SHALL add Info after those tabs only when the crawl has an introduction string with non-whitespace text or a valid quick link. The shell SHALL show one view at a time. It SHALL open on Schedule and mark the active tab. Each new crawl selection SHALL reset the active tab to Schedule.
+
+#### Scenario: The shell has no Map tab
+
+- **WHEN** a participant opens any crawl
+- **THEN** the tab bar shows Schedule, Places, and Tasks, and no Map tab
 
 #### Scenario: App opens on the Schedule tab
 
@@ -28,17 +33,17 @@ The shell SHALL always present Schedule, Map, Places, and Tasks. It SHALL add In
 #### Scenario: A crawl has Info content
 
 - **WHEN** a crawl has an introduction string with non-whitespace text or at least one valid quick link
-- **THEN** the shell shows Info as its fifth tab
+- **THEN** the shell shows Info as its fourth tab
 
 #### Scenario: A crawl has no Info content
 
 - **WHEN** a crawl has no introduction string with non-whitespace text and no valid quick link
-- **THEN** the shell shows only Schedule, Map, Places, and Tasks
+- **THEN** the shell shows only Schedule, Places, and Tasks
 
 #### Scenario: A blank or malformed introduction does not create Info
 
 - **WHEN** a crawl has a whitespace-only or non-string introduction and no valid quick links
-- **THEN** the shell shows only Schedule, Map, Places, and Tasks
+- **THEN** the shell shows only Schedule, Places, and Tasks
 
 #### Scenario: A new crawl omits Info while Info is active
 
@@ -222,9 +227,9 @@ The shell SHALL persist each crawl's checklist on the device under `crawl-checks
 - **WHEN** a task id matches an object prototype property name such as `toString` or `constructor`
 - **THEN** the task is checked only if its own saved value is literal `true`
 
-### Requirement: Quick links and embedded map
+### Requirement: Quick links
 
-The Info view SHALL show the crawl's valid quick links in authored order. Each link SHALL show its label and optional hint, and open its destination in a new browser tab. A missing, invalid, or empty link list SHALL leave no link cards. The view SHALL omit a link without required text or with an unsafe URL while keeping valid siblings. The Schedule view SHALL start with the timeline and SHALL NOT show link cards. An album link SHALL use the same format and behavior as any other quick link. The Map view SHALL embed the configured Google map and link to its viewer URL. A missing or invalid map SHALL show an unavailable message without a frame or viewer link. The view SHALL NOT create a clickable link or frame from an unsafe URL. Whether the viewer link opens a native app depends on the participant's device.
+The Info view SHALL show the crawl's valid quick links in authored order. Each link SHALL show its label and optional hint, and open its destination in a new browser tab. A missing, invalid, or empty link list SHALL leave no link cards. The view SHALL omit a link without required text or with an unsafe URL while keeping valid siblings. The Schedule view SHALL start with the timeline and SHALL NOT show link cards. An album link SHALL use the same format and behavior as any other quick link. The view SHALL NOT create a clickable link from an unsafe URL. A route map is an ordinary quick link.
 
 #### Scenario: Quick link opens externally
 
@@ -253,27 +258,22 @@ The Info view SHALL show the crawl's valid quick links in authored order. Each l
 
 #### Scenario: Album link uses the common link format
 
-- **WHEN** an organizer adds a group album to the crawl's link list
+- **WHEN** an author adds a group album to the crawl's link list
 - **THEN** Info shows it in authored order with the same behavior as other links
 - **THEN** Tasks shows no separate album button
 
-#### Scenario: Map view shows the embedded map and viewer link
-
-- **WHEN** the Map view receives valid Google map URLs
-- **THEN** it embeds the configured map and links to the configured viewer URL
-
 #### Scenario: A URL is unsafe at runtime
 
-- **WHEN** a quick link or map URL uses an unsafe scheme or unsupported map origin
+- **WHEN** a quick link URL uses an unsafe scheme
 - **THEN** Info omits the unsafe quick link and keeps valid sibling links
-- **THEN** the Map view shows no frame or viewer link for an unsafe map URL
 
-#### Scenario: The map is missing at runtime
 
-- **WHEN** the resolved crawl has no map object
-- **THEN** the Map view shows an unavailable message without a frame or viewer link
+#### Scenario: A route map is a quick link
 
-### Requirement: Phone-first layout
+- **WHEN** an author adds a route map URL to the crawl's link list
+- **THEN** Info shows it as a quick link that opens in a new tab, and no view embeds it in a frame
+
+### Requirement: Phone-first shell layout
 
 The shell SHALL target a portrait phone used one-handed. It SHALL keep the header and bottom navigation fixed while content scrolls, respect safe-area insets, and make each tab and each checklist row a full-row or full-cell tap target. It SHALL follow the system light or dark setting through `prefers-color-scheme`, with no in-app toggle, and reduce motion when the device requests it.
 
@@ -287,12 +287,12 @@ The shell SHALL target a portrait phone used one-handed. It SHALL keep the heade
 - **WHEN** the device requests reduced motion
 - **THEN** the shell disables its transitions and animations
 
-#### Scenario: Five tabs fit a portrait phone
+#### Scenario: Four tabs fit a portrait phone
 
 - **WHEN** the Info tab is visible at a 320 CSS pixel viewport width
 - **THEN** every label is fully visible, every tab has a tap target of at least 44 by 44 CSS pixels, and the page has no horizontal overflow
 
-### Requirement: Resolve the crawl before rendering views
+### Requirement: Resolve the crawl before a view renders
 
 The route SHALL give the shell its selected logical id. The shell SHALL obtain that crawl from the provider for each route selection. It SHALL pass the resolved crawl to the active view. A view SHALL NOT call the provider. While a result is pending, the shell SHALL show a loading state and SHALL NOT mount the views. For a found result, it SHALL render that crawl. For not-found, invalid, or error, it SHALL show a fallback and SHALL NOT mount views. A stale result SHALL NOT replace a newer route selection.
 
@@ -311,10 +311,10 @@ The route SHALL give the shell its selected logical id. The shell SHALL obtain t
 - **WHEN** the resolved shell opens the Tasks tab
 - **THEN** the view lists each seed scavenger task with its points
 
-#### Scenario: The Map tab shows the seed map URLs
+#### Scenario: The Info tab shows the seed route map link
 
-- **WHEN** the resolved shell opens the Map tab
-- **THEN** the embed src and viewer href match the seed map URLs
+- **WHEN** the resolved shell opens the Info tab for cory-trent
+- **THEN** it shows a Route map link whose destination is the seed's My Maps viewer URL
 
 #### Scenario: The Info tab shows the seed content
 

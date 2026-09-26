@@ -125,9 +125,9 @@ Build validation SHALL NOT change the runtime provider contract. The provider SH
 - **WHEN** the runtime provider resolves an authored record
 - **THEN** it applies the existing identity checks without repeating definition validation
 
-### Requirement: Validate generic itinerary fields
+### Requirement: Validate schedule and quick-link fields
 
-The build SHALL require a schedule list, a quick-link list, and a map in each crawl definition. Each schedule entry SHALL have a supported kind, a non-empty time, and a non-empty title. A move SHALL have a non-empty, author-written mode. Every kind SHALL allow an optional note or tag, which SHALL be non-empty when present. Each link SHALL have a non-empty label, an optional hint, and an HTTP or HTTPS URL. The parsed origin of each map URL SHALL equal `https://www.google.com`. Embed paths SHALL equal `/maps/d/embed` or `/maps/embed`, or sit beneath those path segments. Viewer paths SHALL begin `/maps/` and SHALL NOT be embed paths. Validation SHALL identify the record and field when these rules fail.
+The build SHALL require a schedule list and a quick-link list in each crawl definition. Each schedule entry SHALL have a supported kind, a non-empty time, and a non-empty title. A move SHALL have a non-empty, author-written mode. Every kind SHALL allow an optional note or tag, which SHALL be non-empty when present. Each link SHALL have a non-empty label, an optional hint, and an HTTP or HTTPS URL. The build SHALL reject a `map` field in the definition. Its error SHALL tell the author to link a route map from `links`. Validation SHALL identify the record and field when these rules fail.
 
 #### Scenario: A walking crawl has no quick links
 
@@ -149,21 +149,6 @@ The build SHALL require a schedule list, a quick-link list, and a map in each cr
 - **WHEN** an entry uses `arrive`, `depart`, or `warning`
 - **THEN** build validation fails and identifies the entry's kind field
 
-#### Scenario: A map points outside the allowed provider
-
-- **WHEN** a map embed URL is not an HTTPS URL on `www.google.com`
-- **THEN** build validation fails and identifies the map's embed field
-
-#### Scenario: Map URLs have reversed roles
-
-- **WHEN** a record puts a Google Maps viewer URL in `map.embed` or an embed URL in `map.app`
-- **THEN** build validation fails and identifies the field with the wrong role
-
-#### Scenario: A map URL uses a non-default port
-
-- **WHEN** a map URL uses `https://www.google.com:444` as its origin
-- **THEN** build validation fails and identifies the offending map field
-
 #### Scenario: A link uses an unsafe scheme
 
 - **WHEN** a quick link uses a URL scheme other than HTTP or HTTPS
@@ -171,8 +156,18 @@ The build SHALL require a schedule list, a quick-link list, and a map in each cr
 
 #### Scenario: An authored container is missing
 
-- **WHEN** a record lacks a schedule list, a link list, or a map object
+- **WHEN** a record lacks a schedule list or a link list
 - **THEN** build validation fails and identifies the missing field
+
+#### Scenario: The build rejects a leftover map
+
+- **WHEN** an authored crawl contains `definition.map`
+- **THEN** build validation fails, identifies `definition.map`, and says to link a route map from `links`
+
+#### Scenario: The build accepts a crawl without a map
+
+- **WHEN** an otherwise valid crawl has no `map` field
+- **THEN** build validation accepts the crawl
 
 ### Requirement: Validate optional crawl introduction
 

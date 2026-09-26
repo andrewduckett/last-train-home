@@ -14,7 +14,7 @@ const config = {
 				'style-src': ['self', 'unsafe-inline'],
 				'img-src': ['self', 'data:'],
 				'font-src': ['self'],
-				'frame-src': ['https://www.google.com'],
+				'frame-src': ['none'],
 				'base-uri': ['none'],
 				'object-src': ['none'],
 			},

@@ -29,11 +29,18 @@ describe('Shell navigation', () => {
 		expect(screen.queryByRole('button', { name: /venues/i })).not.toBeInTheDocument();
 	});
 
+	it('shows no Map tab', async () => {
+		render(Shell, seedShellProps);
+		await screen.findByTestId('view-schedule');
+		expect(screen.getAllByRole('button').map((button) => button.querySelector('.nav-label')?.textContent?.trim()).filter(Boolean)).toEqual(['Schedule', 'Places', 'Tasks', 'Info']);
+		expect(screen.queryByRole('button', { name: /map/i })).not.toBeInTheDocument();
+	});
+
 	it('tapping a tab scrolls to top', async () => {
 		const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
 		render(Shell, seedShellProps);
 		await screen.findByTestId('view-schedule');
-		await fireEvent.click(screen.getByRole('button', { name: /map/i }));
+		await fireEvent.click(screen.getByRole('button', { name: /tasks/i }));
 		expect(scrollTo).toHaveBeenCalledWith(0, 0);
 		scrollTo.mockRestore();
 	});

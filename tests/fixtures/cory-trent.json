@@ -230,10 +230,11 @@
       "label": "Metra",
       "hint": "Live train schedules",
       "url": "https://www.metra.com/schedules?line=UP-NW&allstops=0"
+    },
+    {
+      "label": "Route map",
+      "hint": "Open the crawl route",
+      "url": "https://www.google.com/maps/d/viewer?mid=1j-yfShXEfBlLNnzdcv4-btB5G6SLdOI"
     }
-  ],
-  "map": {
-    "embed": "https://www.google.com/maps/d/embed?mid=1j-yfShXEfBlLNnzdcv4-btB5G6SLdOI&ehbc=2E312F&noprof=1",
-    "app": "https://www.google.com/maps/d/viewer?mid=1j-yfShXEfBlLNnzdcv4-btB5G6SLdOI"
-  }
+  ]
 }

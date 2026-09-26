@@ -78,7 +78,7 @@ it('carries every definition field through untouched', async () => {
 		appTitle: 'Different header', line: 'A → B',
 		schedule: [{ custom: 'entry' }], places: ['uninterpreted'],
 		scavenger: null, scavengerRules: ['Keep this rule'],
-		map: { embed: 'embed', app: 'viewer' }, links: [{ label: 'Tickets', url: 'tickets' }], albumUrl: 'photos',
+		links: [{ label: 'Tickets', url: 'tickets' }], albumUrl: 'photos',
 		extraAuthoredField: { keep: true },
 	};
 	const provider = createCrawlProvider(() => ({ title: 'Valid identity', definition }));
