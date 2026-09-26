@@ -8,7 +8,7 @@ The site SHALL serve the app icon as an opaque 180-pixel Apple touch icon and SH
 
 The manifest and every app icon file SHALL be same-origin. The build SHALL fail when a committed app icon file or the manifest does not match what the palette source and the train icon produce.
 
-On Android, the site SHALL rely on Chrome's menu option to install the app. It SHALL NOT depend on Chrome offering an install prompt. Checks on a real iPhone and a real Android phone SHALL confirm the home-screen scenarios before the change is accepted.
+On Android, the site SHALL rely on Chrome's menu option to install the app. It SHALL NOT depend on Chrome offering an install prompt. Checks on a real iPhone and a real Android phone SHALL confirm the home-screen scenarios before the repository owner merges the change.
 
 #### Scenario: iOS shows the app icon
 

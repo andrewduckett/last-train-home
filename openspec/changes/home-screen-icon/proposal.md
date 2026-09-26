@@ -12,7 +12,7 @@ When a Crawler adds the app to a phone's home screen, the phone has no icon to u
   - `manifest.webmanifest`.
 - The manifest names the app, lists the icons, and sets the board color. It sets `display: standalone`, so the home-screen icon opens the app full screen.
 - The manifest has no `start_url`. The browser then uses the page the Crawler added, so the icon opens that crawl rather than the default crawl.
-- On Android, a Crawler installs the app from Chrome's menu. The change does not promise that Chrome offers an install prompt. A check on a real Android phone must confirm that the installed icon opens `/cory-trent` full screen. If it does not, the manifest plan and the spec change before the work is accepted.
+- On Android, a Crawler installs the app from Chrome's menu. The change does not promise that Chrome offers an install prompt. A check on a real Android phone must confirm that the installed icon opens `/cory-trent` full screen. If it does not, the implementer revises the manifest plan and the spec before the repository owner merges the change.
 - `src/app.html` links the manifest and the Apple icon. It also sets the iOS status bar to overlay the dark header, which already pads itself below the status bar.
 - The build checks the committed app icon files and fails when one is stale. `npm run generate:icons` rewrites them.
 

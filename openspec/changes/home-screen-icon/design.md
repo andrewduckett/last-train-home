@@ -54,7 +54,7 @@ The script turns each app icon SVG into a PNG with `@resvg/resvg-js`, a dev depe
 
 When a manifest has no `start_url`, the browser uses the URL of the page that linked the manifest. A Crawler who adds `/cory-trent` then gets an icon that opens `/cory-trent`. `scope` defaults to `/`, so links between crawls stay inside the full-screen app. Each crawl's icon also gets its own app identity on Android, because the manifest `id` defaults to the start URL.
 
-Chrome's published criteria for its install prompt list `start_url`. This change does not need that prompt: a Crawler installs from Chrome's menu, which accepts a manifest without `start_url`. Whether Chrome then opens the installed icon full screen at `/cory-trent` is a device check, not a JSON check. If Chrome opens a browser tab or `/` instead, the implementer pauses. The manifest plan and the spec change before the work is accepted.
+Chrome's published criteria for its install prompt list `start_url`. This change does not need that prompt: a Crawler installs from Chrome's menu, which accepts a manifest without `start_url`. Whether Chrome then opens the installed icon full screen at `/cory-trent` is a device check, not a JSON check. If Chrome opens a browser tab or `/` instead, the implementer pauses and revises the manifest plan and the spec before the repository owner merges the change.
 
 - *Alternative: `start_url: "/"`.* The icon would open the default crawl, which can change between events.
 - *Alternative: one manifest per crawl.* The site would need to build a manifest for each YAML file and swap the link at run time. That costs far more than this story is worth.

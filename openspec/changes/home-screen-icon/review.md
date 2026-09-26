@@ -54,3 +54,5 @@ All four required changes are applied. The first suggestion is applied, and the 
 - **🟡 4. Plain language** — fixed. The spec, proposal, and design now use "app icon" for the asset throughout. The proposal's cost claim now gives a concrete reason: no new drawing. The ADR's four-choice recap is now one line on what reversal touches.
 - **📌 Label device checks as acceptance evidence** — applied in the spec: "Checks on a real iPhone and a real Android phone SHALL confirm the home-screen scenarios before the change is accepted."
 - **📌 Add an online-launch scenario** — declined. The proposal already lists offline support as out of scope (#17), and no requirement promises an offline launch. A scenario that only restates an exclusion adds no testable behavior.
+
+Round-1 re-check (same reviewer) confirmed items 1 to 4 and accepted the declined suggestion. It flagged one actor-hiding passive: "before the change is accepted". The author fixed the phrase in the spec, the proposal, and the design. Each now says "before the repository owner merges the change", and the proposal and design name the implementer as the one who revises the plan.
