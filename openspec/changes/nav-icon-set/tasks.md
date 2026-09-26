@@ -1,9 +1,9 @@
 ## 1. Icon set (test-first)
 
-- [ ] 1.1 Write `src/lib/icons/icons.test.ts` with every check in design decision 4. Cover the Bold values, the namespace, both attribute allowlists, colors, decimals, parser errors, and the file list. Run `npm test`, and verify that it fails because `src/lib/icons/` holds no icons yet.
-- [ ] 1.2 Run the `design-assets:icon-set-generator` skill with the Bold preset. Ask for five icons: `clock`, `map-pin`, `checklist`, `info`, and `train`. Write its output to `.workspace/icons/`. Verify that the folder holds five `.svg` files, `style-spec.json`, and `preview.html`.
-- [ ] 1.3 Open `.workspace/icons/preview.html`, and check each icon at 1× and 2× on the dark section. Redraw any icon whose detail clogs at 20 pixels or looks heavier than the rest. Show the user the preview, and wait for their approval before continuing.
-- [ ] 1.4 Copy the five `.svg` files and `style-spec.json` into `src/lib/icons/`. Leave `preview.html` in `.workspace/`. Verify that `icons.test.ts` passes. Commit 1.1 to 1.4 as `feat:`.
+- [x] 1.1 Write `src/lib/icons/icons.test.ts` with every check in design decision 4. Cover the Bold values, the namespace, both attribute allowlists, colors, decimals, parser errors, and the file list. Run `npm test`, and verify that it fails because `src/lib/icons/` holds no icons yet.
+- [x] 1.2 Run the `design-assets:icon-set-generator` skill with the Bold preset. Ask for five icons: `clock`, `map-pin`, `checklist`, `info`, and `train`. Write its output to `.workspace/icons/`. Verify that the folder holds five `.svg` files, `style-spec.json`, and `preview.html`.
+- [x] 1.3 Open `.workspace/icons/preview.html`, and check each icon at 1× and 2× on the dark section. Redraw any icon whose detail clogs at 20 pixels or looks heavier than the rest. Show the user the preview, and wait for their approval before continuing.
+- [x] 1.4 Copy the five `.svg` files and `style-spec.json` into `src/lib/icons/`. Leave `preview.html` in `.workspace/`. Verify that `icons.test.ts` passes. Commit 1.1 to 1.4 as `feat:`.
 
 ## 2. Icon component (test-first)
 
