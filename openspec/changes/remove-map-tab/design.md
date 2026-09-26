@@ -68,7 +68,7 @@ The seed drops the embed URL, because nothing can show it.
 
 ### Spec requirements that must be replaced, not modified
 
-The OpenSpec validator keeps every existing scenario of a modified requirement, and it rejects a requirement that is both removed and added under one name. Four requirements have a map scenario that must go. Each is removed and re-added under a new name:
+The OpenSpec validator keeps every existing scenario of a modified requirement, and it rejects a requirement that is both removed and added under one name. Five requirements have a map scenario that must go. Each is removed and re-added under a new name:
 
 | Removed | Added |
 |---|---|
