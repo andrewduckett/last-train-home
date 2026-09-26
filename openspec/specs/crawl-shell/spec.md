@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The crawl shell is the phone screen a participant uses on the day. It renders one crawl across Schedule, Map, Venues, and Tasks. An Info tab appears when the crawl has an introduction or a valid quick link.
+The crawl shell is the phone screen a participant uses on the day. It renders one crawl across Schedule, Map, Places, and Tasks. An Info tab appears when the crawl has an introduction or a valid quick link.
 
 ## Requirements
 
