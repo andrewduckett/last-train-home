@@ -4,13 +4,15 @@
 	"version": "1.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "npm run generate:palette && vite dev",
-		"build": "npm run generate:palette && npm run validate:crawls && vite build",
+		"dev": "npm run generate:palette && npm run generate:icons && vite dev",
+		"build": "npm run check:icons && npm run generate:palette && npm run validate:crawls && vite build",
 		"preview": "vite preview",
 		"test": "vitest run",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"validate:crawls": "node scripts/validate-crawls.mjs",
-		"generate:palette": "node scripts/generate-palette.mjs"
+		"generate:palette": "node scripts/generate-palette.mjs",
+		"generate:icons": "node scripts/generate-app-icons.mjs",
+		"check:icons": "node scripts/generate-app-icons.mjs --check"
 	},
 	"dependencies": {
 		"@fontsource/ibm-plex-mono": "^5.1.1",
@@ -19,6 +21,7 @@
 		"yaml": "^2.9.1"
 	},
 	"devDependencies": {
+		"@resvg/resvg-js": "^2.6.2",
 		"@sveltejs/adapter-static": "^3.0.10",
 		"@sveltejs/kit": "^2.70.3",
 		"@sveltejs/vite-plugin-svelte": "^7.3.0",
