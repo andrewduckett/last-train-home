@@ -34,7 +34,7 @@ VERDICT: APPROVE_WITH_CHANGES
 
 ## Required Changes (if APPROVE WITH CHANGES)
 
-CHANGES_APPLIED: no
+CHANGES_APPLIED: yes
 
 1. Revise the `{@html}` design and SVG test to allow only the SVG elements and attributes needed by this set; reject URL-bearing references, nested non-SVG content, parse errors, and unknown runtime icon names.
 2. Reconcile the existing Places “neutral pin icon” requirement with the new accent rule.
@@ -57,3 +57,5 @@ Round-1 re-check (same reviewer) failed two items, and the author fixed both:
 
 - **Item 1** — the allowlist had no namespace check, and children could declare `xmlns`. Decision 4 now requires every element to sit in the SVG namespace. It also splits the attribute allowlist into a root list and a child list, so only the root may declare `xmlns`.
 - **Item 4** — the plan omitted the header ink color and full opacity. The Verification table now checks the header icon rule for `color: var(--board-ink)`. It also checks that no nav rule sets `opacity` below 1.
+
+Round-1 second re-check (same reviewer, gpt-6-sol via codex): `RECHECK: PASS`. Required Changes 1 to 4 and both suggestions are applied, with no new plain-language problem. The reviewer accepts every fix.
