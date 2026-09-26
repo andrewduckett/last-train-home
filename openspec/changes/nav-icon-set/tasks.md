@@ -31,9 +31,9 @@
 
 ## 4. Verify
 
-- [ ] 4.1 Run `npm test`, `npm run check`, and `npm run build`, and confirm all three pass.
-- [ ] 4.2 Run `rg -n "🕑|📍|✅|ℹ️|🚆" src tests`. Confirm that no hit remains in `Shell.svelte` or its tests, except the checks that assert no emoji.
-- [ ] 4.3 Run `npm run preview`, and open `cory-trent` in Chrome at a 320-pixel width. Confirm these things:
+- [x] 4.1 Run `npm test`, `npm run check`, and `npm run build`, and confirm all three pass.
+- [x] 4.2 Run `rg -n "🕑|📍|✅|ℹ️|🚆" src tests`. Confirm that no hit remains in `Shell.svelte` or its tests, except the checks that assert no emoji.
+- [x] 4.3 Run `npm run preview`, and open `cory-trent` in Chrome at a 320-pixel width. Confirm these things:
   - every tab shows its icon and full label with no horizontal overflow;
   - the active icon matches its label's accent, and inactive icons show in the muted color at full opacity;
   - the header shows the train icon;
