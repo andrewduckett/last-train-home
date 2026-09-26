@@ -52,14 +52,12 @@ The build SHALL reject definitions that violate the current views' keyed-list an
 
 Each crawl definition SHALL have a `places` list, which MAY be empty. Each entry in `places` SHALL have a string `stop`, a string `town`, and a `locations` list with at least one location. Each location SHALL have a string `name` and a string `address`. A location MAY have a `label`, which SHALL be a non-empty string when present. Each scavenger task SHALL have a string `id`, a string `title`, a finite number `points`, and a string `description`.
 
-The build SHALL reject each retired key and SHALL name the key that replaces it:
+The build SHALL reject each retired key below. Each rejection SHALL identify the record, the old field, and the key that replaces it.
 
-- `definition.venues`, replaced by `places`;
-- a `places` list inside a stop, replaced by `locations`;
-- `n` or `a` on a location, replaced by `name` or `address`;
-- `t`, `p`, or `d` on a task, replaced by `title`, `points`, or `description`.
-
-Each rejection SHALL identify the record, the old field, and the key that replaces it.
+- `definition.venues`: use `places`.
+- A `places` list inside a stop: use `locations`.
+- `n` or `a` on a location: use `name` or `address`.
+- `t`, `p`, or `d` on a task: use `title`, `points`, or `description`.
 
 #### Scenario: A crawl uses the descriptive keys
 
@@ -113,8 +111,8 @@ Each rejection SHALL identify the record, the old field, and the key that replac
 
 #### Scenario: Saved checks survive the rename
 
-- **WHEN** a crawler checked tasks before the rename and opens the renamed seed crawl
-- **THEN** each task keeps its `id`, and the Tasks tab shows the same tasks as checked
+- **WHEN** a crawler has saved checks for a crawl and an author later edits that crawl's task titles, points, or descriptions but keeps each task's `id`
+- **THEN** the Tasks tab shows the same tasks as checked
 
 ### Requirement: Keep provider validation limited to identity
 
@@ -199,7 +197,7 @@ The build SHALL accept a crawl without an album link. It SHALL accept a group al
 
 #### Scenario: The seed has no album destination
 
-- **WHEN** cory-trent has Ventra and Metra links but no album URL
+- **WHEN** a crawl has quick links but none of them is an album
 - **THEN** build validation accepts its link list
 
 #### Scenario: An organizer adds an album link

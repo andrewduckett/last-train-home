@@ -54,11 +54,11 @@ The build SHALL publish only palettes whose declared text and background pairs m
 - **WHEN** the checked-in generated CSS differs from the palette source
 - **THEN** verification fails before the site is published
 
-### Requirement: Preserve the first crawl's accent
+### Requirement: Keep shared surfaces consistent across crawls
 
-The `cory-trent` record SHALL select `amber`. Shared station-board surfaces and semantic checklist success styling SHALL remain consistent across crawls.
+Shared station-board surfaces and semantic checklist success styling SHALL stay the same across crawls. Only the accent and on-accent colors SHALL vary with a crawl's authored `color`.
 
-#### Scenario: The default crawl opens
+#### Scenario: Two crawls with different colors open
 
-- **WHEN** a crawler opens `/` or `/cory-trent`
-- **THEN** the crawl displays the amber accent in the current system color scheme
+- **WHEN** a crawler opens one crawl whose color is `amber` and another whose color is `teal`
+- **THEN** both crawls show the same surface and checklist success styling, and only their accents differ

@@ -1,16 +1,19 @@
 import { afterEach, describe, it, expect, vi } from 'vitest';
 import { render, screen, within } from '@testing-library/svelte';
 import PlacesView from './PlacesView.svelte';
-import { crawl } from '../../tests/fixtures/cory-trent.js';
+import { buildCrawl } from '../../tests/fixtures/crawl-builders.js';
 import type { PlaceStop } from './types.js';
+
+const crawl = buildCrawl('lantern-loop');
+const authoredPlaces = crawl.definition.places;
 
 const iPhone = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1';
 
-function renderPlaces(places: PlaceStop[] = crawl.places) {
-	return render(PlacesView, { crawl: { id: 'cory-trent', title: crawl.appTitle, definition: { ...crawl, places } } });
+function renderPlaces(places: PlaceStop[] = authoredPlaces) {
+	return render(PlacesView, { crawl: { ...crawl, definition: { ...crawl.definition, places } } });
 }
 
-function authoredQueries(places: PlaceStop[] = crawl.places) {
+function authoredQueries(places: PlaceStop[] = authoredPlaces) {
 	return places.flatMap((stop) =>
 		stop.locations.map((location) => encodeURIComponent(`${location.name}, ${location.address}, ${stop.town}`)),
 	);
@@ -33,7 +36,7 @@ describe('PlacesView', () => {
 	it('renders a directions link for every location', () => {
 		renderPlaces();
 		const links = screen.getAllByRole('link', { name: 'Directions' });
-		expect(links).toHaveLength(crawl.places.reduce((sum, stop) => sum + stop.locations.length, 0));
+		expect(links).toHaveLength(authoredPlaces.reduce((sum, stop) => sum + stop.locations.length, 0));
 	});
 
 	it('shows a location label as a tag beside its name', () => {
@@ -57,7 +60,7 @@ describe('PlacesView', () => {
 	});
 
 	it('renders a stop that holds a single location', () => {
-		const meetup = crawl.places[0];
+		const meetup = authoredPlaces.find((stop) => stop.locations.length === 1)!;
 		const { container } = renderPlaces([meetup]);
 		const card = within(container.querySelector('.stop-card') as HTMLElement);
 		expect(card.getByText(meetup.stop)).toBeInTheDocument();

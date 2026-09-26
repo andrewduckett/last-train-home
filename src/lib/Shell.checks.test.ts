@@ -4,15 +4,20 @@ import Shell from './Shell.svelte';
 import CrawlRoute from './CrawlRoute.svelte';
 import { defaultCrawl } from './config.js';
 import { createCrawlProvider } from './data/provider.js';
-import { crawl as seed } from '../../tests/fixtures/cory-trent.js';
-import { seedShellProps } from '../../tests/fixtures/seed-provider.js';
+import { buildRecord, task } from '../../tests/fixtures/crawl-builders.js';
 
 beforeEach(() => {
 	localStorage.clear();
 	vi.restoreAllMocks();
 });
 
-const getCrawl = createCrawlProvider(() => ({ title: 'Test crawl', definition: seed })).getCrawl;
+// Points total 100, so one check on the first task shows 10% collected.
+const tasks = [
+	task({ id: 'first-task', title: 'First Task', points: 10 }),
+	task({ id: 'second-task', title: 'Second Task', points: 40 }),
+	task({ id: 'third-task', title: 'Third Task', points: 50 }),
+];
+const getCrawl = createCrawlProvider(() => buildRecord({ definition: { scavenger: tasks } })).getCrawl;
 
 async function openTasks() {
 	await screen.findByTestId('view-schedule');
@@ -24,20 +29,21 @@ function firstCheck() {
 	return screen.getAllByRole('checkbox')[0] as HTMLInputElement;
 }
 
-it('keeps seed checks saved before the key rename', async () => {
-	localStorage.setItem('crawl-checks:cory-trent', '{"sh-selfie":true,"sh-photobomb":true}');
-	render(Shell, seedShellProps);
+it('keeps saved checks by task id after an author retitles the tasks', async () => {
+	localStorage.setItem('crawl-checks:first', '{"first-task":true,"third-task":true}');
+	const retitled = tasks.map((item) => ({ ...item, title: `Renamed ${item.title}` }));
+	render(Shell, { id: 'first', getCrawl: createCrawlProvider(() => buildRecord({ definition: { scavenger: retitled } })).getCrawl });
 	await openTasks();
 	const checked = screen.getAllByRole('checkbox').filter((box) => (box as HTMLInputElement).checked);
 	expect(checked.map((box) => box.closest('label')?.querySelector('.check-title')?.textContent)).toEqual([
-		'The Platform Selfie',
-		'Bonus Photobomb',
+		'Renamed First Task',
+		'Renamed Third Task',
 	]);
-	expect(document.querySelector('.tally-pts')).toHaveTextContent(/^35\s*\/\s*85 pts$/);
+	expect(document.querySelector('.tally-pts')).toHaveTextContent(/^60\s*\/\s*100 pts$/);
 });
 
 it('ignores the old global key', async () => {
-	localStorage.setItem('crawl-checks-v1', '{"sh-selfie":true}');
+	localStorage.setItem('crawl-checks-v1', '{"first-task":true}');
 	render(Shell, { id: 'first', getCrawl });
 	await openTasks();
 	expect(firstCheck()).not.toBeChecked();
@@ -51,7 +57,7 @@ it('restores a check after the shell remounts', async () => {
 	render(Shell, { id: 'first', getCrawl });
 	await openTasks();
 	expect(firstCheck()).toBeChecked();
-	expect(screen.getByText(/12% collected/)).toBeInTheDocument();
+	expect(screen.getByText(/10% collected/)).toBeInTheDocument();
 });
 
 it('stores checks separately for crawls sharing task ids', async () => {
@@ -62,8 +68,8 @@ it('stores checks separately for crawls sharing task ids', async () => {
 	await openTasks();
 	expect(firstCheck()).not.toBeChecked();
 	await fireEvent.click(firstCheck());
-	expect(localStorage.getItem('crawl-checks:first')).toContain('sh-selfie');
-	expect(localStorage.getItem('crawl-checks:second')).toContain('sh-selfie');
+	expect(localStorage.getItem('crawl-checks:first')).toContain('first-task');
+	expect(localStorage.getItem('crawl-checks:second')).toContain('first-task');
 });
 
 it('shares saved checks across root and id routes for one crawl', async () => {
@@ -79,7 +85,7 @@ it('shares saved checks across root and id routes for one crawl', async () => {
 it('reads newer saved checks when Tasks opens', async () => {
 	render(Shell, { id: 'first', getCrawl });
 	await screen.findByTestId('view-schedule');
-	localStorage.setItem('crawl-checks:first', '{"sh-selfie":true}');
+	localStorage.setItem('crawl-checks:first', '{"first-task":true}');
 	await fireEvent.click(screen.getByRole('button', { name: /Tasks/ }));
 	expect(firstCheck()).toBeChecked();
 });
@@ -119,7 +125,7 @@ it('keeps a failed write across tab changes', async () => {
 	await fireEvent.click(screen.getByRole('button', { name: /Schedule/ }));
 	await openTasks();
 	expect(firstCheck()).toBeChecked();
-	expect(screen.getByText(/12% collected/)).toBeInTheDocument();
+	expect(screen.getByText(/10% collected/)).toBeInTheDocument();
 });
 
 it('resets unsaved checks after confirmation', async () => {

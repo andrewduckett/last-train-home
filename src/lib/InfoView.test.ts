@@ -15,13 +15,13 @@ it('renders introduction markup as plain Unicode text', () => {
 
 it('keeps valid quick links in authored order', () => {
 	const { container } = show(undefined, [
-		{ label: 'Ventra', hint: 'Buy a pass', url: 'https://example.com/ventra' },
-		{ label: 'Metra', url: 'https://example.com/metra' },
+		{ label: 'Tickets', hint: 'Buy a pass', url: 'https://example.com/tickets' },
+		{ label: 'Ferry', url: 'https://example.com/ferry' },
 		{ label: 'Album', url: 'https://example.com/album' },
 	]);
-	expect([...container.querySelectorAll('.quick-link')].map((link) => link.textContent?.trim())).toEqual(['Ventra Buy a pass', 'Metra', 'Album']);
-	expect(screen.getByRole('link', { name: /Ventra/ })).toHaveAttribute('target', '_blank');
-	expect(screen.getByRole('link', { name: /Ventra/ })).toHaveAttribute('rel', 'noopener noreferrer');
+	expect([...container.querySelectorAll('.quick-link')].map((link) => link.textContent?.trim())).toEqual(['Tickets Buy a pass', 'Ferry', 'Album']);
+	expect(screen.getByRole('link', { name: /Tickets/ })).toHaveAttribute('target', '_blank');
+	expect(screen.getByRole('link', { name: /Tickets/ })).toHaveAttribute('rel', 'noopener noreferrer');
 });
 
 it('omits malformed optional content while keeping valid links', () => {

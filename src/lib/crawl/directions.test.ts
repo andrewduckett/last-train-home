@@ -28,17 +28,17 @@ it.each([undefined, ''])('falls back to another device for the user agent %j', (
 	expect(detectMapsPlatform(userAgent)).toBe('other');
 });
 
-const seedPlace = ['Station 34', '34 S Main St', 'Mt. Prospect, IL'];
+const authoredPlace = ['Mill 12', '12 N Mill St', 'Harbor Town, ME'];
 
 it('builds a Google Maps search from the authored parts', () => {
-	expect(directionsUrl(seedPlace, 'other')).toBe(
-		'https://www.google.com/maps/search/?api=1&query=Station%2034%2C%2034%20S%20Main%20St%2C%20Mt.%20Prospect%2C%20IL',
+	expect(directionsUrl(authoredPlace, 'other')).toBe(
+		'https://www.google.com/maps/search/?api=1&query=Mill%2012%2C%2012%20N%20Mill%20St%2C%20Harbor%20Town%2C%20ME',
 	);
 });
 
 it('builds an Apple Maps search from the authored parts', () => {
-	expect(directionsUrl(seedPlace, 'apple')).toBe(
-		'https://maps.apple.com/?q=Station%2034%2C%2034%20S%20Main%20St%2C%20Mt.%20Prospect%2C%20IL',
+	expect(directionsUrl(authoredPlace, 'apple')).toBe(
+		'https://maps.apple.com/?q=Mill%2012%2C%2012%20N%20Mill%20St%2C%20Harbor%20Town%2C%20ME',
 	);
 });
 
