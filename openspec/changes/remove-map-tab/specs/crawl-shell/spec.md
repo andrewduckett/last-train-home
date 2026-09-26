@@ -7,7 +7,7 @@
 
 ### Requirement: Tab navigation
 
-The shell SHALL always present Schedule, Places, and Tasks, in that order. It SHALL NOT present a Map tab. It SHALL add Info after those tabs only when the crawl has an introduction string with non-whitespace text or a valid quick link. The shell SHALL show one view at a time. It SHALL open on Schedule and mark the active tab. Each new crawl selection SHALL reset the active tab to Schedule.
+The shell SHALL always present Schedule, Places, and Tasks. It SHALL NOT present a Map tab. It SHALL add Info after those tabs only when the crawl has an introduction string with non-whitespace text or a valid quick link. The shell SHALL show one view at a time. It SHALL open on Schedule and mark the active tab. Each new crawl selection SHALL reset the active tab to Schedule.
 
 #### Scenario: The shell has no Map tab
 
@@ -102,7 +102,7 @@ The Info view SHALL show the crawl's valid quick links in authored order. Each l
 
 #### Scenario: Album link uses the common link format
 
-- **WHEN** an organizer adds a group album to the crawl's link list
+- **WHEN** an author adds a group album to the crawl's link list
 - **THEN** Info shows it in authored order with the same behavior as other links
 - **THEN** Tasks shows no separate album button
 
@@ -114,7 +114,7 @@ The Info view SHALL show the crawl's valid quick links in authored order. Each l
 
 #### Scenario: A route map is a quick link
 
-- **WHEN** an organizer adds a route map URL to the crawl's link list
+- **WHEN** an author adds a route map URL to the crawl's link list
 - **THEN** Info shows it as a quick link that opens in a new tab, and no view embeds it in a frame
 
 ### Requirement: Phone-first shell layout
