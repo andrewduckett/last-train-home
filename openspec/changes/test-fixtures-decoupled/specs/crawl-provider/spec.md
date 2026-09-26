@@ -25,4 +25,4 @@ The in-repo provider SHALL expose each authored YAML crawl by its requested logi
 
 **Reason**: This requirement guarded a one-time migration from the earlier event page to the YAML record. That migration has shipped. Keeping the check pins the live crawl's content, so every content edit breaks verification.
 
-**Migration**: None for authors or crawlers. The contract check in `crawl-authoring` ("Check authored crawls by contract, not content") now verifies each authored record. Behavior checks use generated crawls.
+**Migration**: None for authors or crawlers. Build validation still checks each authored record. A contract test checks that each one resolves through the provider, as ADR 0008 records. Behavior checks use generated crawls.

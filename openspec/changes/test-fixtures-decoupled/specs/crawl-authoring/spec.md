@@ -1,29 +1,3 @@
-## ADDED Requirements
-
-### Requirement: Check authored crawls by contract, not content
-
-Verification SHALL check every authored crawl record against the crawl contract. A record meets the contract when it passes build validation and the in-repo provider resolves its logical id to found. Verification SHALL NOT compare an authored record's title, text, links, places, tasks, or color with fixed expected values. Behavior checks SHALL use generated crawls that copy no authored record's content.
-
-#### Scenario: An author edits a crawl's content
-
-- **WHEN** the contract check runs on a valid record, whatever its title, introduction, links, schedule, places, tasks, or color
-- **THEN** the check passes
-
-#### Scenario: An author adds a crawl
-
-- **WHEN** the crawl directory holds a valid record that no test names
-- **THEN** the contract check finds that record and checks it
-
-#### Scenario: An authored record breaks the contract
-
-- **WHEN** an authored record fails build validation or does not resolve to found through the provider
-- **THEN** verification fails and identifies the record
-
-#### Scenario: The configured default crawl is missing
-
-- **WHEN** no authored record matches the configured default logical id
-- **THEN** verification fails and identifies the default logical id
-
 ## MODIFIED Requirements
 
 ### Requirement: Use descriptive place and scavenger keys

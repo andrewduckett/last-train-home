@@ -37,3 +37,4 @@
 - [x] 6.2 Temporarily change the title, intro, a link, and the color in `static/crawls/cory-trent.yaml`, then run `npm test`. Verify the suite passes, then restore the file.
 - [x] 6.3 Run `npm test`, `npm run check`, and `npm run build`. Verify all three succeed.
 - [x] 6.4 Replace example text copied from the live crawl in older inline tests (`InfoView`, `directions`, `richText`) and in the `Crawl introduction` scenarios with invented text. Verify a search of tests and delta specs finds no authored names, and the affected tests pass.
+- [x] 6.5 Apply review round 2: drop the guard's authored-id ban, check authored files in the build by name only, and move the contract-check policy from the `crawl-authoring` spec to ADR 0008. Verify that `npm test` stays green after a crawl is added as `first.yaml` and built, and after a content edit with no rebuild.

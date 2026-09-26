@@ -46,7 +46,7 @@ Some tests already build small crawls inline, for example `Shell.theme.test.ts` 
 Shell and route tests use `recordProvider`. They test rendering, so they need no YAML round-trip. Pure view tests (Schedule, Places, Tasks) pass a built `Crawl` straight to the view, as they do today. Only provider tests use `yamlProvider` and `toCrawlYaml`, so YAML parsing stays covered in one place. One test in `seed.test.ts` keeps covering the production `getCrawl` binding: it stubs the global `fetch` to serve a generated record as YAML.
 
 - **Why not route every Shell test through YAML:** it adds a serialize-and-parse step that those tests do not check. A YAML defect would then fail many unrelated tests at once.
-- **Why not stub the global `fetch` everywhere:** injection is already supported, it needs no cleanup, and it cannot leak between tests.
+- **Why not stub the global `fetch` everywhere:** the providers already accept an injected fetch, which needs no cleanup, and it cannot leak between tests.
 
 ### D3. Two contract tests own the authored crawls
 
@@ -62,19 +62,18 @@ Only two test files may touch authored crawls:
 
 It also checks that the configured default id (`defaultCrawl`) has an authored file. The test asserts no title, text, link, place, task, or color value.
 
-Because the check takes a directory, the test also runs it on a temporary directory of generated records. That proves the spec scenarios mechanically: a valid record with any content passes, a new file is found without a code change, and a broken or missing record fails with its name. It replaces `yaml-seed.test.ts`, the seed half of `seed.test.ts`, and the `defaultCrawl` value check in `root-route.test.ts`.
+Because the check takes a directory, the test also runs it on a temporary directory of generated records. That proves the check itself works. A valid record with any content passes. A new file is found without a code change. A broken or missing record fails with its name. It replaces `yaml-seed.test.ts`, the seed half of `seed.test.ts`, and the `defaultCrawl` value check in `root-route.test.ts`.
 
-In `tests/static-build.test.ts`, the title check becomes "each authored file appears in `build/crawls/` with identical bytes". That still proves the build publishes the crawls, without naming any content.
+In `tests/static-build.test.ts`, the title check becomes "each authored file appears in `build/crawls/`". It checks names, not bytes, so a content edit does not fail against an older build. That still proves the build publishes the crawls, without naming any content.
 
 ### D4. A guard test keeps the coupling from coming back
 
-`tests/test-isolation.test.ts` scans every `*.test.ts` file and every file under `tests/fixtures/`. It skips its own source. It applies two rules:
+`tests/test-isolation.test.ts` scans every `*.test.ts` file and every file under `tests/fixtures/`. It skips its own source. A file other than the two contract tests (D3) and `tests/fixtures/authored-crawls.ts` fails when it contains `static/crawls` or `build/crawls`.
 
-- **No authored paths.** A file other than the two contract tests (D3) and `tests/fixtures/authored-crawls.ts` fails when it contains `static/crawls` or `build/crawls`.
-- **No authored ids.** The guard lists the file names in `static/crawls` and derives each logical id. Any scanned file fails when it contains one of those ids as a quoted string or after a `/`, as in `'cory-trent'` or `/cory-trent`. Because the guard reads the ids from disk, it also covers crawls added later.
+- **Why not also ban authored ids:** a crawl added later could share a name with an id that a test invents, such as `first`. The suite would then fail on a valid content addition, which is the coupling this change removes. Builders are the only source of test data, so a test has no authored content to reach for.
 
 - **Why:** without it, the next test that needs "a real crawl" will likely reach for the live file again. A plain text scan is cheap, and its failure message can name the file and the fix.
-- **Limit:** the scan finds literal text only. It does not catch a path or id built from string pieces. This is acceptable for a guard aimed at accidental reuse.
+- **Limit:** the scan finds literal text only. It does not catch a path built from string pieces. This is acceptable for a guard aimed at accidental reuse.
 
 ### D5. Rewrite or delete each coupled test
 
@@ -83,7 +82,7 @@ In `tests/static-build.test.ts`, the title check becomes "each authored file app
 | `Shell.parity.test.ts`, `tests/fixtures/cory-trent-before.json` | Delete. The migration they guarded has shipped. |
 | `tests/fixtures/cory-trent.json`, `cory-trent.ts`, `seed-provider.ts` | Delete after every importer moves to the builders. |
 | `data/yaml-seed.test.ts` | Delete. D3 covers it. |
-| `data/seed.test.ts` | Keep the unsafe-id and missing-id cases. Serve a generated record for the production-binding case. Drop the intro and links content checks. |
+| `data/seed.test.ts` | Rename to `get-crawl.test.ts`, since it tests the production `getCrawl`. Keep the unsafe-id and missing-id cases. Serve a generated record for the production-binding case. Drop the intro and links content checks. |
 | `crawl/richText.test.ts` | Replace the seed case with a built intro of three paragraphs and one bold phrase. |
 | `Shell.seed-theme.test.ts` | Rename to cover any crawl. Render `/` and `/<id>` for a generated `amber` record served under the default id. |
 | `Shell.test.ts`, `Shell.layout.test.ts`, `Shell.checks.test.ts` | Use `recordProvider` with a generated record. The rename-era check becomes "saved checks follow task ids after the titles change". |
@@ -100,7 +99,7 @@ OpenSpec 1.12 cannot drop one scenario from a MODIFIED requirement. It also reje
 
 - **[Risk] Builder defaults drift from what authors write.** → The contract tests still run every real crawl through validation and the provider. The builders only need to produce valid shapes, and `validateCrawlSource` can check that in one builder test.
 - **[Risk] Deleting parity loses a regression net for the rendering of real content.** → Each behavior the parity test touched (header, schedule order, places, tasks, links) keeps a test against built data. Only the check that the content matches the old event goes away, and that one was temporary by design.
-- **[Trade-off] The guard's id ban also blocks legitimate mentions** of an authored id in test names or comments. → That is acceptable. A test that needs the default id imports `defaultCrawl` and never spells it out.
+- **[Trade-off] A test can still spell out an authored id,** for example as a storage key. → It cannot read that crawl's content, so a content edit still cannot break it. A test that needs the default id imports `defaultCrawl`.
 - **[Trade-off] Scenario names keep the word "seed"** (D6). → The bodies are generic. A later spec cleanup can rename them when OpenSpec supports it.
 
 ## Migration Plan

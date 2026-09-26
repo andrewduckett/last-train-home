@@ -7,7 +7,7 @@ Every content edit to `static/crawls/cory-trent.yaml` breaks the test suite. The
 - Add builder functions under `tests/fixtures/` that generate made-up crawls in the `CrawlDefinition` shape. Each builder returns valid, invented defaults, and a test overrides only the fields it checks. No generated value comes from `cory-trent`.
 - Let the builders serialize a crawl to YAML in memory, so tests still exercise the provider and parser path without reading a file.
 - Move every behavior test (schedule, places, tasks, checklist, theme, rich text, provider) to generated crawls.
-- Replace content snapshots of the real crawl with a contract check. It runs over every `static/crawls/*.yaml` file and checks only that each file is valid and resolves through the provider. The build test checks only that each authored file is published unchanged.
+- Replace content snapshots of the real crawl with a contract check. It runs over every `static/crawls/*.yaml` file and checks only that each file is valid and resolves through the provider. The build test checks only that each authored file is published.
 - Remove the migration parity check. **BREAKING** (tests only): delete `src/lib/Shell.parity.test.ts`, `tests/fixtures/cory-trent-before.json`, `tests/fixtures/cory-trent.json`, `tests/fixtures/cory-trent.ts`, and `tests/fixtures/seed-provider.ts`.
 - Remove or restate the spec requirements and scenarios that pin `cory-trent` content, so that each one describes app behavior for any crawl.
 
@@ -24,7 +24,7 @@ None.
 - `crawl-provider`: remove "Preserve the planned seed crawl". The migration it guarded has shipped. Keep "Expose the in-repo crawl by its id", but check it against any authored record, not the seed's content.
 - `crawl-theming`: remove "Preserve the first crawl's accent" (`cory-trent` SHALL select `amber`). The color is an authoring choice. "Resolve an authored color to a crawl palette" already covers the behavior.
 - `crawl-shell`: restate the "seed keeps its Google searches" and "seed shows its stations" scenarios so they describe any crawl with those location kinds.
-- `crawl-authoring`: restate "The seed has no album destination" so it describes any crawl without an album link. Add a requirement that every authored crawl passes a content-independent contract check. That check is the only way tests touch authored crawls.
+- `crawl-authoring`: restate "The seed has no album destination" so it describes any crawl without an album link. The content-independent contract check is test policy, not product behavior, so ADR 0008 records it instead of a spec.
 
 ## Impact
 
