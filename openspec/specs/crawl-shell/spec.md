@@ -184,13 +184,13 @@ On an Apple device, the link SHALL open an Apple Maps search at `https://maps.ap
 
 #### Scenario: The seed keeps its Google searches
 
-- **WHEN** a participant on a non-Apple device opens the Places view for cory-trent
-- **THEN** each bar's directions link matches the Google Maps search it opened before this change
+- **WHEN** a participant on a non-Apple device opens the Places view for any crawl, including the default crawl
+- **THEN** each location's directions link is the Google Maps search for that location's query, built only from its authored text
 
 #### Scenario: The seed shows its stations
 
-- **WHEN** a participant opens the Places view for cory-trent
-- **THEN** the first card is `Meetup` with Palatine Metra Station, and each other stop lists its Metra station, labeled `Train`, before its bar, labeled `Bar`
+- **WHEN** a crawl's stops each list a location labeled `Train` before a location labeled `Bar`
+- **THEN** each stop's card shows the `Train` location first and the `Bar` location second, each with its tag
 
 ### Requirement: Scavenger checklist with points tally
 
@@ -338,28 +338,28 @@ The route SHALL give the shell its selected logical id. The shell SHALL obtain t
 
 #### Scenario: The default crawl resolves and the Schedule view shows its content
 
-- **WHEN** the shell resolves cory-trent with the Schedule tab active
-- **THEN** the header shows the seed appTitle and line, and Schedule lists entries in authored order
+- **WHEN** the shell resolves any crawl, including the default crawl, with the Schedule tab active
+- **THEN** the header shows that crawl's appTitle and line, and Schedule lists its entries in authored order
 
 #### Scenario: The Venues tab shows the seed venues
 
 - **WHEN** the resolved shell opens the Places tab
-- **THEN** the view shows each seed location's name, address, label, and directions link
+- **THEN** the view shows each of that crawl's locations with its name, address, label, and directions link
 
 #### Scenario: The Tasks tab shows the seed tasks
 
 - **WHEN** the resolved shell opens the Tasks tab
-- **THEN** the view lists each seed scavenger task with its points
+- **THEN** the view lists each of that crawl's scavenger tasks with its points
 
 #### Scenario: The Info tab shows the seed route map link
 
-- **WHEN** the resolved shell opens the Info tab for cory-trent
-- **THEN** it shows a Route map link whose destination is the seed's My Maps viewer URL
+- **WHEN** the resolved shell opens the Info tab for a crawl whose quick links include a route map
+- **THEN** it shows that link with its authored label, and the link opens its authored destination
 
 #### Scenario: The Info tab shows the seed content
 
-- **WHEN** the resolved shell opens the Info tab for cory-trent
-- **THEN** it shows the seed introduction and the Ventra and Metra links in authored order
+- **WHEN** the resolved shell opens the Info tab
+- **THEN** it shows that crawl's introduction and its quick links in authored order, each opening its authored destination
 
 #### Scenario: Switching tabs does not re-resolve the crawl
 
@@ -409,9 +409,9 @@ The Info view SHALL show all other markup as literal text, including HTML tags. 
 
 #### Scenario: The seed introduction appears
 
-- **WHEN** a participant opens Info for cory-trent
-- **THEN** the view shows the seed introduction as three paragraphs
-- **AND** "Don't forget" appears in bold without asterisks
+- **WHEN** a participant opens Info for a crawl whose introduction has three blocks of text and one `**` bold phrase
+- **THEN** the view shows the introduction as three paragraphs
+- **AND** the bold phrase appears in bold without asterisks
 
 #### Scenario: A blank line separates paragraphs
 
@@ -440,8 +440,8 @@ The Info view SHALL show all other markup as literal text, including HTML tags. 
 
 #### Scenario: Markers inside a word render
 
-- **WHEN** an introduction contains `Cory*and*Trent`
-- **THEN** Info shows "and" in italic between "Cory" and "Trent", without asterisks
+- **WHEN** an introduction contains `Harbor*and*Mill`
+- **THEN** Info shows "and" in italic between "Harbor" and "Mill", without asterisks
 
 #### Scenario: Spaced asterisks stay literal
 
@@ -455,8 +455,8 @@ The Info view SHALL show all other markup as literal text, including HTML tags. 
 
 #### Scenario: An unmatched marker stays literal
 
-- **WHEN** an introduction contains `**Don't forget` with no closing marker
-- **THEN** Info shows `**Don't forget` as written, and the rest of the introduction renders
+- **WHEN** an introduction contains `**Bring a jacket` with no closing marker
+- **THEN** Info shows `**Bring a jacket` as written, and the rest of the introduction renders
 
 #### Scenario: Markers do not pair across lines
 

@@ -85,17 +85,17 @@ A found result SHALL guarantee only that the crawl identity is present and corre
 
 ### Requirement: Expose the in-repo crawl by its id
 
-The in-repo provider SHALL expose each authored YAML crawl by its requested logical id. It SHALL resolve cory-trent as the seed crawl. It SHALL return not-found when no authored record matches the logical id.
+The in-repo provider SHALL expose each authored YAML crawl by its requested logical id. It SHALL return not-found when no authored record matches the logical id.
 
 #### Scenario: The seed crawl resolves by its id
 
-- **WHEN** a caller calls getCrawl with cory-trent
-- **THEN** the promise resolves to a found result whose crawl id is cory-trent
+- **WHEN** a caller calls getCrawl with the configured default logical id
+- **THEN** the promise resolves to a found result whose crawl id is that logical id
 
 #### Scenario: Another authored crawl resolves by its id
 
-- **WHEN** a caller calls getCrawl with the logical id of another authored record
-- **THEN** the promise resolves to that crawl
+- **WHEN** a caller calls getCrawl with the logical id of any authored record
+- **THEN** the promise resolves to a found result whose crawl id is that logical id and whose content is that record's content
 
 #### Scenario: Another id is not found
 
@@ -139,14 +139,3 @@ The provider SHALL treat a requested logical id as a key. It SHALL accept only l
 
 - **WHEN** a caller requests an id containing an underscore, a leading or trailing hyphen, or adjacent hyphens
 - **THEN** the provider returns not-found without retrieving a file
-
-### Requirement: Preserve the planned seed crawl
-
-The YAML seed SHALL preserve the planned event's visible schedule wording, times, and entry order when its fields move to the generic itinerary schema. It SHALL preserve place and task content, link labels and destinations, and their authored order. The seed's route map SHALL survive as a quick link to the earlier map viewer URL. The seed SHALL use the new generic itinerary fields rather than retaining obsolete field names.
-
-#### Scenario: The seed record matches the existing event
-
-- **WHEN** the migrated cory-trent YAML record is compared with the earlier seed event
-- **THEN** its rendered schedule wording, times, and order match the earlier event
-- **THEN** its place, task, and link content and destinations match the earlier event
-- **THEN** its Route map link opens the earlier map viewer URL
