@@ -7,8 +7,8 @@
 
 ## 2. Icon component (test-first)
 
-- [ ] 2.1 Write `src/lib/Icon.test.ts` with failing tests, one behavior each. A known name renders an inline `<svg>` inside a span with `aria-hidden="true"` and a matching `data-icon`. The `size` prop sets the span's width and height. An unknown name renders an empty span. Verify that the tests fail because `Icon.svelte` does not exist.
-- [ ] 2.2 Write `src/lib/Icon.svelte` as design decision 2 describes. Verify that `Icon.test.ts` passes and `npm run check` reports no errors. Commit as `feat:`.
+- [x] 2.1 Write `src/lib/Icon.test.ts` with failing tests, one behavior each. A known name renders an inline `<svg>` inside a span with `aria-hidden="true"` and a matching `data-icon`. The `size` prop sets the span's width and height. An unknown name renders an empty span. Verify that the tests fail because `Icon.svelte` does not exist.
+- [x] 2.2 Write `src/lib/Icon.svelte` as design decision 2 describes. Verify that `Icon.test.ts` passes and `npm run check` reports no errors. Commit as `feat:`.
 
 ## 3. Shell icons and colors (test-first)
 
