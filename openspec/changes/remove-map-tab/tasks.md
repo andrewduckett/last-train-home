@@ -1,13 +1,13 @@
 ## 1. Build validation and URL helpers (test-first)
 
-- [ ] 1.1 In `src/lib/data/validate.test.ts` and `src/lib/data/validate-generic.test.ts`, remove `map` from the inline crawls and delete the map URL cases. Add failing tests, one behavior each: a leftover `definition.map` fails with `invalid definition.map (removed; link a route map from links)`, and a crawl with no `map` passes. Verify that they fail for the right reason.
-- [ ] 1.2 In `src/lib/data/validate.js`, delete the map block and its helper imports, and add the `map` check beside the `albumUrl` check, as the design shows. Verify that all `validate*.test.ts` tests pass.
-- [ ] 1.3 Delete `resolveMap`, `isMapEmbedUrl`, and `isMapViewerUrl` from `src/lib/crawl/urls.js`, and their cases from `urls.test.ts`. Keep the quick-link helpers and tests. Verify that `urls.test.ts` passes. Commit 1.1 to 1.3 together as `feat:`.
+- [x] 1.1 In `src/lib/data/validate.test.ts` and `src/lib/data/validate-generic.test.ts`, remove `map` from the inline crawls and delete the map URL cases. Add failing tests, one behavior each: a leftover `definition.map` fails with `invalid definition.map (removed; link a route map from links)`, and a crawl with no `map` passes. Verify that they fail for the right reason.
+- [x] 1.2 In `src/lib/data/validate.js`, delete the map block and its helper imports, and add the `map` check beside the `albumUrl` check, as the design shows. Verify that all `validate*.test.ts` tests pass.
+- [x] 1.3 Delete `resolveMap`, `isMapEmbedUrl`, and `isMapViewerUrl` from `src/lib/crawl/urls.js`, and their cases from `urls.test.ts`. Keep the quick-link helpers and tests. Verify that `urls.test.ts` passes. Commit 1.1 to 1.3 with group 2, because `MapView` imports `resolveMap` until task 2.3 deletes it.
 
 ## 2. Seed, shell, and types
 
-- [ ] 2.1 In `static/crawls/cory-trent.yaml` and `tests/fixtures/cory-trent.json`, delete `map`, and add the third link from the design: `Route map`, hint `Open the crawl route`, and the My Maps viewer URL. Verify with `npm run validate:crawls`.
-- [ ] 2.2 Update the tests first:
+- [x] 2.1 In `static/crawls/cory-trent.yaml` and `tests/fixtures/cory-trent.json`, delete `map`, and add the third link from the design: `Route map`, hint `Open the crawl route`, and the My Maps viewer URL. Verify with `npm run validate:crawls`.
+- [x] 2.2 Update the tests first:
   - `Shell.parity.test.ts`: replace the Map-tab test with one that expects the seed's link URLs to equal the frozen snapshot's Ventra URL, Metra URL, and `myMapsAppUrl`, in that order.
   - `seed.test.ts`: expect the link labels Ventra, Metra, and Route map.
   - `Shell.test.ts`: expect no Map tab, and click another tab in the scroll-to-top test.
@@ -16,7 +16,7 @@
   - Inline crawls in `CrawlRoute.test.ts`, `Shell.theme.test.ts`, and `provider.test.ts`: drop `map`.
 
   Verify that the new expectations fail against the current code.
-- [ ] 2.3 Delete `src/lib/MapView.svelte`, `src/lib/MapView.test.ts`, and `src/lib/MapView.generic.test.ts`. Remove the Map tab, title, view branch, and import from `src/lib/Shell.svelte`. Remove `CrawlMap` and `CrawlDefinition.map` from `src/lib/types.ts`. Verify that `npm test` and `npm run check` pass. Commit 2.1 to 2.3 together as `feat:`, so no commit has a failing suite.
+- [x] 2.3 Delete `src/lib/MapView.svelte`, `src/lib/MapView.test.ts`, and `src/lib/MapView.generic.test.ts`. Remove the Map tab, title, view branch, and import from `src/lib/Shell.svelte`. Remove `CrawlMap` and `CrawlDefinition.map` from `src/lib/types.ts`. Verify that `npm test` and `npm run check` pass. Commit 2.1 to 2.3 together as `feat:`, so no commit has a failing suite.
 
 ## 3. Content Security Policy (test-first)
 

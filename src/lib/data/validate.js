@@ -2,7 +2,7 @@ import { parseJsonYaml } from './yaml.js';
 import { readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { LOGICAL_ID_PATTERN } from './id.js';
-import { isQuickLinkUrl, isMapEmbedUrl, isMapViewerUrl } from '../crawl/urls.js';
+import { isQuickLinkUrl } from '../crawl/urls.js';
 
 export { LOGICAL_ID_PATTERN } from './id.js';
 
@@ -87,6 +87,7 @@ export function validateCrawlSource(fileName, source) {
 	}
 	const definition = asRecord(fileName, 'definition', record.definition);
 	if ('albumUrl' in definition) invalid(fileName, 'definition.albumUrl');
+	if ('map' in definition) invalid(fileName, 'definition.map (removed; link a route map from links)');
 	if ('intro' in definition) asNonemptyString(fileName, 'definition.intro', definition.intro);
 	for (const field of [
 		'appTitle',
@@ -114,9 +115,6 @@ export function validateCrawlSource(fileName, source) {
 		if ('hint' in link) asNonemptyString(fileName, `${field}.hint`, link.hint);
 		if (!isQuickLinkUrl(link.url)) invalid(fileName, `${field}.url`);
 	});
-	const map = asRecord(fileName, 'definition.map', definition.map);
-	if (!isMapEmbedUrl(map.embed)) invalid(fileName, 'definition.map.embed');
-	if (!isMapViewerUrl(map.app)) invalid(fileName, 'definition.map.app');
 	rejectRetiredKeys(fileName, 'definition', definition, RETIRED_DEFINITION_KEYS);
 	const places = asArray(fileName, 'definition.places', definition.places);
 	const seenStops = new Set();

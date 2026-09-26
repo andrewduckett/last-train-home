@@ -3,7 +3,6 @@
 	import { getCrawl as getDefaultCrawl, type CrawlProvider } from './data/provider.js';
 	import type { CrawlResult } from './types.js';
 	import ScheduleView from './ScheduleView.svelte';
-	import MapView from './MapView.svelte';
 	import PlacesView from './PlacesView.svelte';
 	import TasksView from './TasksView.svelte';
 	import InfoView from './InfoView.svelte';
@@ -32,7 +31,6 @@
 
 	const BASE_TABS = [
 		{ id: 'schedule', label: 'Schedule', icon: '🕑' },
-		{ id: 'map', label: 'Map', icon: '🗺️' },
 		{ id: 'places', label: 'Places', icon: '📍' },
 		{ id: 'tasks', label: 'Tasks', icon: '✅' },
 	] as const;
@@ -44,7 +42,6 @@
 
 	const TITLES: Record<TabId, string> = {
 		schedule: 'Schedule',
-		map: 'Route Map',
 		places: 'Places',
 		tasks: 'Tasks',
 		info: 'Info',
@@ -80,8 +77,6 @@
 
 			{#if activeTab === 'schedule'}
 				<ScheduleView crawl={result.crawl} />
-			{:else if activeTab === 'map'}
-				<MapView crawl={result.crawl} />
 			{:else if activeTab === 'places'}
 				<PlacesView crawl={result.crawl} />
 			{:else if activeTab === 'tasks' && checksController}

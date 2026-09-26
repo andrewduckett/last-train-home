@@ -10,7 +10,6 @@ export interface ScheduleEntry {
 }
 
 export interface QuickLink { label: string; hint?: string; url: string }
-export interface CrawlMap { embed: string; app: string }
 
 export interface StopLocation {
 	name: string;
@@ -40,7 +39,6 @@ export interface CrawlDefinition {
 	scavenger: ScavengerTask[];
 	scavengerRules: string[];
 	links: QuickLink[];
-	map: CrawlMap;
 }
 
 export interface CrawlIdentity {

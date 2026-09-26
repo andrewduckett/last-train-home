@@ -14,7 +14,6 @@ function record(title: string) {
 			places: [],
 			scavenger: [],
 			scavengerRules: [],
-			map: { embed: 'https://www.google.com/maps/embed', app: 'https://www.google.com/maps/d/viewer' },
 			links: [],
 		},
 	};

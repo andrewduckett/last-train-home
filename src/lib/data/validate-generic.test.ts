@@ -6,7 +6,7 @@ function source(change: (definition: Record<string, any>) => void = () => {}) {
 	const definition: Record<string, any> = {
 		appTitle: 'Walk', line: 'Park → Cafe',
 		schedule: [{ kind: 'move', time: 'Noon', title: 'To cafe', mode: '15 min walk' }],
-		links: [], map: { embed: 'https://www.google.com/maps/d/embed?mid=x', app: 'https://www.google.com/maps/d/viewer?mid=x' },
+		links: [],
 		places: [{ stop: 'Cafe', town: 'Town', locations: [{ name: 'Cafe', address: '1 Main' }] }],
 		scavenger: [{ id: 'photo', title: 'Photo', points: 10, description: 'Share it' }], scavengerRules: ['Share.'],
 	};
@@ -39,11 +39,8 @@ it.each([
 	['schedule[0].note', (d: any) => { d.schedule[0].note = ''; }],
 	['links[0].label', (d: any) => { d.links = [{ label: '', url: 'https://example.com' }]; }],
 	['links[0].url', (d: any) => { d.links = [{ label: 'Bad', url: 'javascript:alert(1)' }]; }],
-	['map.embed', (d: any) => { d.map.embed = 'https://www.google.com:444/maps/d/embed'; }],
-	['map.app', (d: any) => { d.map.app = 'https://www.google.com/maps/d/embed'; }],
 	['schedule', (d: any) => { delete d.schedule; }],
 	['links', (d: any) => { delete d.links; }],
-	['map', (d: any) => { delete d.map; }],
 ] as const)('identifies invalid definition.%s', (field, change) => {
 	expect(() => validateCrawlSource('walk.yaml', source(change))).toThrow(`walk.yaml: invalid definition.${field}`);
 });

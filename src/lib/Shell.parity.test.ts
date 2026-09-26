@@ -60,11 +60,12 @@ it('preserves every schedule entry in authored order', async () => {
 	});
 });
 
-it('preserves the quick-link destinations', async () => {
+it('preserves the quick-link destinations, with the route map as a link', async () => {
 	await openTab('info');
-	expect(seed.links.map((link) => link.url)).toEqual([before.ventraUrl, before.metraUrl]);
+	expect(seed.links.map((link) => link.url)).toEqual([before.ventraUrl, before.metraUrl, before.myMapsAppUrl]);
 	expect(screen.getByRole('link', { name: /Ventra/ })).toHaveAttribute('href', seed.links[0].url);
 	expect(screen.getByRole('link', { name: /Metra/ })).toHaveAttribute('href', seed.links[1].url);
+	expect(screen.getByRole('link', { name: /Route map/ })).toHaveAttribute('href', before.myMapsAppUrl);
 });
 
 function barRows(container: HTMLElement) {
@@ -142,9 +143,3 @@ it('hides the seed placeholder album link', async () => {
 	expect(screen.queryByRole('link', { name: /Open group album/ })).not.toBeInTheDocument();
 });
 
-it('preserves the seed map destinations', async () => {
-	await openTab('map');
-	expect(seed.map).toEqual({ embed: before.myMapsEmbedUrl, app: before.myMapsAppUrl });
-	expect(screen.getByTitle('Crawl route map')).toHaveAttribute('src', seed.map.embed);
-	expect(screen.getByTestId('map-viewer-link')).toHaveAttribute('href', seed.map.app);
-});

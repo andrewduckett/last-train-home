@@ -32,7 +32,7 @@ it('resolves the original seed content through the production provider', async (
 it('publishes the welcome without an album placeholder', () => {
 	expect(expectedDefinition.intro).toContain("Cory & Trent are getting married!");
 	expect(expectedDefinition).not.toHaveProperty('albumUrl');
-	expect(expectedDefinition.links.map((link) => link.label)).toEqual(['Ventra', 'Metra']);
+	expect(expectedDefinition.links.map((link) => link.label)).toEqual(['Ventra', 'Metra', 'Route map']);
 });
 
 it.each(['missing', 'constructor'])('does not resolve missing id %j', async (id) => {

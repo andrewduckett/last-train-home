@@ -71,13 +71,6 @@ describe('browser boot and tab switching', () => {
 		await fireEvent.click(screen.getByRole('button', { name: /tasks/i }));
 		expect(screen.getByTestId('view-tasks')).toBeInTheDocument();
 	});
-
-	it('switching to Map tab shows the map view', async () => {
-		render(Shell, seedShellProps);
-		await screen.findByTestId('view-schedule');
-		await fireEvent.click(screen.getByRole('button', { name: /map/i }));
-		expect(screen.getByTestId('view-map')).toBeInTheDocument();
-	});
 });
 
 describe('unauthorized inline script is not hash-authorized', () => {

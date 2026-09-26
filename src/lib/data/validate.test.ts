@@ -27,9 +27,6 @@ definition:
   scavengerRules:
     - Post the photo.
   links: []
-  map:
-    embed: https://www.google.com/maps/d/embed?mid=example
-    app: https://www.google.com/maps/d/viewer?mid=example
 `;
 
 it('accepts an omitted introduction', () => {
@@ -46,6 +43,17 @@ it.each(['   ', 42, '[welcome]', '{ greeting: hello }'])(
 		expect(() => validateCrawlSource('example.yaml', source)).toThrow(/example\.yaml: invalid definition\.intro/);
 	},
 );
+
+it('accepts a crawl without a map', () => {
+	expect(() => validateCrawlSource('example.yaml', validSource)).not.toThrow();
+});
+
+it('rejects a leftover map and says to link a route map', () => {
+	const source = validSource + '  map:\n    app: https://www.google.com/maps/d/viewer?mid=example\n';
+	expect(() => validateCrawlSource('example.yaml', source)).toThrow(
+		'example.yaml: invalid definition.map (removed; link a route map from links)',
+	);
+});
 
 it('rejects the obsolete album field', () => {
 	expect(() => validateCrawlSource('example.yaml', validSource + '  albumUrl: https://example.com/photos\n')).toThrow(/example\.yaml: invalid definition\.albumUrl/);

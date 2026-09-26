@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/svelte';
 import Shell from './Shell.svelte';
 import { createCrawlProvider } from './data/provider.js';
 
-const base = { appTitle: 'Walk', line: 'A → B', schedule: [], places: [], scavenger: [], scavengerRules: [], map: null };
+const base = { appTitle: 'Walk', line: 'A → B', schedule: [], places: [], scavenger: [], scavengerRules: [] };
 
 function show(intro: unknown, links: unknown) {
 	return render(Shell, { id: 'walk', getCrawl: createCrawlProvider(() => ({ title: 'Walk', definition: { ...base, intro, links } })).getCrawl });
