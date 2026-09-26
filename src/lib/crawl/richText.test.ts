@@ -1,5 +1,3 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { parse } from 'yaml';
 import { expect, it } from 'vitest';
 import { parseRichText } from './richText.js';
@@ -121,13 +119,22 @@ it('does not pair markers split across two lines', () => {
 	expect(parseRichText('**Meet\nearly**')).toEqual([[line(['**Meet', false, false]), line(['early**', false, false])]]);
 });
 
-it('parses the seed intro into three paragraphs with one bold run', () => {
-	const source = readFileSync(resolve('static/crawls/cory-trent.yaml'), 'utf8');
-	const intro = parse(source).definition.intro as string;
+it('parses an authored YAML intro into three paragraphs with one bold run', () => {
+	// A block scalar whose separator lines hold only spaces, as editors often leave them.
+	const source = [
+		'intro: |',
+		'  Meet by the harbor fountain at six.',
+		'    ',
+		'  We finish back where we started. ',
+		'  ',
+		'  **Bring a jacket**: evenings get cold by the water.',
+		'',
+	].join('\n');
+	const intro = parse(source).intro as string;
 
 	const paragraphs = parseRichText(intro);
 
 	expect(paragraphs).toHaveLength(3);
 	const boldRuns = paragraphs[2][0].filter((run) => run.strong);
-	expect(boldRuns).toEqual([{ text: "Don't forget", strong: true, em: false }]);
+	expect(boldRuns).toEqual([{ text: 'Bring a jacket', strong: true, em: false }]);
 });
