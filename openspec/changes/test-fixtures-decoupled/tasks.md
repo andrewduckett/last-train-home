@@ -15,7 +15,7 @@
 
 - [x] 3.1 Rewrite `src/lib/data/seed.test.ts`: keep the missing-id and unsafe-id cases, and serve a generated record as YAML for the production-binding case. Delete `src/lib/data/yaml-seed.test.ts`. Verify both data test files pass or are gone.
 - [x] 3.2 Replace the seed case in `src/lib/crawl/richText.test.ts` with a built intro of three paragraphs and one bold phrase. Verify the file passes.
-- [ ] 3.3 Rewrite `src/lib/Shell.seed-theme.test.ts` to render `/` and `/<id>` for a generated `amber` record served under `defaultCrawl`. Rename it to describe any crawl. Verify it passes.
+- [x] 3.3 Rewrite `src/lib/Shell.seed-theme.test.ts` to render `/` and `/<id>` for a generated record with a chosen color, served under `defaultCrawl`. Rename it to describe any crawl. Verify it passes.
 - [ ] 3.4 Move `src/lib/Shell.test.ts` and `src/lib/Shell.layout.test.ts` to `recordProvider` with a generated record. Verify both pass.
 - [ ] 3.5 Move `src/lib/Shell.checks.test.ts` to generated records. Replace the rename-era case with "saved checks follow task ids after titles change". Verify it passes.
 - [ ] 3.6 Move `ScheduleView.test.ts`, `PlacesView.test.ts`, and `TasksView.test.ts` to builders. Each test asserts only against values it passed in. Verify all three pass.
