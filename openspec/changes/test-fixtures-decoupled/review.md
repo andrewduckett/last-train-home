@@ -39,13 +39,16 @@ VERDICT: APPROVE_WITH_CHANGES
 1. In `tests/test-isolation.test.ts` and `design.md` (D4), remove the dynamic ID text ban entirely. Rely strictly on the directory path ban (`static/crawls` and `build/crawls`) to prevent coupling, eliminating the reverse-coupling risk where a valid live crawl name collides with a dummy test ID.
 2. Remove the "Check authored crawls by contract, not content" requirement and its four meta-process scenarios from `specs/crawl-authoring/spec.md`. The mechanics of the test suite belong in ADR 0008, not in product behavior specs.
 3. In `design.md`, rewrite the 32-word sentence in D3 to be 30 words or fewer, and change the passive phrase "Injection is already supported" in D2 to active voice.
-CHANGES_APPLIED: no
+CHANGES_APPLIED: yes
 ## Rebuttals
 
-- **C1** fixed: the guard no longer bans authored ids (`tests/test-isolation.test.ts`, design.md D4, ADR 0008). Verified: with `static/crawls/first.yaml` added and built, `npm test` passes.
-- **M1** fixed: removed "Check authored crawls by contract, not content" from `specs/crawl-authoring/spec.md`. ADR 0008 records the policy; proposal.md and the `crawl-provider` REMOVED migration note now point there.
-- **M2** fixed: the D3 sentence is split into four short ones; D2 now says "the providers already accept an injected fetch".
+- **C1** (accepted by reviewer, targeted re-check) fixed: the guard no longer bans authored ids (`tests/test-isolation.test.ts`, design.md D4, ADR 0008). Verified: with `static/crawls/first.yaml` added and built, `npm test` passes.
+- **M1** (accepted by reviewer, targeted re-check) fixed: removed "Check authored crawls by contract, not content" from `specs/crawl-authoring/spec.md`. ADR 0008 records the policy; proposal.md and the `crawl-provider` REMOVED migration note now point there.
+- **M2** (accepted by reviewer, targeted re-check) fixed: the D3 sentence is split into four short ones; D2 now says "the providers already accept an injected fetch".
 - **S1** adopted: design.md D5 now records the `seed.test.ts` to `get-crawl.test.ts` rename.
 - **S2** adopted differently: `tests/static-build.test.ts` now checks that each authored file exists in `build/crawls/`, not byte equality. Verified: after a content edit with no rebuild, `npm test` passes. A separate `test:build` script was not added; the smaller fix removes the false failure.
 - Tasks 6.4 (borrowed example text) and 6.5 (this round's rework) record the implementation changes.
 
+## Targeted Re-check
+
+Gemini 3.1 Pro (High) via agy re-checked Required Changes 1-3 and the C1, M1, and M2 responses. It marked every Required Change applied and every response accepted.
