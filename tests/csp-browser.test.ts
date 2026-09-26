@@ -18,7 +18,10 @@ import { readFileSync, existsSync } from 'fs';
 import { resolve } from 'path';
 import { createHash } from 'crypto';
 import Shell from '../src/lib/Shell.svelte';
-import { seedShellProps } from './fixtures/seed-provider.js';
+import { buildRecord } from './fixtures/crawl-builders.js';
+import { recordProvider } from './fixtures/crawl-provider.js';
+
+const shellProps = { id: 'lantern-loop', getCrawl: recordProvider({ 'lantern-loop': buildRecord() }).getCrawl };
 
 const INDEX_HTML = resolve('build/index.html');
 
@@ -48,7 +51,7 @@ beforeAll(() => {
 
 describe('browser boot and tab switching', () => {
 	it('Shell renders and opens on Schedule tab', async () => {
-		render(Shell, seedShellProps);
+		render(Shell, shellProps);
 		await screen.findByTestId('view-schedule');
 		expect(screen.getByRole('button', { name: /schedule/i })).toHaveAttribute(
 			'aria-current',
@@ -58,7 +61,7 @@ describe('browser boot and tab switching', () => {
 	});
 
 	it('switching to Places tab shows the places view', async () => {
-		render(Shell, seedShellProps);
+		render(Shell, shellProps);
 		await screen.findByTestId('view-schedule');
 		await fireEvent.click(screen.getByRole('button', { name: /places/i }));
 		expect(screen.getByTestId('view-places')).toBeInTheDocument();
@@ -66,7 +69,7 @@ describe('browser boot and tab switching', () => {
 	});
 
 	it('switching to Tasks tab shows the tasks view', async () => {
-		render(Shell, seedShellProps);
+		render(Shell, shellProps);
 		await screen.findByTestId('view-schedule');
 		await fireEvent.click(screen.getByRole('button', { name: /tasks/i }));
 		expect(screen.getByTestId('view-tasks')).toBeInTheDocument();

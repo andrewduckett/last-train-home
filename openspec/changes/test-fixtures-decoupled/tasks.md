@@ -24,7 +24,7 @@
 ## 4. Remove the seed fixtures
 
 - [x] 4.1 Delete `src/lib/Shell.parity.test.ts` and `tests/fixtures/cory-trent-before.json`. Verify `npm test` passes.
-- [ ] 4.2 Delete `tests/fixtures/cory-trent.json`, `cory-trent.ts`, and `seed-provider.ts`. Verify that no file imports them and that `npm test` and `npm run check` pass.
+- [x] 4.2 Delete `tests/fixtures/cory-trent.json`, `cory-trent.ts`, and `seed-provider.ts`. Verify that no file imports them and that `npm test` and `npm run check` pass.
 
 ## 5. Guard against new coupling
 
