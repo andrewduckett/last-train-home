@@ -8,7 +8,7 @@ The crawl shell is the phone screen a participant uses on the day. It renders on
 
 ### Requirement: Four-tab navigation
 
-The shell SHALL always present Schedule, Map, Venues, and Tasks. It SHALL add Info after those tabs only when the crawl has an introduction string with non-whitespace text or a valid quick link. The shell SHALL show one view at a time. It SHALL open on Schedule and mark the active tab. Each new crawl selection SHALL reset the active tab to Schedule.
+The shell SHALL always present Schedule, Map, Places, and Tasks. It SHALL add Info after those tabs only when the crawl has an introduction string with non-whitespace text or a valid quick link. The shell SHALL show one view at a time. It SHALL open on Schedule and mark the active tab. Each new crawl selection SHALL reset the active tab to Schedule.
 
 #### Scenario: App opens on the Schedule tab
 
@@ -20,6 +20,11 @@ The shell SHALL always present Schedule, Map, Venues, and Tasks. It SHALL add In
 - **WHEN** a participant taps a different tab
 - **THEN** the shell shows that tab's view, marks it active, and scrolls the content to the top
 
+#### Scenario: The Places tab replaces Venues
+
+- **WHEN** a participant opens any crawl
+- **THEN** the tab bar shows a Places tab with a neutral pin icon, and no Venues tab
+
 #### Scenario: A crawl has Info content
 
 - **WHEN** a crawl has an introduction string with non-whitespace text or at least one valid quick link
@@ -28,12 +33,12 @@ The shell SHALL always present Schedule, Map, Venues, and Tasks. It SHALL add In
 #### Scenario: A crawl has no Info content
 
 - **WHEN** a crawl has no introduction string with non-whitespace text and no valid quick link
-- **THEN** the shell shows only Schedule, Map, Venues, and Tasks
+- **THEN** the shell shows only Schedule, Map, Places, and Tasks
 
 #### Scenario: A blank or malformed introduction does not create Info
 
 - **WHEN** a crawl has a whitespace-only or non-string introduction and no valid quick links
-- **THEN** the shell shows only Schedule, Map, Venues, and Tasks
+- **THEN** the shell shows only Schedule, Map, Places, and Tasks
 
 #### Scenario: A new crawl omits Info while Info is active
 
@@ -64,51 +69,83 @@ The Schedule view SHALL show valid timed `stop`, `move`, and `note` entries in a
 - **WHEN** the resolved crawl has no schedule list
 - **THEN** the Schedule view shows an unavailable message and the other crawl tabs remain usable
 
-### Requirement: Venue list with directions
+### Requirement: Place list with directions
 
-The Venues view SHALL list each stop with its venue names and addresses. Each venue SHALL show a directions link that opens a map search. The search query SHALL be the venue's name, street address, and town, as authored, separated by a comma and a space. The app SHALL NOT add any other text to the query, such as a state.
+The Places view SHALL list each stop in authored order, with its stop label and town. Under each stop, it SHALL list that stop's locations in authored order. Each location SHALL show its name and address. When a location has a label, the view SHALL show the label as a tag beside the name. The view SHALL NOT mark the locations at one stop as alternatives to each other.
+
+Each location SHALL show a directions link that opens a map search. The search query SHALL be the location's name, its street address, and its stop's town, as authored, separated by a comma and a space. The app SHALL NOT add any other text to the query, such as a state or a label. The app SHALL percent-encode the query, so authored characters such as `&`, `=`, `#`, and `?` stay inside the query parameter.
 
 On an Apple device, the link SHALL open an Apple Maps search at `https://maps.apple.com/` with the query in its `q` parameter, in the same browser tab. An Apple device is one whose user agent names an iPhone, iPad, iPod, or Macintosh. On any other device, the link SHALL open a Google Maps search in a new browser tab. The same rule SHALL apply when the app cannot read the user agent. The Google link SHALL use `https://www.google.com/maps/search/?api=1` with the query in its `query` parameter.
 
 #### Scenario: Directions link opens a map search
 
-- **WHEN** the Venues view renders on a non-Apple device
+- **WHEN** the Places view renders on a non-Apple device
 - **THEN** each directions link has a Google Maps search `href`, `target="_blank"`, and `rel="noopener noreferrer"`
 
 #### Scenario: An Apple Maps link opens in the same tab
 
-- **WHEN** the Venues view renders on an Apple device
+- **WHEN** the Places view renders on an Apple device
 - **THEN** each directions link has an Apple Maps search `href` and no `target` attribute
 
 #### Scenario: An iPhone gets Apple Maps
 
-- **WHEN** a participant whose user agent names an iPhone opens the Venues view
-- **THEN** each directions link is an Apple Maps search for that venue's query
+- **WHEN** a participant whose user agent names an iPhone opens the Places view
+- **THEN** each directions link is an Apple Maps search for that location's query
 
 #### Scenario: An iPad in desktop mode gets Apple Maps
 
 - **WHEN** a participant's iPad reports a Macintosh user agent
-- **THEN** each directions link is an Apple Maps search for that venue's query
+- **THEN** each directions link is an Apple Maps search for that location's query
 
 #### Scenario: An Android phone gets Google Maps
 
-- **WHEN** a participant whose user agent names Android opens the Venues view
-- **THEN** each directions link is a Google Maps search for that venue's query
+- **WHEN** a participant whose user agent names Android opens the Places view
+- **THEN** each directions link is a Google Maps search for that location's query
 
 #### Scenario: The device cannot be identified
 
 - **WHEN** the app cannot read a user agent
-- **THEN** each directions link is a Google Maps search for that venue's query
+- **THEN** each directions link is a Google Maps search for that location's query
 
 #### Scenario: The query carries only authored text
 
-- **WHEN** a crawl outside Illinois lists a venue named `Canal Cafe` at `7 River Rd` in `River Town`
+- **WHEN** a crawl outside Illinois lists a location named `Canal Cafe`, labeled `Cafe`, at `7 River Rd`, in a stop whose town is `River Town`
 - **THEN** the directions query is exactly `Canal Cafe, 7 River Rd, River Town`
+
+#### Scenario: Authored punctuation stays in the query
+
+- **WHEN** a location is named `Pub & Grill #2?`
+- **THEN** its directions link keeps the whole name inside the query parameter and adds no other parameter or fragment
+
+#### Scenario: A label shows as a tag
+
+- **WHEN** a location has the label `Train`
+- **THEN** the view shows `Train` as a tag beside that location's name
+
+#### Scenario: A location without a label shows no tag
+
+- **WHEN** a location has no label
+- **THEN** the view shows that location's name with no tag
+
+#### Scenario: Locations at one stop are not alternatives
+
+- **WHEN** a stop has two or more locations
+- **THEN** the view lists them in authored order with no "OR" divider between them
+
+#### Scenario: A stop holds a single location
+
+- **WHEN** a stop lists only one location, such as a meetup point
+- **THEN** the view shows that stop's card with that one location and its directions link
 
 #### Scenario: The seed keeps its Google searches
 
-- **WHEN** a participant on a non-Apple device opens the Venues view for cory-trent
-- **THEN** each directions link matches the Google Maps search it opened before this change, including `IL`, because the seed writes the state into each town
+- **WHEN** a participant on a non-Apple device opens the Places view for cory-trent
+- **THEN** each bar's directions link matches the Google Maps search it opened before this change
+
+#### Scenario: The seed shows its stations
+
+- **WHEN** a participant opens the Places view for cory-trent
+- **THEN** the first card is `Meetup` with Palatine Metra Station, and each other stop lists its Metra station, labeled `Train`, before its bar, labeled `Bar`
 
 ### Requirement: Scavenger checklist with points tally
 
@@ -266,8 +303,8 @@ The route SHALL give the shell its selected logical id. The shell SHALL obtain t
 
 #### Scenario: The Venues tab shows the seed venues
 
-- **WHEN** the resolved shell opens the Venues tab
-- **THEN** the view shows each seed venue's name, address, and directions link
+- **WHEN** the resolved shell opens the Places tab
+- **THEN** the view shows each seed location's name, address, label, and directions link
 
 #### Scenario: The Tasks tab shows the seed tasks
 
