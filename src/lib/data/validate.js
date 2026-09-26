@@ -16,8 +16,10 @@ function invalid(fileName, field) {
 	throw new Error(`${fileName}: invalid ${field}`);
 }
 
-/** Retired one-letter keys, mapped to the descriptive keys that replace them. */
-const RETIRED_PLACE_KEYS = { n: 'name', a: 'address' };
+/** Retired keys at each level of a crawl, mapped to the keys that replace them. */
+const RETIRED_DEFINITION_KEYS = { venues: 'places' };
+const RETIRED_STOP_KEYS = { places: 'locations' };
+const RETIRED_LOCATION_KEYS = { n: 'name', a: 'address' };
 const RETIRED_TASK_KEYS = { t: 'title', p: 'points', d: 'description' };
 
 /**
@@ -115,25 +117,29 @@ export function validateCrawlSource(fileName, source) {
 	const map = asRecord(fileName, 'definition.map', definition.map);
 	if (!isMapEmbedUrl(map.embed)) invalid(fileName, 'definition.map.embed');
 	if (!isMapViewerUrl(map.app)) invalid(fileName, 'definition.map.app');
-	const venues = asArray(fileName, 'definition.venues', definition.venues);
+	rejectRetiredKeys(fileName, 'definition', definition, RETIRED_DEFINITION_KEYS);
+	const places = asArray(fileName, 'definition.places', definition.places);
 	const seenStops = new Set();
-	venues.forEach((entry, index) => {
-		const field = `definition.venues[${index}]`;
-		const venue = asRecord(fileName, field, entry);
-		const stop = asString(fileName, `${field}.stop`, venue.stop);
-		if (seenStops.has(stop)) invalid(fileName, 'definition.venues.stop duplicate');
+	places.forEach((entry, index) => {
+		const field = `definition.places[${index}]`;
+		const stopEntry = asRecord(fileName, field, entry);
+		rejectRetiredKeys(fileName, field, stopEntry, RETIRED_STOP_KEYS);
+		const stop = asString(fileName, `${field}.stop`, stopEntry.stop);
+		if (seenStops.has(stop)) invalid(fileName, 'definition.places.stop duplicate');
 		seenStops.add(stop);
-		asString(fileName, `${field}.town`, venue.town);
-		const places = asArray(fileName, `${field}.places`, venue.places);
-		const seenPlaces = new Set();
-		places.forEach((placeEntry, placeIndex) => {
-			const placeField = `${field}.places[${placeIndex}]`;
-			const place = asRecord(fileName, placeField, placeEntry);
-			rejectRetiredKeys(fileName, placeField, place, RETIRED_PLACE_KEYS);
-			const name = asString(fileName, `${placeField}.name`, place.name);
-			if (seenPlaces.has(name)) invalid(fileName, `${field}.places.name duplicate`);
-			seenPlaces.add(name);
-			asString(fileName, `${placeField}.address`, place.address);
+		asString(fileName, `${field}.town`, stopEntry.town);
+		const locations = asArray(fileName, `${field}.locations`, stopEntry.locations);
+		if (locations.length === 0) invalid(fileName, `${field}.locations`);
+		const seenNames = new Set();
+		locations.forEach((locationEntry, locationIndex) => {
+			const locationField = `${field}.locations[${locationIndex}]`;
+			const location = asRecord(fileName, locationField, locationEntry);
+			rejectRetiredKeys(fileName, locationField, location, RETIRED_LOCATION_KEYS);
+			const name = asString(fileName, `${locationField}.name`, location.name);
+			if (seenNames.has(name)) invalid(fileName, `${field}.locations.name duplicate`);
+			seenNames.add(name);
+			asString(fileName, `${locationField}.address`, location.address);
+			if ('label' in location) asNonemptyString(fileName, `${locationField}.label`, location.label);
 		});
 	});
 	const scavenger = asArray(fileName, 'definition.scavenger', definition.scavenger);
