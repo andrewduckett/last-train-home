@@ -48,19 +48,25 @@ The served Content Security Policy SHALL set `script-src` to `'self'` plus the b
 - **WHEN** an inline script whose hash is not in the policy appears after the policy's `<meta>` tag
 - **THEN** the policy blocks that script from running
 
-### Requirement: App-loaded assets are same-origin, fonts self-hosted
+### Requirement: Same-origin assets, self-hosted fonts, and no frames
 
-Every script, style, font, and image the app document loads SHALL be same-origin. Fonts SHALL be self-hosted and bundled at build time. The embedded map frame is the one allowed cross-origin frame, listed in `frame-src`; requests that frame makes on its own are outside this requirement.
+Every script, style, font, and image the app document loads SHALL be same-origin. Fonts SHALL be self-hosted and bundled at build time. The served Content Security Policy SHALL set `frame-src` to `'none'`, so the app document loads no frames from any origin, its own included.
 
 #### Scenario: The app document loads only same-origin assets
 
 - **WHEN** the built site loads its shell
 - **THEN** the scripts, styles, fonts, and images the document itself requests come only from its own origin
 
-#### Scenario: The map frame is the only cross-origin frame
 
-- **WHEN** the served policy is inspected
-- **THEN** `frame-src` lists only the map provider and no other cross-origin source
+#### Scenario: The policy allows no frames
+
+- **WHEN** the served Content Security Policy is inspected
+- **THEN** its `frame-src` directive is exactly `'none'`
+
+#### Scenario: The policy names no map provider
+
+- **WHEN** the served Content Security Policy is inspected
+- **THEN** it lists no `https://www.google.com` source in any directive
 
 ### Requirement: Baseline security headers via HTTP response
 
