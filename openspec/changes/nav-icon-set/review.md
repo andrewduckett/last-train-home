@@ -52,3 +52,8 @@ All findings are fixed. None is rebutted.
 - **🟡 Network scenario too broad** — fixed. The spec now forbids only icon file requests: "Drawing an icon SHALL NOT request a file."
 - **📌 One title term** — applied. The spec says "the crawl's app title".
 - **📌 Repeated prose** — applied. `design.md` merges the two `preview.html` sentences. `adr.md` drops the two repeated sentences.
+
+Round-1 re-check (same reviewer) failed two items, and the author fixed both:
+
+- **Item 1** — the allowlist had no namespace check, and children could declare `xmlns`. Decision 4 now requires every element to sit in the SVG namespace. It also splits the attribute allowlist into a root list and a child list, so only the root may declare `xmlns`.
+- **Item 4** — the plan omitted the header ink color and full opacity. The Verification table now checks the header icon rule for `color: var(--board-ink)`. It also checks that no nav rule sets `opacity` below 1.

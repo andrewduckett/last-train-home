@@ -60,8 +60,9 @@ The build places the SVG strings in the JavaScript bundle. The browser draws the
 - `style-spec.json` names the Bold preset values below;
 - the root `viewBox` is `0 0 24 24`, `stroke-width` is `2.5`, and `stroke-linecap` and `stroke-linejoin` are `round`;
 - no child sets `stroke-width`, `stroke-linecap`, or `stroke-linejoin`;
-- every element is one of `svg`, `path`, `circle`, `ellipse`, `rect`, `line`, `polyline`, or `polygon`;
-- every attribute is one of `xmlns`, `width`, `height`, `viewBox`, `fill`, `stroke`, `stroke-width`, `stroke-linecap`, `stroke-linejoin`, `d`, `cx`, `cy`, `r`, `rx`, `ry`, `x`, `y`, `x1`, `y1`, `x2`, `y2`, and `points`;
+- every element sits in the SVG namespace and is one of `svg`, `path`, `circle`, `ellipse`, `rect`, `line`, `polyline`, or `polygon`;
+- the root allows only `xmlns`, `width`, `height`, `viewBox`, `fill`, `stroke`, `stroke-width`, `stroke-linecap`, and `stroke-linejoin`;
+- a child allows only `fill`, `stroke`, `d`, `cx`, `cy`, `r`, `rx`, `ry`, `x`, `y`, `width`, `height`, `x1`, `y1`, `x2`, `y2`, and `points`, so no child declares a namespace;
 - every `fill` and `stroke` value is `none` or `currentColor`;
 - every number has at most two decimal places.
 
@@ -74,8 +75,8 @@ jsdom does not resolve the color cascade from scoped styles. So the plan checks 
 | Spec scenario | Check |
 |---|---|
 | Each tab shows its icon | A Shell test finds `[data-icon]` in each tab with the expected name. The tab bar's text holds no emoji. |
-| The header shows a train | A Shell test finds `[data-icon="train"]` in the header, and the header text holds no emoji. |
-| The active icon takes the accent | A Shell test checks that no icon span has an inline `style` other than its size, and each SVG uses `currentColor`. A build test reads the built CSS. It checks that the nav button rule sets `color: var(--board-muted)`, and the active rule sets `color: var(--board-accent)`. The existing palette test checks the amber token. |
+| The header shows a train | A Shell test finds `[data-icon="train"]` in the header, and the header text holds no emoji. The build test checks that the header icon rule sets `color: var(--board-ink)`. |
+| The active icon takes the accent | A Shell test checks that no icon span has an inline `style` other than its size, and each SVG uses `currentColor`. A build test reads the built CSS. It checks that the nav button rule sets `color: var(--board-muted)`, and the active rule sets `color: var(--board-accent)`. It also checks that no nav rule sets `opacity` below 1, so inactive icons stay at full opacity. The existing palette test checks the amber token. |
 | A crawl without a valid color uses the neutral accent | The existing theme test selects the neutral palette for a missing or unknown color. The build test above ties the icon to that palette's token. |
 | Screen readers hear only the tab labels | A Shell test finds each tab by `getByRole('button', { name })` with its exact label. Each icon span has `aria-hidden="true"`. |
 | Icons load with the app | A build test checks that `build/` holds no copy of the five icon files and that an icon's path data appears in the JavaScript bundle. |
