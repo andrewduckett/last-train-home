@@ -64,3 +64,9 @@ describe('shell icons in the build', () => {
 		expect(bundle).toContain(pin);
 	});
 });
+
+it('contains the manifest and the app icons', () => {
+	for (const file of ['manifest.webmanifest', 'apple-touch-icon.png', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png']) {
+		expect(existsSync(resolve('build', file)), file).toBe(true);
+	}
+});

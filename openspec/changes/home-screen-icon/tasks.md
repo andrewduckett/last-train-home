@@ -14,12 +14,12 @@
 
 ## 2. Build gate and page head (test-first)
 
-- [ ] 2.1 Add failing tests:
+- [x] 2.1 Add failing tests:
   - in `tests/app-icons.test.ts`: `src/app.html` links the manifest and the Apple touch icon, sets the `black-translucent` status bar and the `Last Train` app title, and sets a `theme-color` equal to the palette's `board`, ignoring case;
   - in `tests/static-build.test.ts`: `build/` holds the manifest, `apple-touch-icon.png`, and the three files in `icons/`.
 
   Run `npm run build`, and verify that the new tests fail.
-- [ ] 2.2 In `package.json`, add `generate:icons`, make `dev` run it after `generate:palette`, and make `build` run `node scripts/generate-app-icons.mjs --check` first. Add the four head tags from design decision 4 to `src/app.html`. Run `npm run build`, then verify that `npm test` passes, including the unchanged CSP tests. Commit as `feat:`.
+- [x] 2.2 In `package.json`, add `generate:icons`, make `dev` run it after `generate:palette`, and make `build` run `node scripts/generate-app-icons.mjs --check` first. Add the four head tags from design decision 4 to `src/app.html`. Run `npm run build`, then verify that `npm test` passes, including the unchanged CSP tests. Commit as `feat:`.
 - [ ] 2.3 Prove the build gate. Append one character to `static/favicon.svg`, run `npm run build`, and confirm that it fails before Vite runs and names `favicon.svg`. Restore the file with `git checkout static/favicon.svg`, and confirm that `npm run build` passes.
 
 ## 3. Verify

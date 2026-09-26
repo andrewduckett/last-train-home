@@ -81,3 +81,22 @@ describe('app icon generator', () => {
 		expect(actual.equals(Buffer.from(expected)), `${path} is stale; run npm run generate:icons`).toBe(true);
 	});
 });
+
+describe('page head', () => {
+	const head = readFileSync(resolve('src/app.html'), 'utf8');
+
+	it('links the manifest and the Apple touch icon', () => {
+		expect(head).toContain('<link rel="manifest" href="%sveltekit.assets%/manifest.webmanifest" />');
+		expect(head).toContain('<link rel="apple-touch-icon" href="%sveltekit.assets%/apple-touch-icon.png" />');
+	});
+
+	it('shows the header under the iOS status bar and names the app', () => {
+		expect(head).toContain('<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />');
+		expect(head).toContain('<meta name="apple-mobile-web-app-title" content="Last Train" />');
+	});
+
+	it('sets theme-color to the palette board color', () => {
+		const themeColor = head.match(/<meta name="theme-color" content="([^"]+)"/)?.[1];
+		expect(themeColor?.toLowerCase()).toBe(BOARD);
+	});
+});
