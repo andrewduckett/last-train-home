@@ -30,6 +30,6 @@
 
 ## 4. Verify
 
-- [ ] 4.1 Run `npm test`, `npm run check`, and `npm run build`, and confirm all three pass.
-- [ ] 4.2 Run `rg -n -i "venue" src static tests/fixtures`. Confirm that the only hits are the retired-key table and its tests, and the frozen `cory-trent-before.json` with the parity test that reads it. Run `rg -n -i "station|train|metra|\bbar\b" src --glob '!*.test.ts'`, and confirm that no code outside tests names a kind of location.
+- [x] 4.1 Run `npm test`, `npm run check`, and `npm run build`, and confirm all three pass.
+- [x] 4.2 Run `rg -n -i "venue" src static tests/fixtures`. Confirm that the only hits are the retired-key table and its tests, and the frozen `cory-trent-before.json` with the parity test that reads it. Run `rg -n -i "station|train|metra|\bbar\b" src --glob '!*.test.ts'`, and confirm that no code outside tests names a kind of location.
 - [ ] 4.3 Run `npm run preview` and open Places for `cory-trent` in Chrome at 320 and 390 pixels wide. Confirm these things: five cards with Meetup first; each station above its bar; `Train` and `Bar` tags; no "OR" divider; no horizontal overflow; the Places tab label fully visible. Confirm that each Directions link is a Google search that opens in a new tab.
