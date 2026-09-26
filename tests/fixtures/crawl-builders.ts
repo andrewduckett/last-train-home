@@ -31,7 +31,7 @@ function defined<T extends object>(value: T): T {
 }
 
 export function stopEntry(overrides: Partial<ScheduleEntry> = {}): ScheduleEntry {
-	return defined({ time: '6:00 PM', kind: 'stop', tag: 'Meet at', title: 'Harbor Square fountain', note: '1 Fountain Way', ...overrides });
+	return defined({ time: '6:00 PM', kind: 'stop', tag: 'Gather at', title: 'Harbor Square fountain', note: '1 Fountain Way', ...overrides });
 }
 
 export function moveEntry(overrides: Partial<ScheduleEntry> = {}): ScheduleEntry {
@@ -43,11 +43,11 @@ export function noteEntry(overrides: Partial<ScheduleEntry> = {}): ScheduleEntry
 }
 
 export function location(overrides: Partial<StopLocation> = {}): StopLocation {
-	return defined({ name: 'The Copper Kettle', address: '14 Mill St', label: 'Bar', ...overrides });
+	return defined({ name: 'The Copper Kettle', address: '14 Mill St', label: 'Pub', ...overrides });
 }
 
 export function placeStop(overrides: Partial<PlaceStop> = {}): PlaceStop {
-	return { stop: 'Stop 1', town: 'Mill Town', locations: [location()], ...overrides };
+	return { stop: 'First stop', town: 'Mill Town', locations: [location()], ...overrides };
 }
 
 export function task(overrides: Partial<ScavengerTask> = {}): ScavengerTask {
@@ -66,18 +66,18 @@ export function buildDefinition(overrides: Partial<CrawlDefinition> = {}): Crawl
 		schedule: [
 			stopEntry(),
 			moveEntry(),
-			stopEntry({ time: '6:30 PM', tag: 'Arrive at', title: 'Stop 1 · The Copper Kettle', note: '14 Mill St' }),
+			stopEntry({ time: '6:30 PM', tag: 'Reach', title: 'First stop · The Copper Kettle', note: '14 Mill St' }),
 			noteEntry(),
 		],
 		places: [
 			placeStop({
-				stop: 'Meetup',
+				stop: 'Gathering',
 				town: 'Harbor Town',
 				locations: [location({ name: 'Harbor Square fountain', address: '1 Fountain Way', label: undefined })],
 			}),
 			placeStop({
 				locations: [
-					location({ name: 'Mill Street Station', address: '2 Rail Rd', label: 'Train' }),
+					location({ name: 'Mill Street Station', address: '2 Rail Rd', label: 'Station' }),
 					location(),
 				],
 			}),
@@ -87,13 +87,13 @@ export function buildDefinition(overrides: Partial<CrawlDefinition> = {}): Crawl
 			task({ id: 'group-toast', title: 'Group Toast', points: 25, description: 'Get the whole group into one toast.' }),
 		],
 		scavengerRules: ['One photo per task.'],
-		links: [link(), link({ label: 'Route map', hint: undefined, url: 'https://example.com/route' })],
+		links: [link(), link({ label: 'Walking map', hint: undefined, url: 'https://example.com/route' })],
 		...overrides,
 	};
 }
 
 export function buildRecord({ definition, ...identity }: RecordOverrides = {}): CrawlRecord {
-	return defined({ title: 'Lantern Loop', color: 'amber', ...identity, definition: buildDefinition(definition) });
+	return defined({ title: 'Lantern Loop', ...identity, definition: buildDefinition(definition) });
 }
 
 export function buildCrawl(id: string, overrides: RecordOverrides = {}): Crawl {

@@ -23,7 +23,7 @@ describe('buildRecord', () => {
 		const { definition } = buildRecord();
 		expect(definition.schedule.map((entry) => entry.kind)).toEqual(expect.arrayContaining(['stop', 'move', 'note']));
 		const locations = definition.places.flatMap((stop) => stop.locations);
-		expect(locations.map((place) => place.label)).toEqual(expect.arrayContaining(['Train', 'Bar', undefined]));
+		expect(locations.map((place) => place.label)).toEqual(expect.arrayContaining(['Station', 'Pub', undefined]));
 		expect(definition.places.some((stop) => stop.locations.length === 1)).toBe(true);
 		expect(definition.scavenger.length).toBeGreaterThanOrEqual(2);
 		expect(definition.links.length).toBeGreaterThanOrEqual(2);
