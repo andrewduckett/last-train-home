@@ -28,7 +28,7 @@
 
 ## 5. Guard against new coupling
 
-- [ ] 5.1 Write `tests/test-isolation.test.ts` per design D4. Confirm it fails on a temporary test file that contains `static/crawls` or an authored id, then remove that file. Verify the guard passes on the real tree.
+- [x] 5.1 Write `tests/test-isolation.test.ts` per design D4. Confirm it fails on a temporary test file that contains `static/crawls` or an authored id, then remove that file. Verify the guard passes on the real tree.
 
 ## 6. Verify
 
