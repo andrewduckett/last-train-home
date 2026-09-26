@@ -5,7 +5,7 @@
 
 ## Review Summary
 
-ADR review completed for this change. The design makes one durable decision: tests own their crawl data, and authored crawls get a content-independent contract check only. An engineer could easily reverse that by adding a test that snapshots a live crawl, and the cost of that reversal would stay hidden until the next content edit. So the decision gets an ADR.
+ADR review completed for this change. The design makes one durable decision: tests own their crawl data, and authored crawls get a content-independent contract check only. A contributor could easily reverse that by adding a test that snapshots a live crawl, and the cost of that reversal would stay hidden until the next content edit. So the decision gets an ADR.
 
 The other design decisions do not meet the bar. Builder names, the in-memory YAML helper, the guard's text scan, and the per-file rewrites are all visible in code and cheap to change.
 

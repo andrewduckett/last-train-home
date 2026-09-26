@@ -6,13 +6,13 @@ Verification SHALL check every authored crawl record against the crawl contract.
 
 #### Scenario: An author edits a crawl's content
 
-- **WHEN** an author changes a valid record's title, introduction, links, schedule, places, tasks, or color, and the record stays valid
-- **THEN** verification passes without any change to a test
+- **WHEN** the contract check runs on a valid record, whatever its title, introduction, links, schedule, places, tasks, or color
+- **THEN** the check passes
 
 #### Scenario: An author adds a crawl
 
-- **WHEN** an author adds a new valid record to the crawl directory
-- **THEN** verification checks that record against the contract without any change to a test
+- **WHEN** the crawl directory holds a valid record that no test names
+- **THEN** the contract check finds that record and checks it
 
 #### Scenario: An authored record breaks the contract
 
@@ -30,14 +30,12 @@ Verification SHALL check every authored crawl record against the crawl contract.
 
 Each crawl definition SHALL have a `places` list, which MAY be empty. Each entry in `places` SHALL have a string `stop`, a string `town`, and a `locations` list with at least one location. Each location SHALL have a string `name` and a string `address`. A location MAY have a `label`, which SHALL be a non-empty string when present. Each scavenger task SHALL have a string `id`, a string `title`, a finite number `points`, and a string `description`.
 
-The build SHALL reject each retired key and SHALL name the key that replaces it:
+The build SHALL reject each retired key below. Each rejection SHALL identify the record, the old field, and the key that replaces it.
 
-- `definition.venues`, replaced by `places`;
-- a `places` list inside a stop, replaced by `locations`;
-- `n` or `a` on a location, replaced by `name` or `address`;
-- `t`, `p`, or `d` on a task, replaced by `title`, `points`, or `description`.
-
-Each rejection SHALL identify the record, the old field, and the key that replaces it.
+- `definition.venues`: use `places`.
+- A `places` list inside a stop: use `locations`.
+- `n` or `a` on a location: use `name` or `address`.
+- `t`, `p`, or `d` on a task: use `title`, `points`, or `description`.
 
 #### Scenario: A crawl uses the descriptive keys
 
