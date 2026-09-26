@@ -34,3 +34,5 @@
 
   If either phone opens `/` or a browser tab, stop. Report the result, and revise the manifest plan and the spec with the user before continuing.
 - [ ] 3.5 Record the device check results, with each phone's OS and browser version, in the PR description.
+
+> **Handed off, 2026-09-26.** The repository owner chose to run tasks 3.3 to 3.5 on their own phones instead of on a Claude-uploaded preview. No preview version was uploaded. The owner reports any problem as a new GitHub issue.
