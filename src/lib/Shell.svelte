@@ -6,6 +6,7 @@
 	import PlacesView from './PlacesView.svelte';
 	import TasksView from './TasksView.svelte';
 	import InfoView from './InfoView.svelte';
+	import Icon from './Icon.svelte';
 	import { resolveLinks } from './crawl/urls.js';
 	import { createChecksController, type ChecksController } from './checks.svelte.js';
 	import { resolvePalette } from './theme/resolve.js';
@@ -30,11 +31,11 @@
 	});
 
 	const BASE_TABS = [
-		{ id: 'schedule', label: 'Schedule', icon: '🕑' },
-		{ id: 'places', label: 'Places', icon: '📍' },
-		{ id: 'tasks', label: 'Tasks', icon: '✅' },
+		{ id: 'schedule', label: 'Schedule', icon: 'clock' },
+		{ id: 'places', label: 'Places', icon: 'map-pin' },
+		{ id: 'tasks', label: 'Tasks', icon: 'checklist' },
 	] as const;
-	const INFO_TAB = { id: 'info', label: 'Info', icon: 'ℹ️' } as const;
+	const INFO_TAB = { id: 'info', label: 'Info', icon: 'info' } as const;
 	let hasInfo = $derived(result?.status === 'found' && ((typeof result.crawl.definition.intro === 'string' && !!result.crawl.definition.intro.trim()) || resolveLinks(result.crawl.definition.links).length > 0));
 	let tabs = $derived(hasInfo ? [...BASE_TABS, INFO_TAB] : [...BASE_TABS]);
 
@@ -61,7 +62,7 @@
 		<header class="shell-header">
 			<div class="header-inner" style="padding-top: max(12px, env(safe-area-inset-top))">
 				<div class="header-title-row">
-					<span class="header-icon">🚆</span>
+					<span class="header-icon"><Icon name="train" size={20} /></span>
 					<h1 class="header-title font-display">{result.crawl.definition.appTitle}</h1>
 				</div>
 				<p class="header-line font-board">{result.crawl.definition.line}</p>
@@ -107,10 +108,8 @@
 					onclick={() => switchTab(tab.id)}
 				>
 					{#if active}<span class="nav-active-bar"></span>{/if}
-					<span class="nav-icon" style="opacity: {active ? 1 : 0.55}">{tab.icon}</span>
-					<span class="nav-label" class:nav-label-active={active}>
-						{tab.label}
-					</span>
+					<span class="nav-icon"><Icon name={tab.icon} size={22} /></span>
+					<span class="nav-label">{tab.label}</span>
 				</button>
 			{/each}
 		</div>
@@ -145,7 +144,8 @@
 	}
 
 	.header-icon {
-		font-size: 19px;
+		display: flex;
+		color: var(--board-ink);
 	}
 
 	.header-title {
@@ -206,8 +206,13 @@
 		min-height: 44px;
 		background: transparent;
 		border: none;
+		color: var(--board-muted);
 		cursor: pointer;
 		transition: transform 0.1s;
+	}
+
+	.nav-btn-active {
+		color: var(--board-accent);
 	}
 
 	.nav-btn:active {
@@ -224,18 +229,12 @@
 	}
 
 	.nav-icon {
-		font-size: 19px;
-		line-height: 1;
+		display: flex;
 	}
 
 	.nav-label {
-		color: var(--board-muted);
 		font-size: 11px;
 		font-weight: 600;
 		letter-spacing: 0.04em;
-	}
-
-	.nav-label-active {
-		color: var(--board-accent);
 	}
 </style>
