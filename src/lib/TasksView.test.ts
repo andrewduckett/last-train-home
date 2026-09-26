@@ -2,16 +2,24 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/svelte';
 import TasksView from './TasksView.svelte';
 import { createChecksController } from './checks.svelte.js';
-import { crawl } from '../../tests/fixtures/cory-trent.js';
+import { buildCrawl, task } from '../../tests/fixtures/crawl-builders.js';
+
+// Points total 100, so checking the first task shows 10 of 100 and 10%.
+const tasks = [
+	task({ id: 'first-task', title: 'First Task', points: 10 }),
+	task({ id: 'second-task', title: 'Second Task', points: 40 }),
+	task({ id: 'third-task', title: 'Third Task', points: 50 }),
+];
+const crawl = buildCrawl('lantern-loop', { definition: { scavenger: tasks } });
+const taskIds = tasks.map((item) => item.id);
 
 beforeEach(() => {
 	localStorage.clear();
 });
 
 function renderTasks() {
-	const resolved = { id: 'cory-trent', title: crawl.appTitle, definition: crawl };
-	const controller = createChecksController(resolved.id, crawl.scavenger.map((task) => task.id));
-	return render(TasksView, { crawl: resolved, controller });
+	const controller = createChecksController(crawl.id, taskIds);
+	return render(TasksView, { crawl, controller });
 }
 
 function getPercent(): string {
@@ -20,20 +28,19 @@ function getPercent(): string {
 
 describe('TasksView: checklist tally', () => {
 	it('does not render a special album button for an obsolete album field', () => {
-		const resolved = { id: 'cory-trent', title: crawl.appTitle, definition: { ...crawl, albumUrl: 'https://example.com/album' } };
-		const controller = createChecksController(resolved.id, crawl.scavenger.map((task) => task.id));
+		const resolved = { ...crawl, definition: { ...crawl.definition, albumUrl: 'https://example.com/album' } };
+		const controller = createChecksController(resolved.id, taskIds);
 		render(TasksView, { crawl: resolved, controller });
 		expect(screen.queryByRole('link', { name: /Open group album/ })).not.toBeInTheDocument();
 	});
-	it('checking a 10-point task shows 10 of 85 and 12%', async () => {
+	it('checking a 10-point task shows 10 of 100 and 10%', async () => {
 		renderTasks();
-		// All tasks start unchecked; sh-selfie (index 0) is 10 pts, total is 85
 		const checkboxes = screen.getAllByRole('checkbox');
 		await fireEvent.click(checkboxes[0]);
 		await waitFor(() => {
 			expect(screen.getByText('10')).toBeInTheDocument();
-			expect(screen.getByText(/\/ 85 pts/)).toBeInTheDocument();
-			expect(screen.getByText(/12% collected/)).toBeInTheDocument();
+			expect(screen.getByText(/\/ 100 pts/)).toBeInTheDocument();
+			expect(screen.getByText(/10% collected/)).toBeInTheDocument();
 		});
 	});
 
@@ -41,7 +48,7 @@ describe('TasksView: checklist tally', () => {
 		renderTasks();
 		const checkboxes = screen.getAllByRole('checkbox');
 		await fireEvent.click(checkboxes[0]);
-		await waitFor(() => expect(screen.getByText(/12% collected/)).toBeInTheDocument());
+		await waitFor(() => expect(screen.getByText(/10% collected/)).toBeInTheDocument());
 		await fireEvent.click(checkboxes[0]);
 		await waitFor(() => expect(screen.getByText(/0% collected/)).toBeInTheDocument());
 	});
@@ -51,7 +58,7 @@ describe('TasksView: checklist tally', () => {
 		renderTasks();
 		const checkboxes = screen.getAllByRole('checkbox');
 		await fireEvent.click(checkboxes[0]);
-		await waitFor(() => expect(screen.getByText(/12% collected/)).toBeInTheDocument());
+		await waitFor(() => expect(screen.getByText(/10% collected/)).toBeInTheDocument());
 		const resetBtn = screen.getByRole('button', { name: /reset/i });
 		await fireEvent.click(resetBtn);
 		await waitFor(() => expect(screen.getByText(/0% collected/)).toBeInTheDocument());
@@ -63,10 +70,10 @@ describe('TasksView: checklist tally', () => {
 		renderTasks();
 		const checkboxes = screen.getAllByRole('checkbox');
 		await fireEvent.click(checkboxes[0]);
-		await waitFor(() => expect(screen.getByText(/12% collected/)).toBeInTheDocument());
+		await waitFor(() => expect(screen.getByText(/10% collected/)).toBeInTheDocument());
 		const resetBtn = screen.getByRole('button', { name: /reset/i });
 		await fireEvent.click(resetBtn);
-		await waitFor(() => expect(screen.getByText(/12% collected/)).toBeInTheDocument());
+		await waitFor(() => expect(screen.getByText(/10% collected/)).toBeInTheDocument());
 		confirmSpy.mockRestore();
 	});
 });
