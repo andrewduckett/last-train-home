@@ -1,13 +1,13 @@
 ## 1. Builders and provider helpers
 
-- [ ] 1.1 Write `tests/fixtures/crawl-builders.test.ts` first. It checks that `buildRecord()` passes `validateCrawlSource`, that its defaults contain no `cory-trent` value or transit-agency name, that overrides replace only the given fields, and that each call returns a fresh object. Verify it fails.
-- [ ] 1.2 Add `tests/fixtures/crawl-builders.ts` with `buildDefinition`, `buildRecord`, and the item builders from design D1. Verify 1.1 passes.
+- [x] 1.1 Write `tests/fixtures/crawl-builders.test.ts` first. It checks that `buildRecord()` passes `validateCrawlSource`, that its defaults name no transit agency, that overrides replace only the given fields, and that each call returns a fresh object. Verify it fails.
+- [x] 1.2 Add `tests/fixtures/crawl-builders.ts` with `buildDefinition`, `buildRecord`, and the item builders from design D1. Verify 1.1 passes.
 - [ ] 1.3 Write tests for `recordProvider`, `toCrawlYaml`, and `yamlProvider`: a known id resolves to found with the given content, and an unknown id returns not-found. Verify they fail.
 - [ ] 1.4 Add `tests/fixtures/crawl-provider.ts` with the three helpers from design D2. Verify 1.3 passes.
 
 ## 2. Contract check for authored crawls
 
-- [ ] 2.1 Write `tests/authored-crawls.test.ts` first. Against a temporary directory of generated records, it checks that valid records with any content pass, that a new file is found, that a broken record fails and names its file, and that a missing default id fails and names the id. Against `static/crawls`, it checks that the directory passes. Verify it fails.
+- [ ] 2.1 Write `tests/authored-crawls.test.ts` first. Against a temporary directory of generated records, it checks that valid records with any content pass, that a new file is found, that a broken record fails and names its file, and that a missing default id fails and names the id. Against `static/crawls`, it checks that the directory passes and that no builder default text appears in any authored crawl. Verify it fails.
 - [ ] 2.2 Add `checkAuthoredCrawls(directory, defaultId)` in `tests/fixtures/authored-crawls.ts`, per design D3. Verify 2.1 passes.
 - [ ] 2.3 In `tests/static-build.test.ts`, replace the title check with "each authored file appears in `build/crawls/` with identical bytes". Verify with `npm run build` then `npx vitest run tests/static-build.test.ts`.
 
