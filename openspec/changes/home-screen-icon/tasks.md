@@ -1,7 +1,7 @@
 ## 1. App icon generator (test-first)
 
-- [ ] 1.1 Run `npm install --save-dev @resvg/resvg-js`. Verify that `package.json` and `package-lock.json` list it, and that `node -e "require('@resvg/resvg-js')"` exits cleanly.
-- [ ] 1.2 Write `tests/app-icons.test.ts` with failing tests, one behavior each:
+- [x] 1.1 Run `npm install --save-dev @resvg/resvg-js`. Verify that `package.json` and `package-lock.json` list it, and that `node -e "require('@resvg/resvg-js')"` exits cleanly.
+- [x] 1.2 Write `tests/app-icons.test.ts` with failing tests, one behavior each:
   - `generateAppIcons()` returns the six outputs from the design's table;
   - the manifest sets `display: standalone`, `name`, `short_name`, and theme and background colors equal to the palette's `board`, and has no `start_url`;
   - the manifest lists 192, 512, and maskable 512 icons, and each PNG's header states the listed size;
@@ -10,7 +10,7 @@
   - every committed file equals the generated content, and a failure names the stale file.
 
   Verify that the tests fail because `scripts/generate-app-icons.mjs` does not exist.
-- [ ] 1.3 Write `scripts/generate-app-icons.mjs` as design decisions 1 to 3 describe, with a `--check` mode that exits non-zero and names each stale file. Run `node scripts/generate-app-icons.mjs` to write the files into `static/`. Verify that `tests/app-icons.test.ts` passes. Commit 1.1 to 1.3 as `feat:`.
+- [x] 1.3 Write `scripts/generate-app-icons.mjs` as design decisions 1 to 3 describe, with a `--check` mode that exits non-zero and names each stale file. Run `node scripts/generate-app-icons.mjs` to write the files into `static/`. Verify that `tests/app-icons.test.ts` passes. Commit 1.1 to 1.3 as `feat:`.
 
 ## 2. Build gate and page head (test-first)
 
