@@ -7,8 +7,8 @@
 
 ## 2. Contract check for authored crawls
 
-- [ ] 2.1 Write `tests/authored-crawls.test.ts` first. Against a temporary directory of generated records, it checks that valid records with any content pass, that a new file is found, that a broken record fails and names its file, and that a missing default id fails and names the id. Against `static/crawls`, it checks that the directory passes and that no builder default text appears in any authored crawl. Verify it fails.
-- [ ] 2.2 Add `checkAuthoredCrawls(directory, defaultId)` in `tests/fixtures/authored-crawls.ts`, per design D3. Verify 2.1 passes.
+- [x] 2.1 Write `tests/authored-crawls.test.ts` first. Against a temporary directory of generated records, it checks that valid records with any content pass, that a new file is found, that a broken record fails and names its file, and that a missing default id fails and names the id. Against `static/crawls`, it checks that the directory passes. Verify it fails.
+- [x] 2.2 Add `checkAuthoredCrawls(directory, defaultId)` in `tests/fixtures/authored-crawls.ts`, per design D3. Verify 2.1 passes.
 - [ ] 2.3 In `tests/static-build.test.ts`, replace the title check with "each authored file appears in `build/crawls/` with identical bytes". Verify with `npm run build` then `npx vitest run tests/static-build.test.ts`.
 
 ## 3. Move tests to generated crawls
@@ -32,6 +32,7 @@
 
 ## 6. Verify
 
+- [ ] 6.0 Check once, not as a standing test, that no builder default string appears in any authored crawl, so the builders copy no authored content. Record the result in the PR description.
 - [ ] 6.1 Confirm the theming requirement "Keep shared surfaces consistent across crawls" is covered by the existing test in `src/lib/theme/palette.test.ts`. Record the test name in the PR description.
 - [ ] 6.2 Temporarily change the title, intro, a link, and the color in `static/crawls/cory-trent.yaml`, then run `npm test`. Verify the suite passes, then restore the file.
 - [ ] 6.3 Run `npm test`, `npm run check`, and `npm run build`. Verify all three succeed.
