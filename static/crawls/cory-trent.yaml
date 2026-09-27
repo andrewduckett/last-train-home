@@ -147,6 +147,18 @@ definition:
       title: Historic Landmark
       points: 10
       description: Snap a photo with a landmark or historic sign near a stop.
+    - id: sh-recreate
+      title: Recreate the Moment
+      points: 10
+      description: Recreate a famous movie or album-cover.
+    - id: sh-couple-advice
+      title: Words of Wisdom
+      points: 15
+      description: Ask a stranger for marriage advice for Cory & Trent, then snap a photo of the stranger with the couple.
+    - id: sh-couple-every-stop
+      title: Celebrate at Every Stop
+      points: 25
+      description: A photo with Cory & Trent at every bar stop — all four to count.
     - id: sh-photobomb
       title: Bonus Photobomb
       points: 25
