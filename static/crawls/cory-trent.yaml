@@ -167,12 +167,13 @@ definition:
     - Share your tasks in the shared Google Photo Album.
     - Tick each one off here once you've uploaded it to see your tally.
   links:
+    - label: Photo Album
+      hint: Share experiences here!
+      url: https://photos.app.goo.gl/hYxSikqjj9kCyi4t6
     - label: Ventra
       hint: Buy & show your pass
       url: https://www.ventrachicago.com/app/
     - label: Metra
       hint: Live train schedules
       url: https://www.metra.com/schedules?line=UP-NW&allstops=0
-    - label: Photo Album [coming soon]
-      hint: Coming soon!
-      url: https://www.google.com
+
