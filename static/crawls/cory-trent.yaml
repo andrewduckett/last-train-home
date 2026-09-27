@@ -60,17 +60,17 @@ definition:
       tag: Arrive at
       title: Stop 3 · Arlington Heights Bar Stop
       note: Eddie's
-    - time: 7:05 PM
+    - time: 8:05 PM
       kind: note
       tag: Wrap up
       title: Head to Outbound Platform
       note: Close out tabs!
-    - time: 7:16 PM
+    - time: 8:16 PM
       kind: move
       tag: Depart
       title: Depart Arlington Heights
       mode: Outbound train → Palatine
-    - time: 7:24 PM
+    - time: 8:24 PM
       kind: stop
       tag: Final Stop
       title: Stop 4 · Palatine Final Landing
