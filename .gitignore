@@ -6,3 +6,6 @@ build/
 
 # Agent scratch/working files (see AGENTS.md)
 .workspace/
+
+# nix-direnv cache
+.direnv/
