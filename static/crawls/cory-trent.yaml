@@ -163,10 +163,10 @@ definition:
       title: Bonus Photobomb
       points: 25
       description: Have a fellow crawler sneak a photobomb into a stranger's photo.
-    - id: sh-green-shirt-photo
-      title: Spot the Green Shirt
-      points: 15
-      description: 15 points for every photo of a stranger in a green shirt.
+    - id: sh-green-shirt-hunt
+      title: Green Shirt Hunt
+      points: 75
+      description: Photograph 5 different strangers in green shirts.
     - id: sh-green-shirt-wear
       title: The Shirt Off Their Back
       points: 100
