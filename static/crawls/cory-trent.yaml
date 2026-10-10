@@ -6,11 +6,11 @@ definition:
   intro: |
     Cory & Trent are getting married! Come help us celebrate on a mini train crawl along the Union Pacific Northwest line: four towns, four bars, one very happy couple.
     
-    Meet at Arlington Heights Station by 3:00 PM and we'll finish back in Arlington Heights for the last round. 
+    Meet at Arlington Heights Station by 3:15 PM and we'll finish back in Arlington Heights for the last round. 
     
     **Don't forget**: $7 for a Metra Weekend Day Pass, which covers every ride all day (buy it in the Ventra app before you board), a charged phone, your ID, and a card for tabs. Close out your tab before each train. Trains don't wait, and neither do we!
   schedule:
-    - time: 3:00 PM
+    - time: 3:15 PM
       kind: stop
       tag: Be here by
       title: Meetup — Arlington Heights Station
