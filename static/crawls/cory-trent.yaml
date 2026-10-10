@@ -171,6 +171,10 @@ definition:
       title: The Shirt Off Their Back
       points: 100
       description: End the night wearing a stranger's green shirt.
+    - id: sh-neon-green-drink
+      title: Glow Green
+      points: 10
+      description: Drink a neon green drink.
   scavengerRules:
     - Share your tasks in the shared Google Photo Album.
     - Tick each one off here once you've uploaded it to see your tally.
