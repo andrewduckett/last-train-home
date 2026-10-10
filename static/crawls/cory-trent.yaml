@@ -4,7 +4,7 @@ definition:
   appTitle: "Cory & Trent: Last Train Home"
   line: Saturday, October 10th 2026
   intro: |
-    Cory & Trent are getting married! Come help us celebrate on a mini train crawl along the Union Pacific Northwest line: four towns, four bars, one very happy couple.
+    Cory & Trent are getting married! Come help us celebrate on a mini train crawl along the Union Pacific Northwest line: three towns, three bars, one very happy couple.
     
     Meet at Arlington Heights Station by 3:15 PM and we'll finish back in Arlington Heights for the last round. 
     
@@ -30,35 +30,20 @@ definition:
       tag: Arrive at
       title: Stop 1 · Mt. Prospect Bar Stop
       note: Station 34
-    - time: 4:25 PM
+    - time: 5:25 PM
       kind: note
       tag: Wrap up
       title: Head to Inbound Platform
       note: Close out tabs!
-    - time: 4:37 PM
+    - time: 5:37 PM
       kind: move
       tag: Depart
       title: Depart Mt. Prospect
-      mode: Inbound train → Park Ridge
-    - time: 4:51 PM
-      kind: stop
-      tag: Arrive at
-      title: Stop 2 · Park Ridge Bar Stop
-      note: The Harp & Fiddle
-    - time: 5:40 PM
-      kind: note
-      tag: Wrap up
-      title: Head to Inbound Platform
-      note: Close out tabs!
-    - time: 5:51 PM
-      kind: move
-      tag: Depart
-      title: Depart Park Ridge
       mode: Inbound train → Edison Park
     - time: 5:54 PM
       kind: stop
       tag: Arrive at
-      title: Stop 3 · Edison Park Bar Stop
+      title: Stop 2 · Edison Park Bar Stop
       note: Edison Park Inn
     - time: 6:45 PM
       kind: note
@@ -73,7 +58,7 @@ definition:
     - time: 7:16 PM
       kind: stop
       tag: Final Stop
-      title: Stop 4 · Arlington Heights Final Landing
+      title: Stop 3 · Arlington Heights Final Landing
       note: Eddie's
   places:
     - stop: Meetup
@@ -92,15 +77,6 @@ definition:
           address: 34 S Main St
           label: Bar
     - stop: Stop 2
-      town: Park Ridge, IL
-      locations:
-        - name: Park Ridge Metra Station
-          address: 100 S Summit Ave
-          label: Train
-        - name: The Harp & Fiddle
-          address: 110 Main St
-          label: Bar
-    - stop: Stop 3
       town: Edison Park, IL
       locations:
         - name: Edison Park Metra Station
@@ -109,7 +85,7 @@ definition:
         - name: Edison Park Inn
           address: 6715 N Olmsted Ave
           label: Bar
-    - stop: Stop 4
+    - stop: Stop 3
       town: Arlington Heights, IL
       locations:
         - name: Arlington Heights Metra Station
@@ -158,7 +134,7 @@ definition:
     - id: sh-couple-every-stop
       title: Celebrate at Every Stop
       points: 25
-      description: A photo with Cory & Trent at every bar stop — all four to count.
+      description: A photo with Cory & Trent at every bar stop — all three to count.
     - id: sh-photobomb
       title: Bonus Photobomb
       points: 25
